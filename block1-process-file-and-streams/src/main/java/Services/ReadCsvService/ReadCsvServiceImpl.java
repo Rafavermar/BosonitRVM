@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -6,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadCsvServiceImpl implements ReadCsvService {
-    private static final String CSV_FILE_PATH = "people.csv";
+    private static final String CSV_FILE_PATH = "block1-process-file-and-streams/src/main/resources/people.csv";
 
     @Override
     public List<Person> readPeopleFromCSV() throws IOException, InvalidLineFormatException {
         List<Person> people = new ArrayList<>();
 
         Path filePath = Paths.get(CSV_FILE_PATH);
+        BufferedReader reader = Files.newBufferedReader(filePath);
         List<String> lines = Files.readAllLines(filePath);
 
         for (int i = 1; i < lines.size(); i++) {
@@ -22,7 +24,8 @@ public class ReadCsvServiceImpl implements ReadCsvService {
                 Person person = parsePersonFromLine(line);
                 people.add(person);
             } catch (InvalidLineFormatException e) {
-                throw new InvalidLineFormatException("Invalid format at line " + i + ": " + line, e);
+                throw new InvalidLineFormatException("Invalid format at line " + i + ": " + line);
+
             }
         }
 
@@ -33,7 +36,7 @@ public class ReadCsvServiceImpl implements ReadCsvService {
         String[] fields = line.split(":");
 
         if (fields.length < 1 || fields.length > 3) {
-            throw new InvalidLineFormatException("Invalid number of fields", line);
+            throw new InvalidLineFormatException("Invalid number of fields");
         }
 
         String name = fields[0];
@@ -47,7 +50,7 @@ public class ReadCsvServiceImpl implements ReadCsvService {
         try {
             return Integer.parseInt(ageStr);
         } catch (NumberFormatException e) {
-            throw new InvalidLineFormatException("Invalid age format", e);
+            throw new InvalidLineFormatException("Invalid age format");
         }
     }
 

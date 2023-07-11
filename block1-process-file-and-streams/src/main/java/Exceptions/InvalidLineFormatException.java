@@ -1,7 +1,7 @@
-public class InvalidLineFormatException extends Exception {
 
 
-    public InvalidLineFormatException(String s,InvalidLineFormatException e) {
-
+public class InvalidLineFormatException extends RuntimeException {
+    public InvalidLineFormatException(String message) {
+        super(message);
     }
 }
