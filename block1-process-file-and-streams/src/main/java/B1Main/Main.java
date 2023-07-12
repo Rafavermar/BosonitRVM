@@ -7,20 +7,17 @@ public class Main {
             ReadCsvService readCsvService = new ReadCsvServiceImpl();
             List<Person> people = readCsvService.readPeopleFromCSV();
 
-
             for (Person person : people) {
-                System.out.println("Name: " + person.getName());
-                System.out.println("Town: " + person.getTown());
-                System.out.println("Age: " + person.getAge());
+                System.out.println("Name: " + person.getName() + " | Town: " + person.getTown() + " | Age: " + person.getAge());
+                if (person.getErrorMessage() != null) {
+                    System.out.println(person.getErrorMessage());
+                }
                 System.out.println();
             }
-
         } catch (IOException e) {
-            System.err.println("Error al leer el archivo csv:" + e.getMessage());
-            e.printStackTrace();
-        } catch (InvalidLineFormatException e) {
-            System.err.println("Error de formato en una linea: " + e.getMessage() );
+            System.err.println("Error al leer el archivo CSV: " + e.getMessage());
             e.printStackTrace();
         }
     }
 }
+

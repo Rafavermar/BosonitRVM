@@ -8,5 +8,6 @@ import lombok.Setter;
 public class Person {
     private String name;
     private String town;
-    private Integer Age;
+    private Integer age;
+    private String errorMessage;
 }

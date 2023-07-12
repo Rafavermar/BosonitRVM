@@ -6,26 +6,25 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class ReadCsvServiceImpl implements ReadCsvService {
     private static final String CSV_FILE_PATH = "block1-process-file-and-streams/src/main/resources/people.csv";
 
     @Override
-    public List<Person> readPeopleFromCSV() throws IOException, InvalidLineFormatException {
+    public List<Person> readPeopleFromCSV() throws IOException {
         List<Person> people = new ArrayList<>();
 
         Path filePath = Paths.get(CSV_FILE_PATH);
-        BufferedReader reader = Files.newBufferedReader(filePath);
         List<String> lines = Files.readAllLines(filePath);
 
-        for (int i = 1; i < lines.size(); i++) {
-            String line = lines.get(i);
-
+        for (String line : lines) {
             try {
                 Person person = parsePersonFromLine(line);
                 people.add(person);
             } catch (InvalidLineFormatException e) {
-                throw new InvalidLineFormatException("Invalid format at line " + i + ": " + line);
-
+                String errorMessage = "Error en la línea: " + line + " -> " + e.getMessage();
+                people.add(new Person(null, null, null, errorMessage));
             }
         }
 
@@ -35,24 +34,23 @@ public class ReadCsvServiceImpl implements ReadCsvService {
     private Person parsePersonFromLine(String line) throws InvalidLineFormatException {
         String[] fields = line.split(":");
 
-        if (fields.length < 1 || fields.length > 3) {
-            throw new InvalidLineFormatException("Invalid number of fields");
+        if (fields.length != 3) {
+            throw new InvalidLineFormatException("La línea no tiene el formato correcto");
         }
 
-        String name = fields[0];
-        String town = fields.length >= 2 ? fields[1] : "";
-        int age = fields.length == 3 ? parseAge(fields[2]) : 0;
+        String name = fields[0].trim();
+        String town = fields[1].trim();
+        String ageStr = fields[2].trim();
 
-        return new Person(name, town, age);
-    }
-
-    private int parseAge(String ageStr) throws InvalidLineFormatException {
-        try {
-            return Integer.parseInt(ageStr);
-        } catch (NumberFormatException e) {
-            throw new InvalidLineFormatException("Invalid age format");
+        if (name.isBlank()) {
+            throw new InvalidLineFormatException("El nombre es obligatorio");
         }
+        if (!ageStr.matches("\\d+")) {
+            throw new InvalidLineFormatException("El formato de edad no es válido");
+        }
+
+        int age = Integer.parseInt(ageStr);
+
+        return new Person(name, town, age, null);
     }
-
-
 }
