@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 
 
 public class ReadCsvServiceImpl implements ReadCsvService {
@@ -24,9 +24,25 @@ public class ReadCsvServiceImpl implements ReadCsvService {
                 people.add(person);
             } catch (InvalidLineFormatException e) {
                 String errorMessage = "Error en la línea: " + line + " -> " + e.getMessage();
-                people.add(new Person(null, null, null, errorMessage));
+
+                String[] fields = line.split(":");
+                String name = fields[0].trim();
+                String town = null;
+                Integer age = null;
+                if (fields.length > 1) {
+                    town = fields[1].trim();
+                }
+                if (fields.length > 2) {
+                    String ageStr = fields[2].trim();
+                    if (ageStr.matches("\\d+")) {
+                        age = Integer.parseInt(ageStr);
+                    }
+                }
+
+                people.add(new Person(name, town, age, errorMessage));
             }
         }
+
 
         return people;
     }
@@ -51,6 +67,6 @@ public class ReadCsvServiceImpl implements ReadCsvService {
 
         int age = Integer.parseInt(ageStr);
 
-        return new Person(name, town, age, null);
+        return new Person(name, Optional.ofNullable(town).orElse(""), age);
     }
 }

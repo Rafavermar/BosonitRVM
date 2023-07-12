@@ -10,4 +10,16 @@ public class Person {
     private String town;
     private Integer age;
     private String errorMessage;
+
+    public Person(String name, String town, Integer age) {
+        this.name = name != null ? name : "";
+        this.town = town != null ? town : "";
+        this.age = age != null ? age : 0;
+        this.errorMessage = null;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + " | Town: " + town + " | Age: " + age;
+    }
 }
