@@ -10,6 +10,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="block1c-process-file-and-streams" />
         <module name="block3-maven-package" />
         <module name="com.BosonitRVM" />
         <module name="block1b-process-file-and-streams" />
