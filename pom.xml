@@ -15,6 +15,7 @@
         <module>block1b-process-file-and-streams</module>
         <module>block1c-process-file-and-streams</module>
         <module>block1d-process-file-and-streams</module>
+        <module>block3-create-repo-git</module>
     </modules>
 
     <properties>
