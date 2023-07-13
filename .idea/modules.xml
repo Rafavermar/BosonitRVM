@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/block1b-process-file-and-streams.iml" filepath="$PROJECT_DIR$/block1b-process-file-and-streams.iml" />
       <module fileurl="file://$PROJECT_DIR$/block1c-process-file-and-streams.iml" filepath="$PROJECT_DIR$/block1c-process-file-and-streams.iml" />
+      <module fileurl="file://$PROJECT_DIR$/block1d-process-file-and-streams.iml" filepath="$PROJECT_DIR$/block1d-process-file-and-streams.iml" />
       <module fileurl="file://$PROJECT_DIR$/block3-maven-package.iml" filepath="$PROJECT_DIR$/block3-maven-package.iml" />
     </modules>
   </component>

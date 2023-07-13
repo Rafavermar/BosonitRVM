@@ -13,6 +13,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/BosonitProjects/pom.xml" />
+        <option value="$PROJECT_DIR$/bloc1d-process-file-and-streams/pom.xml" />
       </set>
     </option>
   </component>
