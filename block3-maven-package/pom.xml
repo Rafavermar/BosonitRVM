@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>groupId</groupId>
         <artifactId>BosonitRVM</artifactId>
@@ -17,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-        <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -26,13 +27,11 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>BosonitRVM.block3-maven-package.main</mainClass>
+                            <mainClass>B3.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
         </plugins>
-        </build>
-
-
+    </build>
 </project>
