@@ -9,10 +9,13 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/block1b-process-file-and-streams/pom.xml" />
         <option value="$PROJECT_DIR$/block3-create-repo-git/pom.xml" />
+        <option value="$PROJECT_DIR$/../5.SpringBasico/pom.xml" />
+        <option value="$PROJECT_DIR$/../block5-command-line-runner/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/../5.SpringBasico/pom.xml" />
         <option value="$PROJECT_DIR$/BosonitProjects/pom.xml" />
         <option value="$PROJECT_DIR$/bloc1d-process-file-and-streams/pom.xml" />
       </set>
