@@ -1,10 +1,3 @@
-package Services.ReadCsvService;
-
-import Entities.Person;
-import Exceptions.InvalidLineFormatException;
-import Services.ReadCsvService.ReadCsvService;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,48 +5,37 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-
-public class ReadCsvServiceImpl implements ReadCsvService {
+public class ReadCsvServiceImpl1b implements ReadCsvService1b {
     private static final String CSV_FILE_PATH = "block1-process-file-and-streams/src/main/resources/people.csv";
 
     @Override
-    public List<Person> readPeopleFromCSV() throws IOException {
-        List<Person> people = new ArrayList<>();
+    public List<Person1b> readPeopleFromCSV() throws IOException {
+        List<Person1b> people = new ArrayList<>();
 
         Path filePath = Paths.get(CSV_FILE_PATH);
         List<String> lines = Files.readAllLines(filePath);
 
         for (String line : lines) {
             try {
-                Person person = parsePersonFromLine(line);
+                Person1b person = parsePersonFromLine(line);
                 people.add(person);
             } catch (InvalidLineFormatException e) {
                 String errorMessage = "Error en la línea: " + line + " -> " + e.getMessage();
-
-                String[] fields = line.split(":");
-                String name = fields[0].trim();
-                String town = null;
-                Integer age = null;
-                if (fields.length > 1) {
-                    town = fields[1].trim();
-                }
-                if (fields.length > 2) {
-                    String ageStr = fields[2].trim();
-                    if (ageStr.matches("\\d+")) {
-                        age = Integer.parseInt(ageStr);
-                    }
-                }
-
-                people.add(new Person(name, town, age, errorMessage));
+                people.add(new Person1b(null, null, null, errorMessage));
             }
         }
 
+        List<Person1b> filteredPeople = people.stream()
+                .filter(person -> person.getName() == null || !person.getName().startsWith("A"))
+                .collect(Collectors.toList());
 
-        return people;
+        return filteredPeople;
     }
 
-    private Person parsePersonFromLine(String line) throws InvalidLineFormatException {
+
+    private Person1b parsePersonFromLine(String line) throws InvalidLineFormatException {
         String[] fields = line.split(":");
 
         if (fields.length != 3) {
@@ -73,6 +55,6 @@ public class ReadCsvServiceImpl implements ReadCsvService {
 
         int age = Integer.parseInt(ageStr);
 
-        return new Person(name, Optional.ofNullable(town).orElse(""), age);
+        return new Person1b(name, Optional.ofNullable(town).orElse(""), age);
     }
 }

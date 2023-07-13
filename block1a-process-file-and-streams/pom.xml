@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>block1-process-file-and-streams</artifactId>
+    <artifactId>block1a-process-file-and-streams</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
