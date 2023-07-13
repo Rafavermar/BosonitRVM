@@ -12,10 +12,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="block3-maven-package" />
         <module name="com.BosonitRVM" />
-        <module name="block1-process-file-and-streams" />
+        <module name="block1-process-file-and-streams (2)" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="block1-process-file-and-streams" target="17" />
+      <module name="block1a-process-file-and-streams" target="17" />
       <module name="BosonitProjects" target="17" />
       <module name="com.BosonitRVM" target="17" />
     </bytecodeTargetLevel>

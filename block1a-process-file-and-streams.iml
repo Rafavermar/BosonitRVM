@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$/block1a-process-file-and-streams" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$/block1a-process-file-and-streams/src/main/java/B1aMain" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/block1a-process-file-and-streams/src/main/java/Entities" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/block1a-process-file-and-streams/src/main/java/Exceptions" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/block1a-process-file-and-streams/src/main/java/ReadCsvService" isTestSource="false" />
+    </content>
+  </component>
+</module>
