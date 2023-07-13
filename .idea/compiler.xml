@@ -11,8 +11,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="block3-maven-package" />
+        <module name="block1-process-file-and-streams (1)" />
         <module name="com.BosonitRVM" />
         <module name="block1-process-file-and-streams (2)" />
+        <module name="block1b-process-file-and-streams" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
