@@ -11,7 +11,7 @@
 	<groupId>com.block5-command-line-runner</groupId>
 	<artifactId>block5-command-line-runner</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>Ejercicio 5 Springboot básico</name>
 	<description>Ejercicio 5 Springboot básico Bosonit</description>
 	<properties>
 		<java.version>17</java.version>
@@ -46,6 +46,18 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.block5commandlinerunner.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

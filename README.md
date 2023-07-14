@@ -4,16 +4,24 @@
 PS C:\Users\rafael.vera\IdeaProjects\BosonitRVM\block3-maven-package\target> java -jar block3-maven-package-1.0-SNAPSHOT.jar
 
 
-## Empaquetar proyecto Maven
-Nombre proyecto Maven: block3-maven-package
-Tiempo estimado: 3 horas
-
-Crear un programa simple que imprima por consola: Hello world!.
-Compilar nuestro proyecto con Maven desde IntelliJ. Esto nos deberá crear un fichero JAR, en el directorio ‘target’. Conseguir ejecutar el programa java desde línea de comandos con la instrucción:
-java –jar XXX.jar
-Hint: Para poder ejecutar nuestro JAR, hay que incluir este plugin en el fichero pom.xml.
+## CommandLineRunner
+Nombre proyecto Maven: block5-command-line-runner
+Tiempo estimado: 4 horas.
+1) Realizar programa con tres funciones que se deberán ejecutar al arrancar el programa. Una mostrará el texto “Hola desde clase inicial”, otra escribirá “Hola desde clase secundaria” y la tercera función pondrá “Soy la tercera clase”. Se deberá utilizar @Postconstruct en la primera función y la interface CommandLineRunner en los dos siguientes. ¿En qué orden se muestran los mensajes? ¿Por qué?
+   Por ejemplo:
 
 
-Esto es porque para que Java sepa dónde está nuestro main, dentro del fichero JAR, hay que especificarlo de algún modo. Este plugin indica en qué clase está nuestra función main. En el ejemplo, es la clase Prueba que está en el paquete “com.bosonit.prueba”.
+   @SpringBootApplication
+   public class Main {
 
-Recordar que Java deberá estar en el path de windows.
+   @Bean
+   CommandLineRunner ejecutame()
+   {
+   return p ->
+   {
+   System.out.println("Linea a ejecutar cuando arranque");
+   };
+   }
+   }
+
+2) Modificar la tercera función para que imprima los valores pasados como parámetro al ejecutar el programa.
