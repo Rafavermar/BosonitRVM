@@ -7,6 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.sql.SQLOutput;
+import java.util.Scanner;
+
 @SpringBootApplication
 @Slf4j
 public class Main implements CommandLineRunner {
@@ -22,19 +25,7 @@ public class Main implements CommandLineRunner {
 			System.out.println("Hola desde clase secundaria");
 		};
 	}
-/**
- * public CommmandLineRunner funcionSecundaria(){
- *     return args -> {
- *         System.out.println("Hola desde clase secundaria")
- *     };
- * }
-	@Bean
-	public CommandLineRunner terceraFuncion() {
-		return args -> {
-			System.out.println("Soy la tercera clase");
-		};
-	}
-**/
+
 
 	@Bean
 	public CommandLineRunner terceraFuncion() {
@@ -51,10 +42,33 @@ public class Main implements CommandLineRunner {
 		};
 	}
 
-	/**
-	apuntando al directorio target
-	java -jar block5-command-line-runner-1.0-SNAPSHOT.jar valor1 valor2 valor3
-	**/
+
+
+// Opcion usando la Clase Scanner
+
+/**
+ 	 @Bean
+	public CommandLineRunner terceraFuncion(){
+		return args -> {
+			System.out.println("Soy la tercera clase");
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Introduzca los valores(separados por esapcio):");
+			String input = scanner.nextLine();
+
+			String[] valores = input.split(" ");
+			if (valores.length > 0) {
+				System.out.println("Valores introducidos:");
+				for (String valor : valores) {
+					System.out.println(valor);
+
+				}
+			} else {
+				System.out.println("No se han introducido valores.");
+			}
+		};
+	}
+**/
+
 
 
 	public static void main(String[] args) {
@@ -63,9 +77,27 @@ public class Main implements CommandLineRunner {
 		log.info("Aplicación finalizada");
 	}
 
+
+
 	@Override
 	public void run(String... args) throws Exception {
 		log.info("Estamos dentro del Runner");
 
 	}
 }
+
+
+/**
+ apuntando al directorio target
+ java -jar block5-command-line-runner-1.0-SNAPSHOT.jar valor1 valor2 valor3
+ **/
+
+/**
+ }
+ @Bean
+ public CommandLineRunner terceraFuncion() {
+ return args -> {
+ System.out.println("Soy la tercera clase");
+ };
+ }
+ **/

@@ -23,5 +23,9 @@ __¿En qué orden se muestran los mensajes? ¿Por qué?__
    La anotación @PostConstruct sobre una función indica a spring, que esa función se ejecutará
    una vez antes de la inicialización del  primer Bean.
 
+/**
+apuntando al directorio target
+java -jar block5-command-line-runner-1.0-SNAPSHOT.jar valor1 valor2 valor3
+**/
 
 2) Modificar la tercera función para que imprima los valores pasados como parámetro al ejecutar el programa.
