@@ -26,7 +26,7 @@ public class Main implements CommandLineRunner {
 		};
 	}
 
-
+/**
 	@Bean
 	public CommandLineRunner terceraFuncion() {
 		return args -> {
@@ -41,12 +41,12 @@ public class Main implements CommandLineRunner {
 			}
 		};
 	}
-
+**/
 
 
 // Opcion usando la Clase Scanner
 
-/**
+
  	 @Bean
 	public CommandLineRunner terceraFuncion(){
 		return args -> {
@@ -67,7 +67,7 @@ public class Main implements CommandLineRunner {
 			}
 		};
 	}
-**/
+
 
 
 
