@@ -23,6 +23,11 @@ public class Main implements CommandLineRunner {
 		};
 	}
 /**
+ * public CommmandLineRunner funcionSecundaria(){
+ *     return args -> {
+ *         System.out.println("Hola desde clase secundaria")
+ *     };
+ * }
 	@Bean
 	public CommandLineRunner terceraFuncion() {
 		return args -> {
