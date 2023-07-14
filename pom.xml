@@ -18,6 +18,7 @@
         <module>block3-create-repo-git</module>
         <module>block3-maven-package</module>
         <module>block5-command-line-runner</module>
+        <module>block5-properties</module>
     </modules>
 
     <properties>

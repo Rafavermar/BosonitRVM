@@ -1,27 +1,54 @@
 # BosonitRVM
+# Rafael Vera Marañón
+## OnBoarding 07/2023
+### Traineship from 03/07/2023 to 31/09/2023
 
-# Comando ejecutado
-PS C:\Users\rafael.vera\IdeaProjects\BosonitRVM\block3-maven-package\target> java -jar block3-maven-package-1.0-SNAPSHOT.jar
-
-
-## CommandLineRunner
-Nombre proyecto Maven: block5-command-line-runner
-Tiempo estimado: 4 horas.
-1) Realizar programa con tres funciones que se deberán ejecutar al arrancar el programa. Una mostrará el texto “Hola desde clase inicial”, otra escribirá “Hola desde clase secundaria” y la tercera función pondrá “Soy la tercera clase”. Se deberá utilizar @Postconstruct en la primera función y la interface CommandLineRunner en los dos siguientes. ¿En qué orden se muestran los mensajes? ¿Por qué?
-   Por ejemplo:
+# EJERCICIOS FORMACIÓN JAVA / SPRINGBOOT 
 
 
-   @SpringBootApplication
-   public class Main {
+1. Java Development Kit (JDK)
 
-   @Bean
-   CommandLineRunner ejecutame()
-   {
-   return p ->
-   {
-   System.out.println("Linea a ejecutar cuando arranque");
-   };
-   }
-   }
+      Lectura de ficheros y filtado con Stream
 
-2) Modificar la tercera función para que imprima los valores pasados como parámetro al ejecutar el programa.
+
+3. Herramientas: Maven & GIT
+
+   3.a Empaquetar proyecto Maven
+
+   3.b Crear repositorio GIT
+
+
+5. Springboot(Básico)
+
+   5a. CommandLineRunner
+
+   5b. Carga de propiedades
+
+   5c. Logging
+
+   5d. Perfiles
+
+6. SpringWeb
+
+   6a. Controladores
+
+   6b. Controladores Persona
+
+   6c. Path variables y headers
+
+
+7. Spring Data (Básico)
+   7a. CRUD
+
+   7b. CRUD con validación
+
+      7b.1 Crear CRUD de tabla Persona
+
+      7b.2 Crear Excepciones
+
+      7b.3 Relaciones entre Entidades
+
+      7b.4 Feign
+
+
+10. Docker

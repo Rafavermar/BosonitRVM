@@ -14,6 +14,7 @@
         <module name="block1c-process-file-and-streams" />
         <module name="block5-command-line-runner" />
         <module name="block3-create-repo-git" />
+        <module name="block5-properties" />
         <module name="block3-maven-package" />
         <module name="block1d-process-file-and-streams" />
         <module name="com.BosonitRVM" />
@@ -31,6 +32,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="block5-command-line-runner" options="-parameters" />
+      <module name="block5-properties" options="-parameters" />
     </option>
   </component>
 </project>
