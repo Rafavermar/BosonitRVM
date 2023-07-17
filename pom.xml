@@ -18,6 +18,9 @@
         <module>block3-maven-package</module>
         <module>block5-command-line-runner</module>
         <module>block5-properties</module>
+        <module>block6-simple-controllers</module>
+        <module>block6.2-simple-controllers</module>
+
     </modules>
 
     <properties>

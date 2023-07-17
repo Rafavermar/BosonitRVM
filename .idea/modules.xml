@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BosonitRVM.iml" filepath="$PROJECT_DIR$/BosonitRVM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/block6.2-simple-controllers/block6.2-simple-controllers.iml" filepath="$PROJECT_DIR$/block6.2-simple-controllers/block6.2-simple-controllers.iml" />
     </modules>
   </component>
 </project>
