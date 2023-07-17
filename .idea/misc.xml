@@ -29,6 +29,10 @@
         <option value="$PROJECT_DIR$/../block6.1-simple-controllers/pom.xml" />
         <option value="$PROJECT_DIR$/../block6.3-simple-controllers/pom.xml" />
         <option value="$PROJECT_DIR$/block6.3-simple-controllers/pom.xml" />
+        <option value="$PROJECT_DIR$/block6-person-controllers3/pom.xml" />
+        <option value="$PROJECT_DIR$/../block6-person.controllers1/pom.xml" />
+        <option value="$PROJECT_DIR$/../block6-person-controllers1/pom.xml" />
+        <option value="$PROJECT_DIR$/block6-person-controllers1/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -39,6 +43,7 @@
         <option value="$PROJECT_DIR$/bloc1d-process-file-and-streams/pom.xml" />
         <option value="$PROJECT_DIR$/block6-simple-controllers/pom.xml" />
         <option value="$PROJECT_DIR$/com.block5-Logging/pom.xml" />
+        <option value="$PROJECT_DIR$/../block6-person.controllers1/pom.xml" />
       </set>
     </option>
   </component>

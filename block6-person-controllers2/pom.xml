@@ -8,11 +8,11 @@
 		<version>3.1.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.block6.3-simple-controllers</groupId>
-	<artifactId>block6.3-simple-controllers</artifactId>
+	<groupId>com.block6.2-simple-controllers</groupId>
+	<artifactId>block6-person-controllers2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>block6.3-simple-controllers</name>
-	<description>block6.3-simple-controllers</description>
+	<name>block6.2-simple-controllers</name>
+	<description>block6.2-simple-controllers</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

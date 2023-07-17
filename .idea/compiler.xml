@@ -10,15 +10,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="block6.3-simple-controllers" />
-        <module name="block6.2-simple-controllers" />
         <module name="block5-profiles" />
+        <module name="block6-person-controllers3" />
         <module name="block3-create-repo-git" />
-        <module name="block6.1-simple-controllers" />
         <module name="block3-maven-package" />
         <module name="block5-Logging" />
         <module name="block1d-process-file-and-streams" />
+        <module name="block6-person-controllers2" />
         <module name="block1a-process-file-and-streams" />
+        <module name="block6-person-controllers1" />
         <module name="block1c-process-file-and-streams" />
         <module name="block5-command-line-runner" />
         <module name="block5-properties" />
@@ -32,6 +32,7 @@
       <module name="block1-process-file-and-streams (2)" target="17" />
       <module name="block5-logging" target="17" />
       <module name="block6-person-controllers" target="17" />
+      <module name="block6-person.controllers1" target="17" />
       <module name="block6-simple-controllers" target="17" />
       <module name="BosonitProjects" target="17" />
       <module name="com.BosonitRVM" target="17" />
@@ -45,10 +46,11 @@
       <module name="block5-profiles" options="-parameters" />
       <module name="block5-properties" options="-parameters" />
       <module name="block6-person-controllers" options="-parameters" />
+      <module name="block6-person-controllers1" options="-parameters" />
+      <module name="block6-person-controllers2" options="-parameters" />
+      <module name="block6-person-controllers3" options="-parameters" />
+      <module name="block6-person.controllers1" options="-parameters" />
       <module name="block6-simple-controllers" options="-parameters" />
-      <module name="block6.1-simple-controllers" options="-parameters" />
-      <module name="block6.2-simple-controllers" options="-parameters" />
-      <module name="block6.3-simple-controllers" options="-parameters" />
     </option>
   </component>
 </project>

@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.block6.1-simple-controllers</groupId>
-	<artifactId>block6.1-simple-controllers</artifactId>
+	<artifactId>block6-simple-controllers</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>block6.1-simple-controllers</name>
 	<description>block6.1-simple-controllers</description>
