@@ -22,6 +22,10 @@ public class Main implements CommandLineRunner {
 
 	@Value("#{systemEnvironment['new_property']}")
 	private String newProperty;
+
+	@Value("${MYURL2:NO_tengo_valor}")
+	private String myUrl2;
+
 	@Autowired
 	private Environment environment;
 
@@ -42,5 +46,6 @@ public class Main implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		String myUrl = environment.getProperty("MYURL");
 		System.out.println("El valor de MYURL es: " + myUrl);
+		System.out.println("El valor de MYURL2 es: " + myUrl2);
 	}
 }
