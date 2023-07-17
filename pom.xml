@@ -22,6 +22,7 @@
         <module>block6-person-controllers2</module>
         <module>block6-person-controllers1</module>
         <module>block6-person-controllers3</module>
+        <module>block6-path-variable-headers</module>
 
     </modules>
 
