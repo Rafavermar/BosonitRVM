@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>block1-process-file-and-streams</module>
-        <module>block3-maven-package</module>
         <module>block1a-process-file-and-streams</module>
         <module>block1b-process-file-and-streams</module>
         <module>block1c-process-file-and-streams</module>
