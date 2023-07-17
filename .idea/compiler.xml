@@ -21,6 +21,7 @@
         <module name="block6-person-controllers1" />
         <module name="block1c-process-file-and-streams" />
         <module name="block5-command-line-runner" />
+        <module name="block6-simple-controller" />
         <module name="block5-properties" />
         <module name="com.BosonitRVM" />
         <module name="block1b-process-file-and-streams" />
@@ -50,6 +51,7 @@
       <module name="block6-person-controllers2" options="-parameters" />
       <module name="block6-person-controllers3" options="-parameters" />
       <module name="block6-person.controllers1" options="-parameters" />
+      <module name="block6-simple-controller" options="-parameters" />
       <module name="block6-simple-controllers" options="-parameters" />
     </option>
   </component>

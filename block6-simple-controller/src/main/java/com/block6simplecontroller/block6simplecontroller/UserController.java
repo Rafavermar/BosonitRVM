@@ -1,5 +1,4 @@
-package com.block6.simplecontrollers.block6.simplecontrollers;
-
+package com.block6simplecontroller.block6simplecontroller;
 
 import org.springframework.web.bind.annotation.*;
 

@@ -1,10 +1,10 @@
-package com.block6.simplecontrollers.block6.simplecontrollers;
+package com.block6simplecontroller.block6simplecontroller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApplicationTests {
+class Block6SimpleControllerApplicationTests {
 
 	@Test
 	void contextLoads() {
