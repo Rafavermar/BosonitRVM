@@ -16,6 +16,7 @@
         <module name="block3-create-repo-git" />
         <module name="block5-properties" />
         <module name="block3-maven-package" />
+        <module name="block5-Logging" />
         <module name="block1d-process-file-and-streams" />
         <module name="com.BosonitRVM" />
         <module name="block1b-process-file-and-streams" />
@@ -25,13 +26,16 @@
     <bytecodeTargetLevel>
       <module name="block1-process-file-and-streams (1)" target="17" />
       <module name="block1-process-file-and-streams (2)" target="17" />
+      <module name="block5-logging" target="17" />
       <module name="BosonitProjects" target="17" />
       <module name="com.BosonitRVM" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
+      <module name="block5-logging" options="-parameters" />
       <module name="block5-properties" options="-parameters" />
     </option>
   </component>

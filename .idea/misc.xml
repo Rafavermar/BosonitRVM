@@ -14,6 +14,10 @@
         <option value="$PROJECT_DIR$/block5-command-line-runner/pom.xml" />
         <option value="$PROJECT_DIR$/../block5-properties/pom.xml" />
         <option value="$PROJECT_DIR$/block5-properties/pom.xml" />
+        <option value="$PROJECT_DIR$/../com.block5-Logging/pom.xml" />
+        <option value="$PROJECT_DIR$/com.block5-Logging/pom.xml" />
+        <option value="$PROJECT_DIR$/../block5-Logging/pom.xml" />
+        <option value="$PROJECT_DIR$/block5-Logging/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -21,6 +25,7 @@
         <option value="$PROJECT_DIR$/../5.SpringBasico/pom.xml" />
         <option value="$PROJECT_DIR$/BosonitProjects/pom.xml" />
         <option value="$PROJECT_DIR$/bloc1d-process-file-and-streams/pom.xml" />
+        <option value="$PROJECT_DIR$/com.block5-Logging/pom.xml" />
       </set>
     </option>
   </component>
