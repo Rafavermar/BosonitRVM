@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-07-17T10:37:06.289077800Z</date>
+  <millis>1689590226289</millis>
+  <nanos>77800</nanos>
+  <sequence>0</sequence>
+  <logger>com.block5Logging.block5Logging.Block5LoggingApplication</logger>
+  <level>SEVERE</level>
+  <class>com.block5Logging.block5Logging.Block5LoggingApplication</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Este es un mensaje de Error</message>
+</record>
+<record>
+  <date>2023-07-17T10:37:06.341659700Z</date>
+  <millis>1689590226341</millis>
+  <nanos>659700</nanos>
+  <sequence>3</sequence>
+  <logger>com.block5Logging.block5Logging.Block5LoggingApplication</logger>
+  <level>SEVERE</level>
+  <class>com.block5Logging.block5Logging.Block5LoggingApplication</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Este es un mensaje de Error</message>
+</record>
+</log>

@@ -1,0 +1,24 @@
+2023-07-17 12:21:49.258 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.0.Final
+2023-07-17 12:21:49.320 [main] INFO  c.b.b.Block5LoggingApplication - Starting Block5LoggingApplication using Java 17.0.7 with PID 1324 (C:\Users\rafael.vera\IdeaProjects\BosonitRVM\block5-Logging\target\classes started by rafael.vera in C:\Users\rafael.vera\IdeaProjects\BosonitRVM)
+2023-07-17 12:21:49.322 [main] INFO  c.b.b.Block5LoggingApplication - No active profile set, falling back to 1 default profile: "default"
+2023-07-17 12:21:50.795 [main] INFO  c.b.b.Block5LoggingApplication - Started Block5LoggingApplication in 1.961 seconds (process running for 2.341)
+2023-07-17 12:24:26.208 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.0.Final
+2023-07-17 12:24:26.270 [main] INFO  c.b.b.Block5LoggingApplication - Starting Block5LoggingApplication using Java 17.0.7 with PID 8408 (C:\Users\rafael.vera\IdeaProjects\BosonitRVM\block5-Logging\target\classes started by rafael.vera in C:\Users\rafael.vera\IdeaProjects\BosonitRVM)
+2023-07-17 12:24:26.272 [main] INFO  c.b.b.Block5LoggingApplication - No active profile set, falling back to 1 default profile: "default"
+2023-07-17 12:24:27.923 [main] INFO  c.b.b.Block5LoggingApplication - Started Block5LoggingApplication in 2.207 seconds (process running for 2.62)
+12:24:47.304 [background-preinit] INFO  | o.h.validator.internal.util.Version | HV000001: Hibernate Validator 8.0.0.Final
+12:24:47.364 [main] INFO  | c.b.b.Block5LoggingApplication | Starting Block5LoggingApplication using Java 17.0.7 with PID 5900 (C:\Users\rafael.vera\IdeaProjects\BosonitRVM\block5-Logging\target\classes started by rafael.vera in C:\Users\rafael.vera\IdeaProjects\BosonitRVM)
+12:24:47.366 [main] INFO  | c.b.b.Block5LoggingApplication | No active profile set, falling back to 1 default profile: "default"
+12:24:48.935 [main] INFO  | c.b.b.Block5LoggingApplication | Started Block5LoggingApplication in 2.062 seconds (process running for 2.489)
+12:25:28 [background-preinit] INFO o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.0.Final
+12:25:28 [main] INFO c.b.b.Block5LoggingApplication - Starting Block5LoggingApplication using Java 17.0.7 with PID 2888 (C:\Users\rafael.vera\IdeaProjects\BosonitRVM\block5-Logging\target\classes started by rafael.vera in C:\Users\rafael.vera\IdeaProjects\BosonitRVM)
+12:25:28 [main] INFO c.b.b.Block5LoggingApplication - No active profile set, falling back to 1 default profile: "default"
+12:25:29 [main] INFO c.b.b.Block5LoggingApplication - Started Block5LoggingApplication in 2.079 seconds (process running for 2.515)
+12:26:45 [background-preinit] INFO o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.0.Final
+12:26:45 [main] INFO c.b.b.Block5LoggingApplication - Starting Block5LoggingApplication using Java 17.0.7 with PID 15700 (C:\Users\rafael.vera\IdeaProjects\BosonitRVM\block5-Logging\target\classes started by rafael.vera in C:\Users\rafael.vera\IdeaProjects\BosonitRVM)
+12:26:45 [main] INFO c.b.b.Block5LoggingApplication - No active profile set, falling back to 1 default profile: "default"
+12:26:47 [main] INFO c.b.b.Block5LoggingApplication - Started Block5LoggingApplication in 2.306 seconds (process running for 2.784)
+12:29:13 [background-preinit] INFO o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.0.Final
+12:29:13 [main] INFO c.b.b.Block5LoggingApplication - Starting Block5LoggingApplication using Java 17.0.7 with PID 12180 (C:\Users\rafael.vera\IdeaProjects\BosonitRVM\block5-Logging\target\classes started by rafael.vera in C:\Users\rafael.vera\IdeaProjects\BosonitRVM)
+12:29:13 [main] INFO c.b.b.Block5LoggingApplication - No active profile set, falling back to 1 default profile: "default"
+12:29:15 [main] INFO c.b.b.Block5LoggingApplication - Started Block5LoggingApplication in 2.022 seconds (process running for 2.538)
