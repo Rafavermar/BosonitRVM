@@ -1,4 +1,5 @@
-package com.block6simplecontrollers.block6simplecontrollers;
+package com.block6.simplecontrollers.block6.simplecontrollers;
+
 
 import org.springframework.web.bind.annotation.*;
 
@@ -16,4 +17,3 @@ public class UserController {
         return persona;
     }
 }
-

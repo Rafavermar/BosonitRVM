@@ -1,4 +1,5 @@
-package com.block6simplecontrollers.block6simplecontrollers;
+package com.block6.simplecontrollers.block6.simplecontrollers;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
