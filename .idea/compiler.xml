@@ -10,6 +10,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="block6.3-simple-controllers" />
         <module name="block6.2-simple-controllers" />
         <module name="block5-profiles" />
         <module name="block3-create-repo-git" />
@@ -47,6 +48,7 @@
       <module name="block6-simple-controllers" options="-parameters" />
       <module name="block6.1-simple-controllers" options="-parameters" />
       <module name="block6.2-simple-controllers" options="-parameters" />
+      <module name="block6.3-simple-controllers" options="-parameters" />
     </option>
   </component>
 </project>
