@@ -52,7 +52,7 @@ public class Main implements CommandLineRunner {
 		return args -> {
 			System.out.println("Soy la tercera clase");
 			Scanner scanner = new Scanner(System.in);
-			System.out.println("Introduzca los valores(separados por esapcio):");
+			System.out.println("Introduzca los valores(separados por espacio):");
 			String input = scanner.nextLine();
 
 			String[] valores = input.split(" ");
