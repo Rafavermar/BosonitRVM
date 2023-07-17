@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.yml")
 public class Main {
 
 	@Value("${greeting}")
