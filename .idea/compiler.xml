@@ -10,6 +10,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="block7-crud-validation" />
         <module name="block7-crud" />
         <module name="block5-profiles" />
         <module name="block6-person-controllers3" />
@@ -57,6 +58,7 @@
       <module name="block6-simple-controller" options="-parameters" />
       <module name="block6-simple-controllers" options="-parameters" />
       <module name="block7-crud" options="-parameters" />
+      <module name="block7-crud-validation" options="-parameters" />
     </option>
   </component>
 </project>
