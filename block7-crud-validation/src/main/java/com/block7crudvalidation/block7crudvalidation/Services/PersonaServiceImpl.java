@@ -2,83 +2,90 @@ package com.block7crudvalidation.block7crudvalidation.Services;
 
 import com.block7crudvalidation.block7crudvalidation.DTO.PersonaDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
-import com.block7crudvalidation.block7crudvalidation.Exception.PersonaNotFoundException;
+import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
-import com.block7crudvalidation.block7crudvalidation.Mappers.PersonaMapper;
+import com.block7crudvalidation.block7crudvalidation.Respository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
 public class PersonaServiceImpl implements PersonaService {
 
-    private final List<PersonaEntity> personas = new ArrayList<>();
-    private final PersonaMapper personaMapper;
-
-    public PersonaServiceImpl(PersonaMapper personaMapper) {
-        this.personaMapper = personaMapper;
-    }
+    @Autowired
+    private PersonaRepository personaRepository;
 
     @Override
     public PersonaDTO agregarPersona(PersonaDTO personaDTO) {
-        if (personaDTO.getName() == null || personaDTO.getName().isEmpty() ||
-                personaDTO.getCompany_email() == null || personaDTO.getCompany_email().isEmpty() ||
-                personaDTO.getPersonal_email() == null || personaDTO.getPersonal_email().isEmpty() ||
-                personaDTO.getCity() == null || personaDTO.getCity().isEmpty()) {
-            throw new UnprocessableEntityException("Todos los campos (name, company_email, personal_email, city) deben estar presentes y no pueden estar vacíos.");
+        // Validar los campos requeridos y lanzar UnprocessableEntityException en caso de que no cumplan los requisitos
+        if (personaDTO.getUsuario() == null || personaDTO.getName() == null || personaDTO.getCity() == null) {
+            throw new UnprocessableEntityException("Todos los campos (usuario, name, city) deben estar presentes y no pueden estar vacíos.");
         }
-        PersonaEntity personaEntity = personaMapper.convertToEntity(personaDTO);
-        personas.add(personaEntity);
-        return personaMapper.convertToDTO(personaEntity);
-    }
 
-    /**
-     * @Override
-     * public PersonOutputDto addPerson(PersonInputDto person) throws UnprocessableEntityException {
-     * String mensajes = "";
-     * if (person.getUsuario()==null) {mensajes += "Usuario no puede ser nulo\n";}
-     * else if (person.getUsuario().length()>10) {mensajes += "Longitud de usuario no puede ser superior a 10 caracteres\n";}
-     * else if (person.getUsuario().length()<6) {mensajes += "Longitud de usuario no puede ser inferior a 6 caracteres\n";}
-     * if (person.getPassword() == null) {mensajes += "Contraseña no puede ser nulo\n";}
-     * if (person.getName() == null) {mensajes += "Nombre no puede ser nulo\n";}
-     * if (person.getCompanyEmail() == null) {mensajes += "Email de la compañia no puede ser nulo\n";}
-     * if (person.getPersonalEmail() == null) {mensajes += "Email personal no puede ser nulo\n";}
-     * if (person.getCity() == null) {mensajes += "Ciudad no puede ser nulo\n";}
-     * if (person.getActive() == null) {mensajes += "Activo no puede ser nulo\n";}
-     * if (person.getCreatedDate() == null) {mensajes += "Fecha de creacion no puede ser nulo\n";}
-     * if(mensajes.isEmpty()){
-     * return personRepository.save(new Person(person)).personToPersonOutputDto();
-     * }else{
-     * throw new UnprocessableEntityException(mensajes);
-     * }
-     * @param id
-     * @return
-     */
+        PersonaEntity personaEntity = new PersonaEntity();
+        personaEntity.setUsuario(personaDTO.getUsuario());
+        personaEntity.setPassword(personaDTO.getPassword());
+        personaEntity.setName(personaDTO.getName());
+        personaEntity.setSurname(personaDTO.getSurname());
+        personaEntity.setCompanyEmail(personaDTO.getCompany_email());
+        personaEntity.setPersonalEmail(personaDTO.getPersonal_email());
+        personaEntity.setCity(personaDTO.getCity());
+        personaEntity.setActive(personaDTO.isActive());
+        personaEntity.setCreatedDate(new Date());
+        personaEntity.setImageUrl(personaDTO.getImagen_url());
+        personaEntity.setTerminationDate(personaDTO.getTermination_date());
+
+        personaRepository.save(personaEntity);
+
+        return convertToDTO(personaEntity);
+    }
 
     @Override
     public PersonaDTO buscarPorId(int id) {
-        PersonaEntity persona = personas.stream()
-                .filter(p -> p.getIdPersona() == id)
-                .findFirst()
-                .orElseThrow(() -> new PersonaNotFoundException(id));
-        return personaMapper.convertToDTO(persona);
+        PersonaEntity personaEntity = personaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id));
+
+        return convertToDTO(personaEntity);
     }
 
     @Override
     public PersonaDTO buscarPorUsuario(String usuario) {
-        PersonaEntity persona = personas.stream()
-                .filter(p -> p.getUsuario().equals(usuario))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Persona no encontrada con usuario: " + usuario));
-        return personaMapper.convertToDTO(persona);
+        PersonaEntity personaEntity = personaRepository.findByUsuario(usuario)
+                .orElseThrow(() -> new EntityNotFoundException(usuario));
+
+        return convertToDTO(personaEntity);
     }
 
     @Override
     public List<PersonaDTO> mostrarTodos() {
-        return personas.stream()
-                .map(personaMapper::convertToDTO)
-                .collect(Collectors.toList());
+        List<PersonaEntity> personasEntity = personaRepository.findAll();
+        List<PersonaDTO> personasDTO = new ArrayList<>();
+
+        for (PersonaEntity personaEntity : personasEntity) {
+            personasDTO.add(convertToDTO(personaEntity));
+        }
+
+        return personasDTO;
+    }
+
+    private PersonaDTO convertToDTO(PersonaEntity personaEntity) {
+        PersonaDTO personaDTO = new PersonaDTO();
+        personaDTO.setId(personaEntity.getIdPersona());
+        personaDTO.setUsuario(personaEntity.getUsuario());
+        personaDTO.setPassword(personaEntity.getPassword());
+        personaDTO.setName(personaEntity.getName());
+        personaDTO.setSurname(personaEntity.getSurname());
+        personaDTO.setCompany_email(personaEntity.getCompanyEmail());
+        personaDTO.setPersonal_email(personaEntity.getPersonalEmail());
+        personaDTO.setCity(personaEntity.getCity());
+        personaDTO.setActive(personaEntity.isActive());
+        personaDTO.setCreated_date(personaEntity.getCreatedDate());
+        personaDTO.setImagen_url(personaEntity.getImageUrl());
+        personaDTO.setTermination_date(personaEntity.getTerminationDate());
+
+        return personaDTO;
     }
 }
