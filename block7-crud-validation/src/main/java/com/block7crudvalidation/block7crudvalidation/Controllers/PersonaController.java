@@ -1,10 +1,9 @@
 package com.block7crudvalidation.block7crudvalidation.Controllers;
 
 import com.block7crudvalidation.block7crudvalidation.DTO.PersonaDTO;
-import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Exception.BadRequestException;
+import com.block7crudvalidation.block7crudvalidation.Exception.CustomError;
 import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
-import com.block7crudvalidation.block7crudvalidation.Mappers.PersonaMapper;
 import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +18,20 @@ import java.util.List;
 @RequestMapping("/personas")
 public class PersonaController {
 
-    PersonaMapper personaMapper;
     @Autowired
     private PersonaService personaService;
 
     @PostMapping()
-    public ResponseEntity<PersonaDTO> agregarPersona(@RequestBody PersonaDTO personaDTO) {
+    public ResponseEntity<?> agregarPersona(@RequestBody PersonaDTO personaDTO) {
         try {
             PersonaDTO nuevaPersonaDTO = personaService.agregarPersona(personaDTO);
             return new ResponseEntity<>(nuevaPersonaDTO, HttpStatus.CREATED);
         } catch (UnprocessableEntityException e) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        } catch (BadRequestException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getExternalMessage());
+            return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<PersonaDTO> buscarPorId(@PathVariable int id) {
         PersonaDTO personaDTO = personaService.buscarPorId(id);
