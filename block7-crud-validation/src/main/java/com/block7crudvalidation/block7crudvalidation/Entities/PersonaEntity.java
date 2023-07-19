@@ -1,6 +1,7 @@
 package com.block7crudvalidation.block7crudvalidation.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,45 +10,44 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Entity
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "persona")
+@Entity
 public class PersonaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_persona")
     private int idPersona;
 
-    @Column(name = "usuario", nullable = false)
+
     @Size(min = 6, max = 10)
+    @NotNull
     private String usuario;
 
-    @Column(name = "password", nullable = false)
+    @NotNull
     private String password;
 
-    @Column(name = "name", nullable = false)
+    @NotNull
     private String name;
 
-    @Column(name = "surname")
     private String surname;
 
-    @Column(name = "company_email", nullable = false)
+    @NotNull
     private String companyEmail;
 
-    @Column(name = "personal_email", nullable = false)
+    @NotNull
     private String personalEmail;
 
-    @Column(name = "city", nullable = false)
+    @NotNull
     private String city;
 
-    @Column(name = "active", nullable = false)
+    @NotNull
     private boolean active;
 
-    @Column(name = "created_date", nullable = false)
+    @NotNull
     private Date createdDate;
 
     @Column(name = "imagen_url")
