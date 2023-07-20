@@ -6,12 +6,15 @@ import java.util.List;
 
 public interface PersonaService {
 
-    public PersonaDTO agregarPersona(PersonaDTO personaDTO);
+    PersonaDTO agregarPersona(PersonaDTO personaDTO);
 
     PersonaDTO buscarPorId(int id);
 
     PersonaDTO buscarPorUsuario(String usuario);
 
     List<PersonaDTO> mostrarTodos();
-}
 
+    void borrarPersona(int id);
+
+    PersonaDTO modificarPersona(int id, PersonaDTO personaDTO);
+}

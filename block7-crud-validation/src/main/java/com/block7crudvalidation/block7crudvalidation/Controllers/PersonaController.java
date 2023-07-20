@@ -3,6 +3,7 @@ package com.block7crudvalidation.block7crudvalidation.Controllers;
 import com.block7crudvalidation.block7crudvalidation.DTO.PersonaDTO;
 import com.block7crudvalidation.block7crudvalidation.Exception.BadRequestException;
 import com.block7crudvalidation.block7crudvalidation.Exception.CustomError;
+import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
 import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
 import lombok.AllArgsConstructor;
@@ -49,5 +50,34 @@ public class PersonaController {
         List<PersonaDTO> personasDTO = personaService.mostrarTodos();
         return new ResponseEntity<>(personasDTO, HttpStatus.OK);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modificarPersona(@PathVariable int id, @RequestBody PersonaDTO personaDTO) {
+        try {
+            PersonaDTO personaModificadaDTO = personaService.modificarPersona(id, personaDTO);
+            return new ResponseEntity<>(personaModificadaDTO, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        } catch (UnprocessableEntityException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getExternalMessage());
+            return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> borrarPersona(@PathVariable int id) {
+        try {
+            personaService.borrarPersona(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        } catch (UnprocessableEntityException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getExternalMessage());
+            return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
 }
 
