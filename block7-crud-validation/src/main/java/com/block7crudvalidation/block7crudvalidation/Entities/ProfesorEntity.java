@@ -8,20 +8,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="profesor")
+@Table(name = "profesor")
 public class ProfesorEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idProfesor;
 
     @OneToOne
-    @JoinColumn(name="idPersona")
+    @JoinColumn(name = "idPersona")
     PersonaEntity persona;
 
-    @Column(name="comments")
+    @Column(name = "comments")
     String comments;
 
     @NotNull
-    @Column(name= "branch")
+    @Column(name = "branch")
     String branch;
 }

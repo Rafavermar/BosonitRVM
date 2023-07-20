@@ -1,5 +1,6 @@
 package com.block7crudvalidation.block7crudvalidation.Services;
 
+import com.block7crudvalidation.block7crudvalidation.DTO.EstudianteFullDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
 
 import java.util.List;
@@ -10,9 +11,9 @@ public interface StudentService {
 
     List<StudentEntity> getAllStudents();
 
-    StudentEntity getStudentById(Long id);
+    StudentEntity getStudentById(Integer id);
 
-    void deleteStudent(Long id);
+    void deleteStudent(Integer id);
 
-
+    EstudianteFullDTO getStudentFullDetails(Integer id);
 }

@@ -1,33 +1,34 @@
 package com.block7crudvalidation.block7crudvalidation.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "estudiantes")
-
+@Table(name = "student")
 public class StudentEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    Integer id_student;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer idStudent;
+
     @OneToOne
     @JoinColumn(name = "idPersona")
     PersonaEntity persona;
-    @Column(name = "horaSemana")
-    Integer hoursWeek;
-    @Column(name = "comentarios")
-    String coments;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @Column(name = "num_hours_week")
+    int numHoursWeek;
+
+    @Column(name = "comments")
+    String comments;
+
+    @ManyToOne
     @JoinColumn(name = "idProfesor")
     ProfesorEntity profesor;
-    @Column(name = "rama")
-    String branch;
-    @OneToMany
-    List<Alumnos_EstudiosEntity> estudios;
-}
 
+    @NotNull
+    @Column(name = "branch")
+    String branch;
+}

@@ -10,23 +10,28 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "EstudianteAsignatura")
-
-public class Alumnos_EstudiosEntity {
+public class AlumnosEstudiosEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idStudy;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idProfesor")
     ProfesorEntity profesor;
-    @ManyToMany(cascade = CascadeType.ALL)
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idStudent")
     StudentEntity student;
+
     @Column(name = "asignatura")
     String asignatura;
+
     @Column(name = "comentarios")
     String comment;
+
     @Column(name = "initialDate")
     Date initialDate;
+
     @Column(name = "finishDate")
     Date finishDate;
 }
-

@@ -20,8 +20,7 @@ public class PersonaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idPersona;
-
+    private Integer idPersona;
 
     @Size(min = 6, max = 10)
     @NotNull
@@ -55,6 +54,4 @@ public class PersonaEntity {
 
     @Column(name = "termination_date")
     private Date terminationDate;
-
-
 }
