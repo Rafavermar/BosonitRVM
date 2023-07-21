@@ -1,20 +1,15 @@
 package com.block7crudvalidation.block7crudvalidation.Services;
 
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
+import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 
 import java.util.List;
 
 public interface PersonaService {
-
-    PersonaDTO agregarPersona(PersonaDTO personaDTO);
-
-    PersonaDTO buscarPorId(Integer id);
-
-    PersonaDTO buscarPorUsuario(String usuario);
-
-    List<PersonaDTO> mostrarTodos();
-
+    PersonaEntity agregarPersona(PersonaEntity personaEntity);
+    PersonaEntity buscarPorId(Integer id);
+    PersonaEntity buscarPorUsuario(String usuario);
+    List<PersonaEntity> mostrarTodos();
     void borrarPersona(int id);
-
-    PersonaDTO modificarPersona(int id, PersonaDTO personaDTO);
+    PersonaEntity modificarPersona(int id, PersonaEntity personaEntity);
 }

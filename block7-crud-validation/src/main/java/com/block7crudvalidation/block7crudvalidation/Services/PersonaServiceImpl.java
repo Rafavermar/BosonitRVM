@@ -16,73 +16,38 @@ import java.util.List;
 public class PersonaServiceImpl implements PersonaService {
 
     private final PersonaRepository personaRepository;
-    private final PersonaMapper personaMapper;
 
     @Autowired
-    public PersonaServiceImpl(PersonaRepository personaRepository, PersonaMapper personaMapper) {
+    public PersonaServiceImpl(PersonaRepository personaRepository) {
         this.personaRepository = personaRepository;
-        this.personaMapper = personaMapper;
     }
 
     @Override
-    public PersonaDTO agregarPersona(PersonaDTO personaDTO) {
+    public PersonaEntity agregarPersona(PersonaEntity personaEntity) {
         // Validar los campos requeridos y lanzar UnprocessableEntityException en caso de que no cumplan los requisitos
-        if (personaDTO.getUsuario() == null || personaDTO.getName() == null || personaDTO.getCity() == null) {
+        if (personaEntity.getUsuario() == null || personaEntity.getName() == null || personaEntity.getCity() == null) {
             throw new UnprocessableEntityException("Todos los campos (usuario, name, city) deben estar presentes y no pueden estar vacíos.");
         }
 
-        PersonaEntity personaEntity = personaMapper.toEntity(personaDTO);
-        personaRepository.save(personaEntity);
-
-        return personaMapper.toDTO(personaEntity);
+        return personaRepository.save(personaEntity);
     }
 
     @Override
-    public PersonaDTO buscarPorId(Integer id) {
-        PersonaEntity personaEntity = personaRepository.findById(id)
+    public PersonaEntity buscarPorId(Integer id) {
+        return personaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id));
-
-        return personaMapper.toDTO(personaEntity);
     }
 
     @Override
-    public PersonaDTO buscarPorUsuario(String usuario) {
-        PersonaEntity personaEntity = personaRepository.findByUsuario(usuario)
+    public PersonaEntity buscarPorUsuario(String usuario) {
+        return personaRepository.findByUsuario(usuario)
                 .orElseThrow(() -> new EntityByNameNotFoundException(usuario));
-
-        return convertToDTO(personaEntity);
     }
 
     @Override
-    public List<PersonaDTO> mostrarTodos() {
-        List<PersonaEntity> personasEntity = personaRepository.findAll();
-        List<PersonaDTO> personasDTO = new ArrayList<>();
-
-        for (PersonaEntity personaEntity : personasEntity) {
-            personasDTO.add(convertToDTO(personaEntity));
-        }
-
-        return personasDTO;
+    public List<PersonaEntity> mostrarTodos() {
+        return personaRepository.findAll();
     }
-
-    private PersonaDTO convertToDTO(PersonaEntity personaEntity) {
-        PersonaDTO personaDTO = new PersonaDTO();
-        personaDTO.setId(personaEntity.getIdPersona());
-        personaDTO.setUsuario(personaEntity.getUsuario());
-        personaDTO.setPassword(personaEntity.getPassword());
-        personaDTO.setName(personaEntity.getName());
-        personaDTO.setSurname(personaEntity.getSurname());
-        personaDTO.setCompany_email(personaEntity.getCompanyEmail());
-        personaDTO.setPersonal_email(personaEntity.getPersonalEmail());
-        personaDTO.setCity(personaEntity.getCity());
-        personaDTO.setActive(personaEntity.isActive());
-        personaDTO.setCreated_date(personaEntity.getCreatedDate());
-        personaDTO.setImagen_url(personaEntity.getImageUrl());
-        personaDTO.setTermination_date(personaEntity.getTerminationDate());
-
-        return personaDTO;
-    }
-
 
     @Override
     public void borrarPersona(int id) {
@@ -91,41 +56,33 @@ public class PersonaServiceImpl implements PersonaService {
         personaRepository.delete(personaEntity);
     }
 
-
     @Override
-    public PersonaDTO modificarPersona(int id, PersonaDTO personaDTO) {
-        // Realizar validaciones de los campos en personaDTO y lanzar UnprocessableEntityException si no se cumplen los requisitos
-        if (personaDTO.getUsuario() == null || personaDTO.getUsuario().isEmpty() ||
-                personaDTO.getName() == null || personaDTO.getName().isEmpty() ||
-                personaDTO.getCity() == null || personaDTO.getCity().isEmpty()) {
+    public PersonaEntity modificarPersona(int id, PersonaEntity personaEntity) {
+        // Realizar validaciones de los campos en personaEntity y lanzar UnprocessableEntityException si no se cumplen los requisitos
+        if (personaEntity.getUsuario() == null || personaEntity.getUsuario().isEmpty() ||
+                personaEntity.getName() == null || personaEntity.getName().isEmpty() ||
+                personaEntity.getCity() == null || personaEntity.getCity().isEmpty()) {
             throw new UnprocessableEntityException("Todos los campos (usuario, name, city) deben estar presentes y no pueden estar vacíos.");
         }
 
         // Recuperar la entidad existente de la base de datos
-        PersonaEntity personaEntity = personaRepository.findById(id)
+        PersonaEntity personaActual = personaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id));
 
-        // Actualizar los campos con los valores de personaDTO, incluido el campo "password"
-        personaEntity.setUsuario(personaDTO.getUsuario());
-        personaEntity.setPassword(personaDTO.getPassword());
-        personaEntity.setName(personaDTO.getName());
-        personaEntity.setSurname(personaDTO.getSurname());
-        personaEntity.setCompanyEmail(personaDTO.getCompany_email());
-        personaEntity.setPersonalEmail(personaDTO.getPersonal_email());
-        personaEntity.setCity(personaDTO.getCity());
-        personaEntity.setActive(personaDTO.isActive());
-        personaEntity.setCreatedDate(personaDTO.getCreated_date());
-        personaEntity.setImageUrl(personaDTO.getImagen_url());
-        personaEntity.setTerminationDate(personaDTO.getTermination_date());
+        // Actualizar los campos con los valores de personaEntity
+        personaActual.setUsuario(personaEntity.getUsuario());
+        personaActual.setPassword(personaEntity.getPassword());
+        personaActual.setName(personaEntity.getName());
+        personaActual.setSurname(personaEntity.getSurname());
+        personaActual.setCompanyEmail(personaEntity.getCompanyEmail());
+        personaActual.setPersonalEmail(personaEntity.getPersonalEmail());
+        personaActual.setCity(personaEntity.getCity());
+        personaActual.setActive(personaEntity.isActive());
+        personaActual.setCreatedDate(personaEntity.getCreatedDate());
+        personaActual.setImageUrl(personaEntity.getImageUrl());
+        personaActual.setTerminationDate(personaEntity.getTerminationDate());
 
         // Guardar la entidad actualizada en la base de datos
-        personaRepository.save(personaEntity);
-
-        return convertToDTO(personaEntity);
+        return personaRepository.save(personaActual);
     }
-
-
-
-
-
 }

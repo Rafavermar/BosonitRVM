@@ -32,13 +32,12 @@ public class EstudianteController {
     public ResponseEntity<?> agregarEstudiante(@RequestBody StudentDTO studentDTO) {
         try {
             // Buscar la entidad PersonaEntity por su ID
-            PersonaDTO personaDTO = personaService.buscarPorId(studentDTO.getPersonaDTO().getId());
-
-            // Convertir el PersonaDTO a PersonaEntity usando el mapper
-            PersonaEntity personaEntity = personaMapper.toEntity(personaDTO);
+            PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getPersonaDTO().getId());
 
             // Convertir el DTO a una entidad StudentEntity usando el mapper
             StudentEntity studentEntity = studentMapper.toEntity(studentDTO);
+
+            // Establecer la entidad PersonaEntity en la nueva entidad StudentEntity
             studentEntity.setPersona(personaEntity);
 
             // Guardar el estudiante en la base de datos
@@ -78,15 +77,12 @@ public class EstudianteController {
     public ResponseEntity<?> actualizarEstudiante(@PathVariable Integer id, @RequestBody StudentDTO studentDTO) {
         try {
             // Buscar la entidad PersonaEntity por su ID
-            PersonaDTO personaDTO = personaService.buscarPorId(studentDTO.getPersonaDTO().getId());
+            PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getPersonaDTO().getId());
 
             // Obtener el estudiante por su ID desde el servicio
             StudentEntity studentEntity = studentService.getStudentById(id);
 
-            // Convertir el PersonaDTO a PersonaEntity usando el mapper
-            PersonaEntity personaEntity = personaMapper.toEntity(personaDTO);
-
-            // Actualizar los campos con los datos recibidos en el DTO
+            // Establecer la entidad PersonaEntity en la entidad StudentEntity actualizada
             studentEntity.setPersona(personaEntity);
             studentEntity.setNumHoursWeek(studentDTO.getNumHoursWeek());
             studentEntity.setComments(studentDTO.getComments());
