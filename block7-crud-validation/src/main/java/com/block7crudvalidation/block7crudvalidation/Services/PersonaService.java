@@ -1,6 +1,6 @@
 package com.block7crudvalidation.block7crudvalidation.Services;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.PersonaDTO;
+import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ public interface PersonaService {
 
     PersonaDTO agregarPersona(PersonaDTO personaDTO);
 
-    PersonaDTO buscarPorId(int id);
+    PersonaDTO buscarPorId(Integer id);
 
     PersonaDTO buscarPorUsuario(String usuario);
 

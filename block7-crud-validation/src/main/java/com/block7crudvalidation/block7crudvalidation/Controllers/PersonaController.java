@@ -1,7 +1,6 @@
 package com.block7crudvalidation.block7crudvalidation.Controllers;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.PersonaDTO;
-import com.block7crudvalidation.block7crudvalidation.Exception.BadRequestException;
+import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
 import com.block7crudvalidation.block7crudvalidation.Exception.CustomError;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
@@ -34,7 +33,7 @@ public class PersonaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PersonaDTO> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<PersonaDTO> buscarPorId(@PathVariable Integer id) {
         PersonaDTO personaDTO = personaService.buscarPorId(id);
         return new ResponseEntity<>(personaDTO, HttpStatus.OK);
     }
@@ -51,7 +50,7 @@ public class PersonaController {
         return new ResponseEntity<>(personasDTO, HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> modificarPersona(@PathVariable int id, @RequestBody PersonaDTO personaDTO) {
+    public ResponseEntity<?> modificarPersona(@PathVariable Integer id, @RequestBody PersonaDTO personaDTO) {
         try {
             PersonaDTO personaModificadaDTO = personaService.modificarPersona(id, personaDTO);
             return new ResponseEntity<>(personaModificadaDTO, HttpStatus.OK);
@@ -66,7 +65,7 @@ public class PersonaController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> borrarPersona(@PathVariable int id) {
+    public ResponseEntity<?> borrarPersona(@PathVariable Integer id) {
         try {
             personaService.borrarPersona(id);
             return new ResponseEntity<>(HttpStatus.OK);

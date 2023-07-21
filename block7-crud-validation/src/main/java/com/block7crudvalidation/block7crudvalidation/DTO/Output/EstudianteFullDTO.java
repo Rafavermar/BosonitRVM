@@ -1,4 +1,4 @@
-package com.block7crudvalidation.block7crudvalidation.DTO;
+package com.block7crudvalidation.block7crudvalidation.DTO.Output;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,17 +11,17 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonaDTO {
-    private int id;
+public class EstudianteFullDTO extends EstudianteSimpleDTO {
+
+    private Integer idPersona;
     private String usuario;
-    private String password;
     private String name;
     private String surname;
-    private String company_email;
-    private String personal_email;
+    private String companyEmail;
+    private String personalEmail;
     private String city;
     private boolean active;
-    private Date created_date;
-    private String imagen_url;
-    private Date termination_date;
+    private Date createdDate;
+    private String imageUrl;
+    private Date terminationDate;
 }

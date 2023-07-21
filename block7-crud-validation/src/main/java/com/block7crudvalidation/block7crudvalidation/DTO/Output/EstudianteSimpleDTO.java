@@ -1,4 +1,4 @@
-package com.block7crudvalidation.block7crudvalidation.DTO;
+package com.block7crudvalidation.block7crudvalidation.DTO.Output;
 
 
 import lombok.AllArgsConstructor;

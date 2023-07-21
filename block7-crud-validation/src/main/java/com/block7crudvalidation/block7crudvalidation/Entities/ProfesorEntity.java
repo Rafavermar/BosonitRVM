@@ -18,6 +18,10 @@ public class ProfesorEntity {
     @JoinColumn(name = "idPersona")
     PersonaEntity persona;
 
+    @ManyToOne
+    @JoinColumn(name="idStudent")
+    StudentEntity student;
+
     @Column(name = "comments")
     String comments;
 

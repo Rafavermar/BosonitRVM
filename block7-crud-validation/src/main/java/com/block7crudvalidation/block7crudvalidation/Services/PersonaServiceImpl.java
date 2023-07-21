@@ -1,23 +1,28 @@
 package com.block7crudvalidation.block7crudvalidation.Services;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.PersonaDTO;
+import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityByNameNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
+import com.block7crudvalidation.block7crudvalidation.Mapper.PersonaMapper;
 import com.block7crudvalidation.block7crudvalidation.Respository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 @Service
 public class PersonaServiceImpl implements PersonaService {
 
+    private final PersonaRepository personaRepository;
+    private final PersonaMapper personaMapper;
+
     @Autowired
-    private PersonaRepository personaRepository;
+    public PersonaServiceImpl(PersonaRepository personaRepository, PersonaMapper personaMapper) {
+        this.personaRepository = personaRepository;
+        this.personaMapper = personaMapper;
+    }
 
     @Override
     public PersonaDTO agregarPersona(PersonaDTO personaDTO) {
@@ -26,30 +31,18 @@ public class PersonaServiceImpl implements PersonaService {
             throw new UnprocessableEntityException("Todos los campos (usuario, name, city) deben estar presentes y no pueden estar vacíos.");
         }
 
-        PersonaEntity personaEntity = new PersonaEntity();
-        personaEntity.setUsuario(personaDTO.getUsuario());
-        personaEntity.setPassword(personaDTO.getPassword());
-        personaEntity.setName(personaDTO.getName());
-        personaEntity.setSurname(personaDTO.getSurname());
-        personaEntity.setCompanyEmail(personaDTO.getCompany_email());
-        personaEntity.setPersonalEmail(personaDTO.getPersonal_email());
-        personaEntity.setCity(personaDTO.getCity());
-        personaEntity.setActive(personaDTO.isActive());
-        personaEntity.setCreatedDate(new Date());
-        personaEntity.setImageUrl(personaDTO.getImagen_url());
-        personaEntity.setTerminationDate(personaDTO.getTermination_date());
-
+        PersonaEntity personaEntity = personaMapper.toEntity(personaDTO);
         personaRepository.save(personaEntity);
 
-        return convertToDTO(personaEntity);
+        return personaMapper.toDTO(personaEntity);
     }
 
     @Override
-    public PersonaDTO buscarPorId(int id) {
+    public PersonaDTO buscarPorId(Integer id) {
         PersonaEntity personaEntity = personaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id));
 
-        return convertToDTO(personaEntity);
+        return personaMapper.toDTO(personaEntity);
     }
 
     @Override

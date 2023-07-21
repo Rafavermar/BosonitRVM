@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,13 +16,13 @@ public class AlumnosEstudiosEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idStudy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idProfesor")
-    ProfesorEntity profesor;
-
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idStudent")
-    StudentEntity student;
+    @JoinTable(
+            name = "EstudianteAsignatura_Estudiante",
+            joinColumns = @JoinColumn(name = "idStudy"),
+            inverseJoinColumns = @JoinColumn(name = "idStudent")
+    )
+    List<StudentEntity> students;
 
     @Column(name = "asignatura")
     String asignatura;
