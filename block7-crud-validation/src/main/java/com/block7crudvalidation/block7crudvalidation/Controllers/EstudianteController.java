@@ -1,6 +1,7 @@
 package com.block7crudvalidation.block7crudvalidation.Controllers;
 
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
+import com.block7crudvalidation.block7crudvalidation.DTO.Input.ProfesorDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
@@ -34,24 +35,8 @@ public class EstudianteController {
     @PostMapping
     public ResponseEntity<?> agregarEstudiante(@RequestBody StudentDTO studentDTO) {
         try {
-            // Buscar la entidad PersonaEntity por su ID
-            PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getIdPersona());
-
-            // Buscar la entidad ProfesorEntity por su ID
-            ProfesorEntity profesorEntity = profesorService.getProfesorById(studentDTO.getProfesorDTO().getIdProfesor());
-
-            // Convertir el DTO a una entidad StudentEntity usando el mapper
-            StudentEntity studentEntity = studentMapper.toEntity(studentDTO);
-
-            // Establecer las entidades PersonaEntity y ProfesorEntity en la nueva entidad StudentEntity
-            studentEntity.setPersona(personaEntity);
-            studentEntity.setProfesor(profesorEntity);
-
             // Guardar el estudiante en la base de datos
-            StudentEntity nuevoEstudiante = studentService.saveStudent(studentEntity);
-
-            // Convertir el estudiante guardado a DTO y devolverlo en la respuesta
-            StudentDTO nuevoEstudianteDTO = studentMapper.toDTO(nuevoEstudiante);
+            StudentDTO nuevoEstudianteDTO = studentService.agregarEstudiante(studentDTO);
             return new ResponseEntity<>(nuevoEstudianteDTO, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
@@ -61,6 +46,8 @@ public class EstudianteController {
             return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
+
 
     // Endpoint para obtener un estudiante por su ID
     @GetMapping("/{id}")

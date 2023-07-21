@@ -18,6 +18,6 @@ public class StudentDTO {
     private Integer idPersona;;
     private int numHoursWeek;
     private String comments;
-    private ProfesorDTO profesorDTO;
+    private Integer idProfesor;
     private String branch;
 }

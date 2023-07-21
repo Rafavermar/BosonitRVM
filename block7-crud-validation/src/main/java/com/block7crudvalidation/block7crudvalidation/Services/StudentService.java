@@ -1,5 +1,6 @@
 package com.block7crudvalidation.block7crudvalidation.Services;
 
+import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Output.EstudianteFullDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
 
@@ -16,4 +17,6 @@ public interface StudentService {
     void deleteStudent(Integer id);
 
     EstudianteFullDTO getStudentFullDetails(Integer id);
+
+    StudentDTO agregarEstudiante(StudentDTO studentDTO);
 }

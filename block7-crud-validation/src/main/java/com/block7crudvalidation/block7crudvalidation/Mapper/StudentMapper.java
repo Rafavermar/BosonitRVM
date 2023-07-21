@@ -6,6 +6,8 @@ import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
+import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
+import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
 import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ public class StudentMapper {
 
     @Autowired
     private PersonaService personaService; // Asegúrate de que PersonaService esté correctamente inyectado.
+    @Autowired
+    private ProfesorRepository profesorRepository;
 
     public StudentEntity toEntity(StudentDTO studentDTO) {
         StudentEntity studentEntity = new StudentEntity();
@@ -29,6 +33,14 @@ public class StudentMapper {
 
         studentEntity.setNumHoursWeek(studentDTO.getNumHoursWeek());
         studentEntity.setComments(studentDTO.getComments());
+
+        // Buscar la entidad ProfesorEntity por su ID
+        if (studentDTO.getIdProfesor() != null) {
+            ProfesorEntity profesorEntity = profesorRepository.findById(studentDTO.getIdProfesor())
+                    .orElseThrow(() -> new EntityNotFoundException("Profesor with id " + studentDTO.getIdProfesor() + " not found"));
+            studentEntity.setProfesor(profesorEntity);
+        }
+
         studentEntity.setBranch(studentDTO.getBranch());
 
         return studentEntity;
@@ -40,7 +52,12 @@ public class StudentMapper {
         studentDTO.setIdPersona(studentEntity.getPersona().getIdPersona());
         studentDTO.setNumHoursWeek(studentEntity.getNumHoursWeek());
         studentDTO.setComments(studentEntity.getComments());
-        studentDTO.setProfesorDTO(convertToDTO(studentEntity.getProfesor()));
+
+        // Mapear el ID del profesor a StudentDTO
+        if (studentEntity.getProfesor() != null) {
+            studentDTO.setIdProfesor(studentEntity.getProfesor().getIdProfesor());
+        }
+
         studentDTO.setBranch(studentEntity.getBranch());
 
         return studentDTO;
