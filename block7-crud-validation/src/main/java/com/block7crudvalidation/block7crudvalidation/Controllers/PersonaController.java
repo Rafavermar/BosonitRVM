@@ -21,17 +21,28 @@ public class PersonaController {
 
     @Autowired
     private PersonaService personaService;
+    @Autowired
+    private PersonaMapper personaMapper;
 
     @PostMapping()
-    public ResponseEntity<?> agregarPersona(@RequestBody PersonaEntity personaEntity) {
+    public ResponseEntity<?> agregarPersona(@RequestBody PersonaDTO personaDTO) {
         try {
-            PersonaEntity nuevaPersonaEntity = personaService.agregarPersona(personaEntity);
-            return new ResponseEntity<>(nuevaPersonaEntity, HttpStatus.CREATED);
+            // Convertir el DTO a una entidad PersonaEntity usando el mapper
+            PersonaEntity nuevaPersonaEntity = personaMapper.toEntity(personaDTO);
+
+            // Guardar la entidad en la base de datos
+            PersonaEntity personaGuardada = personaService.agregarPersona(nuevaPersonaEntity);
+
+            // Convertir la entidad guardada a DTO y devolverla en la respuesta
+            PersonaDTO personaGuardadaDTO = personaMapper.toDTO(personaGuardada);
+
+            return new ResponseEntity<>(personaGuardadaDTO, HttpStatus.CREATED);
         } catch (UnprocessableEntityException e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getExternalMessage());
             return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<PersonaEntity> buscarPorId(@PathVariable Integer id) {
