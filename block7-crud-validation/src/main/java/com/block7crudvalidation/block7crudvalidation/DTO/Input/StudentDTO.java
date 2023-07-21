@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class StudentDTO {
     private Integer idStudent;
-    private PersonaDTO personaDTO;
+    private Integer idPersona;;
     private int numHoursWeek;
     private String comments;
     private ProfesorDTO profesorDTO;

@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProfesorDTO {
     private Integer idProfesor;
-    private PersonaEntity persona; // Cambio a PersonaEntity en lugar de PersonaDTO
+    private Integer idPersona;;
     private String comments;
     private String branch;
 }

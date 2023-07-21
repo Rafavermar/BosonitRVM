@@ -3,6 +3,7 @@ package com.block7crudvalidation.block7crudvalidation.Controllers;
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
+import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
 import com.block7crudvalidation.block7crudvalidation.Exception.CustomError;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
@@ -10,6 +11,7 @@ import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEnti
 import com.block7crudvalidation.block7crudvalidation.Mapper.PersonaMapper;
 import com.block7crudvalidation.block7crudvalidation.Mapper.StudentMapper;
 import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
+import com.block7crudvalidation.block7crudvalidation.Services.ProfesorService;
 import com.block7crudvalidation.block7crudvalidation.Services.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,19 +28,24 @@ public class EstudianteController {
     private final PersonaService personaService;
     private final StudentMapper studentMapper;
     private final PersonaMapper personaMapper;
+    private final ProfesorService profesorService;
 
     // Endpoint para agregar un estudiante
     @PostMapping
     public ResponseEntity<?> agregarEstudiante(@RequestBody StudentDTO studentDTO) {
         try {
             // Buscar la entidad PersonaEntity por su ID
-            PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getPersonaDTO().getId());
+            PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getIdPersona());
+
+            // Buscar la entidad ProfesorEntity por su ID
+            ProfesorEntity profesorEntity = profesorService.getProfesorById(studentDTO.getProfesorDTO().getIdProfesor());
 
             // Convertir el DTO a una entidad StudentEntity usando el mapper
             StudentEntity studentEntity = studentMapper.toEntity(studentDTO);
 
-            // Establecer la entidad PersonaEntity en la nueva entidad StudentEntity
+            // Establecer las entidades PersonaEntity y ProfesorEntity en la nueva entidad StudentEntity
             studentEntity.setPersona(personaEntity);
+            studentEntity.setProfesor(profesorEntity);
 
             // Guardar el estudiante en la base de datos
             StudentEntity nuevoEstudiante = studentService.saveStudent(studentEntity);
@@ -77,7 +84,7 @@ public class EstudianteController {
     public ResponseEntity<?> actualizarEstudiante(@PathVariable Integer id, @RequestBody StudentDTO studentDTO) {
         try {
             // Buscar la entidad PersonaEntity por su ID
-            PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getPersonaDTO().getId());
+            PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getIdStudent());
 
             // Obtener el estudiante por su ID desde el servicio
             StudentEntity studentEntity = studentService.getStudentById(id);

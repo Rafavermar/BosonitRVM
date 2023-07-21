@@ -31,11 +31,14 @@ public class ProfesorController {
         this.personaService = personaService;
     }
 
-    @PostMapping("/profesores")
+    @PostMapping()
     public ResponseEntity<?> agregarProfesor(@RequestBody ProfesorDTO profesorDTO) {
         try {
-            // Buscar la entidad PersonaEntity por su ID
-            PersonaEntity personaEntity = personaService.buscarPorId(profesorDTO.getPersona().getIdPersona());
+            // Obtener el ID de persona desde el DTO del profesor
+            Integer idPersona = profesorDTO.getIdPersona();
+
+            // Buscar la entidad PersonaEntity por su ID desde el servicio
+            PersonaEntity personaEntity = personaService.buscarPorId(idPersona);
 
             // Convertir el DTO a una entidad ProfesorEntity usando el mapper
             ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorDTO);
@@ -57,7 +60,6 @@ public class ProfesorController {
             return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<ProfesorDTO> obtenerProfesorPorId(@PathVariable Integer id) {

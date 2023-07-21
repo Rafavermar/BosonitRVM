@@ -15,7 +15,7 @@ public class ProfesorMapper {
     public ProfesorEntity toEntity(ProfesorDTO profesorDTO) {
         ProfesorEntity profesorEntity = new ProfesorEntity();
         profesorEntity.setIdProfesor(profesorDTO.getIdProfesor());
-        profesorEntity.setPersona(profesorDTO.getPersona()); // Cambio a getPersona() en lugar de getPersonaDTO()
+        profesorEntity.setPersona(new PersonaEntity());
         profesorEntity.setComments(profesorDTO.getComments());
         profesorEntity.setBranch(profesorDTO.getBranch());
         return profesorEntity;
@@ -24,7 +24,12 @@ public class ProfesorMapper {
     public ProfesorDTO toDTO(ProfesorEntity profesorEntity) {
         ProfesorDTO profesorDTO = new ProfesorDTO();
         profesorDTO.setIdProfesor(profesorEntity.getIdProfesor());
-        profesorDTO.setPersona(profesorEntity.getPersona()); // Cambio a getPersona() en lugar de getPersonaDTO()
+
+        // Obtener el idPersona de la entidad PersonaEntity asociada al profesor
+        if (profesorEntity.getPersona() != null) {
+            profesorDTO.setIdPersona(profesorEntity.getPersona().getIdPersona());
+        }
+
         profesorDTO.setComments(profesorEntity.getComments());
         profesorDTO.setBranch(profesorEntity.getBranch());
         return profesorDTO;

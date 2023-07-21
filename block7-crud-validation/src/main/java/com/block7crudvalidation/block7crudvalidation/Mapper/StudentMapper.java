@@ -6,16 +6,27 @@ import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
+import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 @Component
 public class StudentMapper {
+
+    @Autowired
+    private PersonaService personaService; // Asegúrate de que PersonaService esté correctamente inyectado.
 
     public StudentEntity toEntity(StudentDTO studentDTO) {
         StudentEntity studentEntity = new StudentEntity();
         studentEntity.setIdStudent(studentDTO.getIdStudent());
-        studentEntity.setPersona(convertToEntity(studentDTO.getPersonaDTO())); // Llamada al método convertToEntity
+
+        // Buscar la entidad PersonaEntity por su ID
+        PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getIdPersona());
+        studentEntity.setPersona(personaEntity);
+
         studentEntity.setNumHoursWeek(studentDTO.getNumHoursWeek());
         studentEntity.setComments(studentDTO.getComments());
         studentEntity.setBranch(studentDTO.getBranch());
@@ -26,31 +37,13 @@ public class StudentMapper {
     public StudentDTO toDTO(StudentEntity studentEntity) {
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setIdStudent(studentEntity.getIdStudent());
-        studentDTO.setPersonaDTO(convertToDTO(studentEntity.getPersona())); // Llamada al método convertToDTO
+        studentDTO.setIdPersona(studentEntity.getPersona().getIdPersona());
         studentDTO.setNumHoursWeek(studentEntity.getNumHoursWeek());
         studentDTO.setComments(studentEntity.getComments());
-        studentDTO.setProfesorDTO(convertToDTO(studentEntity.getProfesor())); // Llamada al método convertToDTO
+        studentDTO.setProfesorDTO(convertToDTO(studentEntity.getProfesor()));
         studentDTO.setBranch(studentEntity.getBranch());
 
         return studentDTO;
-    }
-
-    private PersonaEntity convertToEntity(PersonaDTO personaDTO) {
-        PersonaEntity personaEntity = new PersonaEntity();
-        personaEntity.setIdPersona(personaDTO.getId());
-        personaEntity.setUsuario(personaDTO.getUsuario());
-        personaEntity.setPassword(personaDTO.getPassword());
-        personaEntity.setName(personaDTO.getName());
-        personaEntity.setSurname(personaDTO.getSurname());
-        personaEntity.setCompanyEmail(personaDTO.getCompany_email());
-        personaEntity.setPersonalEmail(personaDTO.getPersonal_email());
-        personaEntity.setCity(personaDTO.getCity());
-        personaEntity.setActive(personaDTO.isActive());
-        personaEntity.setCreatedDate(personaDTO.getCreated_date());
-        personaEntity.setImageUrl(personaDTO.getImagen_url());
-        personaEntity.setTerminationDate(personaDTO.getTermination_date());
-
-        return personaEntity;
     }
 
     private PersonaDTO convertToDTO(PersonaEntity personaEntity) {
@@ -73,7 +66,12 @@ public class StudentMapper {
 
     private ProfesorDTO convertToDTO(ProfesorEntity profesorEntity) {
         ProfesorDTO profesorDTO = new ProfesorDTO();
-        // Implementar el mapeo de ProfesorEntity a ProfesorDTO
+        if (profesorEntity != null) {
+            profesorDTO.setIdProfesor(profesorEntity.getIdProfesor());
+            profesorDTO.setIdPersona(profesorEntity.getPersona().getIdPersona());
+            profesorDTO.setComments(profesorEntity.getComments());
+            profesorDTO.setBranch(profesorEntity.getBranch());
+        }
         return profesorDTO;
     }
 }
