@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,4 +32,8 @@ public class ProfesorEntity {
 
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL) // Relación uno a muchos con StudentEntity
     private List<StudentEntity> students = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profesor")
+    private Set<ProfesorEstudiante> profesorEstudiantes = new HashSet<>();
+
 }

@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -31,4 +34,8 @@ public class StudentEntity {
     @NotNull
     @Column(name = "branch")
     String branch;
+
+    @OneToMany(mappedBy = "student")
+    private Set<ProfesorEstudiante> profesorEstudiantes = new HashSet<>();
+
 }

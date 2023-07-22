@@ -4,10 +4,12 @@ import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Output.EstudianteFullDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
+import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEstudiante;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Mapper.StudentMapper;
 import com.block7crudvalidation.block7crudvalidation.Respository.PersonaRepository;
+import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorEstudianteRepository;
 import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
 import com.block7crudvalidation.block7crudvalidation.Respository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +25,21 @@ public class StudentServiceImpl implements StudentService {
     private final PersonaRepository personaRepository;
     private final StudentMapper studentMapper;
     private final PersonaService personaService;
+    private final ProfesorEstudianteRepository profesorEstudianteRepository;
+    private final ProfesorService profesorService;
 
     @Autowired
     public StudentServiceImpl(StudentRepository studentRepository, ProfesorRepository profesorRepository,
                               PersonaRepository personaRepository, StudentMapper studentMapper,
-                              PersonaService personaService) {
+                              PersonaService personaService,ProfesorEstudianteRepository profesorEstudianteRepository,
+                              ProfesorService profesorService) {
         this.studentRepository = studentRepository;
         this.profesorRepository = profesorRepository;
         this.personaRepository = personaRepository;
         this.studentMapper = studentMapper;
         this.personaService = personaService;
+        this.profesorEstudianteRepository = profesorEstudianteRepository;
+        this.profesorService = profesorService;
     }
 
     @Override
@@ -118,7 +125,24 @@ public class StudentServiceImpl implements StudentService {
         // Guardar el estudiante en la base de datos
         StudentEntity nuevoEstudiante = saveStudent(studentEntity);
 
+        // Si se asignó un profesor, actualizar la relación en ambas direcciones
+        if (profesorEntity != null) {
+            // Asignar el profesor al estudiante
+            studentEntity.setProfesor(profesorEntity);
+
+            // Agregar la relación en la tabla intermedia
+            ProfesorEstudiante profesorEstudiante = new ProfesorEstudiante();
+            profesorEstudiante.setProfesor(profesorEntity);
+            profesorEstudiante.setStudent(nuevoEstudiante);
+            profesorEstudianteRepository.save(profesorEstudiante);
+
+            // Agregar el estudiante a la lista de estudiantes del profesor
+            profesorEntity.getProfesorEstudiantes().add(profesorEstudiante);
+            profesorService.saveProfesor(profesorEntity);
+        }
+
         // Convertir el estudiante guardado a DTO y devolverlo en la respuesta
         return studentMapper.toDTO(nuevoEstudiante);
+
     }
 }
