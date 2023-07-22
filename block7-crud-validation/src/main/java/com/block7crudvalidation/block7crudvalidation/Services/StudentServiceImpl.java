@@ -26,7 +26,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     public StudentServiceImpl(StudentRepository studentRepository, ProfesorRepository profesorRepository,
-                              PersonaRepository personaRepository, StudentMapper studentMapper,PersonaService personaService) {
+                              PersonaRepository personaRepository, StudentMapper studentMapper,
+                              PersonaService personaService) {
         this.studentRepository = studentRepository;
         this.profesorRepository = profesorRepository;
         this.personaRepository = personaRepository;
@@ -104,9 +105,15 @@ public class StudentServiceImpl implements StudentService {
         // Convertir el DTO a una entidad StudentEntity usando el mapper
         StudentEntity studentEntity = studentMapper.toEntity(studentDTO);
 
-        // Establecer las entidades PersonaEntity y ProfesorEntity en la nueva entidad StudentEntity
+        // Establecer la entidad PersonaEntity en la nueva entidad StudentEntity
         studentEntity.setPersona(personaEntity);
-        studentEntity.setProfesor(profesorEntity);
+
+        // Si se asignó un profesor, actualizar la relación en ambas direcciones
+        if (profesorEntity != null) {
+            // Asignar el profesor al estudiante
+            studentEntity.setProfesor(profesorEntity);
+            profesorEntity.getStudents().add(studentEntity); // Agregar el estudiante al profesor
+        }
 
         // Guardar el estudiante en la base de datos
         StudentEntity nuevoEstudiante = saveStudent(studentEntity);
@@ -114,5 +121,4 @@ public class StudentServiceImpl implements StudentService {
         // Convertir el estudiante guardado a DTO y devolverlo en la respuesta
         return studentMapper.toDTO(nuevoEstudiante);
     }
-
 }

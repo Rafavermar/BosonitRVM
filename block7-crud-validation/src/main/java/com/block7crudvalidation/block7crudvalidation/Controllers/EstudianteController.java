@@ -15,22 +15,25 @@ import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
 import com.block7crudvalidation.block7crudvalidation.Services.ProfesorService;
 import com.block7crudvalidation.block7crudvalidation.Services.StudentService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-@AllArgsConstructor
 @RestController
 @RequestMapping("/estudiantes")
 public class EstudianteController {
 
     private final StudentService studentService;
-    private final PersonaService personaService;
     private final StudentMapper studentMapper;
-    private final PersonaMapper personaMapper;
-    private final ProfesorService profesorService;
+    private final PersonaService personaService;
 
+    @Autowired
+    public EstudianteController(StudentService studentService, StudentMapper studentMapper, PersonaService personaService) {
+        this.studentService = studentService;
+        this.studentMapper = studentMapper;
+        this.personaService = personaService;
+    }
     // Endpoint para agregar un estudiante
     @PostMapping
     public ResponseEntity<?> agregarEstudiante(@RequestBody StudentDTO studentDTO) {

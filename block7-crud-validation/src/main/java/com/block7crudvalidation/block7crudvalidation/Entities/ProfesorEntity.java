@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -18,14 +21,13 @@ public class ProfesorEntity {
     @JoinColumn(name = "idPersona")
     PersonaEntity persona;
 
-    @ManyToOne
-    @JoinColumn(name="idStudent")
-    StudentEntity student;
-
     @Column(name = "comments")
     String comments;
 
     @NotNull
     @Column(name = "branch")
     String branch;
+
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL) // Relación uno a muchos con StudentEntity
+    private List<StudentEntity> students = new ArrayList<>();
 }

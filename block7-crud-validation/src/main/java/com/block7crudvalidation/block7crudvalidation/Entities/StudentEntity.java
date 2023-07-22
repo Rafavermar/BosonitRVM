@@ -24,7 +24,7 @@ public class StudentEntity {
     @Column(name = "comments")
     String comments;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "idProfesor")
     ProfesorEntity profesor;
 
