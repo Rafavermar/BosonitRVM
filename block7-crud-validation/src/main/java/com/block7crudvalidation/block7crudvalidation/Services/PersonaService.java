@@ -10,6 +10,6 @@ public interface PersonaService {
     PersonaEntity buscarPorId(Integer id);
     PersonaEntity buscarPorUsuario(String usuario);
     List<PersonaEntity> mostrarTodos();
-    void borrarPersona(int id);
+    void borrarPersona(Integer id);
     PersonaEntity modificarPersona(int id, PersonaEntity personaEntity);
 }

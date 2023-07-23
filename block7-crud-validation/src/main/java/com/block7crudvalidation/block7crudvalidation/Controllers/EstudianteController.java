@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/estudiantes")
 public class EstudianteController {
@@ -34,6 +33,7 @@ public class EstudianteController {
         this.studentMapper = studentMapper;
         this.personaService = personaService;
     }
+
     // Endpoint para agregar un estudiante
     @PostMapping
     public ResponseEntity<?> agregarEstudiante(@RequestBody StudentDTO studentDTO) {
@@ -50,8 +50,6 @@ public class EstudianteController {
         }
     }
 
-
-
     // Endpoint para obtener un estudiante por su ID
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerEstudiantePorId(@PathVariable Integer id) {
@@ -67,7 +65,6 @@ public class EstudianteController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
     }
-
 
     // Endpoint para actualizar un estudiante por su ID
     @PutMapping("/{id}")
@@ -100,7 +97,6 @@ public class EstudianteController {
         }
     }
 
-
     // Endpoint para eliminar un estudiante por su ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarEstudiante(@PathVariable Integer id) {
@@ -113,5 +109,4 @@ public class EstudianteController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
     }
-
 }

@@ -2,13 +2,19 @@ package com.block7crudvalidation.block7crudvalidation.Services;
 
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
+import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
+import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityByNameNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
 import com.block7crudvalidation.block7crudvalidation.Mapper.PersonaMapper;
 import com.block7crudvalidation.block7crudvalidation.Respository.PersonaRepository;
+import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorEstudianteRepository;
+import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
+import com.block7crudvalidation.block7crudvalidation.Respository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +22,20 @@ import java.util.List;
 public class PersonaServiceImpl implements PersonaService {
 
     private final PersonaRepository personaRepository;
+    private final ProfesorRepository profesorRepository;
+
+    private final StudentRepository studentRepository;
+
+    private final ProfesorEstudianteRepository profesorEstudianteRepository;
 
     @Autowired
-    public PersonaServiceImpl(PersonaRepository personaRepository) {
+    public PersonaServiceImpl(PersonaRepository personaRepository, ProfesorRepository profesorRepository,
+                              StudentRepository studentRepository,
+                              ProfesorEstudianteRepository profesorEstudianteRepository) {
         this.personaRepository = personaRepository;
+        this.profesorRepository = profesorRepository;
+        this.studentRepository = studentRepository;
+        this.profesorEstudianteRepository = profesorEstudianteRepository;
     }
 
     @Override
@@ -49,12 +65,28 @@ public class PersonaServiceImpl implements PersonaService {
         return personaRepository.findAll();
     }
 
+    @Transactional
     @Override
-    public void borrarPersona(int id) {
+    public void borrarPersona(Integer id) {
+        // Primero, busca la PersonaEntity
         PersonaEntity personaEntity = personaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException("Persona with id " + id + " not found"));
+
+        // Luego, busca cualquier StudentEntity relacionado
+        StudentEntity studentEntity = studentRepository.findByPersona(personaEntity);
+        if (studentEntity != null) {
+            // Primero, elimina todas las entidades ProfesorEstudiante que hacen referencia al estudiante
+            profesorEstudianteRepository.deleteByStudent(studentEntity);
+
+            // Luego, elimina el StudentEntity
+            studentRepository.delete(studentEntity);
+        }
+
+        // Finalmente, elimina la PersonaEntity
         personaRepository.delete(personaEntity);
     }
+
+
 
     @Override
     public PersonaEntity modificarPersona(int id, PersonaEntity personaEntity) {
