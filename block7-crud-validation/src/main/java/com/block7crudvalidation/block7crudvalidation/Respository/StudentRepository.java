@@ -8,10 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface StudentRepository extends JpaRepository<StudentEntity, Integer> {
 
     StudentEntity findByPersona(PersonaEntity personaEntity);
+    Optional<StudentEntity> findByIdStudent(Integer idStudent);
 
     // Puedes eliminar el siguiente método ya que no será utilizado más.
     // @Modifying

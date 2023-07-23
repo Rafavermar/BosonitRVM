@@ -3,6 +3,7 @@ package com.block7crudvalidation.block7crudvalidation.Controllers;
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.ProfesorDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
+import com.block7crudvalidation.block7crudvalidation.DTO.Output.EstudianteFullDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
@@ -78,15 +79,19 @@ public class EstudianteController {
     }
 
     // Endpoint para obtener un estudiante por su ID
+    // Endpoint para obtener un estudiante por su ID y el tipo de salida (simple o full)
     @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerEstudiantePorId(@PathVariable Integer id) {
+    public ResponseEntity<?> getEstudianteById(@PathVariable Integer id, @RequestParam(required = false, defaultValue = "simple") String outputType) {
         try {
-            // Obtener el estudiante por su ID desde el servicio
-            StudentEntity studentEntity = studentService.getStudentById(id);
-
-            // Convertir la entidad a DTO usando el mapper
-            StudentDTO studentDTO = studentMapper.toDTO(studentEntity);
-            return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+            if ("full".equalsIgnoreCase(outputType)) {
+                // Obtener los datos completos del estudiante y la persona asociada
+                EstudianteFullDTO estudianteFullDTO = studentService.getStudentFullDetails(id);
+                return ResponseEntity.ok(estudianteFullDTO);
+            } else {
+                // Obtener solo los datos básicos del estudiante
+                StudentDTO studentDTO = studentService.getStudentDTOById(id); // Using the new method
+                return ResponseEntity.ok(studentDTO);
+            }
         } catch (EntityNotFoundException e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);

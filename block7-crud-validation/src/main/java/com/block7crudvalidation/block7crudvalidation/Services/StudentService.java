@@ -19,4 +19,7 @@ public interface StudentService {
     EstudianteFullDTO getStudentFullDetails(Integer id);
 
     StudentDTO agregarEstudiante(StudentDTO studentDTO);
+
+    // New method to get StudentDTO by id
+    StudentDTO getStudentDTOById(Integer id);
 }

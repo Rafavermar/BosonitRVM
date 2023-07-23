@@ -60,31 +60,19 @@ public class StudentServiceImpl implements StudentService {
 
     @Transactional
     @Override
-    public void deleteStudent(Integer idPersona) throws EntityNotFoundException {
-        PersonaEntity personaEntity = personaRepository.findById(idPersona)
-                .orElseThrow(() -> new EntityNotFoundException("La persona con ID: " + idPersona + " no fue encontrada."));
+    public void deleteStudent(Integer idStudent) throws EntityNotFoundException {
+        StudentEntity studentEntity = studentRepository.findByIdStudent(idStudent)
+                .orElseThrow(() -> new EntityNotFoundException("El estudiante con ID: " + idStudent + " no fue encontrado."));
 
-        StudentEntity studentEntity = studentRepository.findByPersona(personaEntity);
-
-        if (studentEntity == null) {
-            throw new EntityNotFoundException("El estudiante con ID de persona: " + idPersona + " no fue encontrado.");
-        }
-
-        // Find all records in ProfesorEstudiante associated with this student
+        // Aquí mantenemos el mismo código para eliminar las relaciones con profesores en ProfesorEstudiante si es necesario
         List<ProfesorEstudiante> profesorEstudiantes = profesorEstudianteRepository.findByStudent(studentEntity);
-
-        // Disassociate the student from any profesor in the ProfesorEstudiante table
-        for (ProfesorEstudiante pe : profesorEstudiantes) {
-            pe.getProfesor().getProfesorEstudiantes().remove(pe); // Remove the association from ProfesorEntity
-            pe.setProfesor(null); // Set the profesor to null in ProfesorEstudiante
-            profesorEstudianteRepository.delete(pe); // Now you can delete the ProfesorEstudiante entry
+        if (!profesorEstudiantes.isEmpty()) {
+            profesorEstudianteRepository.deleteByStudent(studentEntity);
         }
 
-        // Now it is safe to delete the student
-        studentRepository.deleteById(studentEntity.getIdStudent());
+        // Ahora es seguro eliminar el estudiante
+        studentRepository.delete(studentEntity);
     }
-
-
 
 
     @Override
@@ -169,5 +157,14 @@ public class StudentServiceImpl implements StudentService {
         // Convertir el estudiante guardado a DTO y devolverlo en la respuesta
         return studentMapper.toDTO(nuevoEstudiante);
 
+    }
+
+    @Override
+    public StudentDTO getStudentDTOById(Integer id) {
+        StudentEntity studentEntity = getStudentById(id);
+        if (studentEntity != null) {
+            return studentMapper.toDTO(studentEntity);
+        }
+        return null;
     }
 }
