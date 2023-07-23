@@ -32,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     public StudentServiceImpl(StudentRepository studentRepository, ProfesorRepository profesorRepository,
                               PersonaRepository personaRepository, StudentMapper studentMapper,
-                              PersonaService personaService,ProfesorEstudianteRepository profesorEstudianteRepository,
+                              PersonaService personaService, ProfesorEstudianteRepository profesorEstudianteRepository,
                               ProfesorService profesorService) {
         this.studentRepository = studentRepository;
         this.profesorRepository = profesorRepository;
@@ -166,5 +166,23 @@ public class StudentServiceImpl implements StudentService {
             return studentMapper.toDTO(studentEntity);
         }
         return null;
+    }
+    @Override
+    public StudentDTO getStudentDTOByName(String name) {
+        // Find the student by name in the database
+        StudentEntity studentEntity = studentRepository.findByPersonaName(name);
+
+        // Convert the entity to DTO using the mapper
+        if (studentEntity != null) {
+            return studentMapper.toDTO(studentEntity);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public EstudianteFullDTO getStudentFullDetailsByName(String name) {
+        StudentEntity studentEntity = studentRepository.findByPersona_Name(name);
+        return studentEntity != null ? getStudentFullDetails(studentEntity.getIdStudent()) : null;
     }
 }

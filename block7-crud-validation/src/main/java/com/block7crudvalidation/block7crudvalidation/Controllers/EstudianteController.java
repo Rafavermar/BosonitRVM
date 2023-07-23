@@ -98,6 +98,29 @@ public class EstudianteController {
         }
     }
 
+    @GetMapping("/nombre/{name}")
+    public ResponseEntity<?> getEstudianteByName(@PathVariable String name,
+                                                 @RequestParam(required = false, defaultValue = "simple") String outputType) {
+        try {
+            StudentDTO studentDTO = studentService.getStudentDTOByName(name);
+
+            if (studentDTO != null) {
+                if ("full".equalsIgnoreCase(outputType)) {
+                    EstudianteFullDTO estudianteFullDTO = studentService.getStudentFullDetailsByName(name);
+                    return ResponseEntity.ok(estudianteFullDTO);
+                } else {
+                    return ResponseEntity.ok(studentDTO);
+                }
+            } else {
+                CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), "Student with name " + name + " not found");
+                return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+            }
+        } catch (EntityNotFoundException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarEstudiante(@PathVariable Integer id, @RequestBody StudentDTO studentDTO) {
         try {
