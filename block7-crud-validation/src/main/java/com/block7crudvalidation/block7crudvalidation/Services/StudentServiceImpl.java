@@ -14,6 +14,7 @@ import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorReposit
 import com.block7crudvalidation.block7crudvalidation.Respository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,11 +57,31 @@ public class StudentServiceImpl implements StudentService {
     public StudentEntity getStudentById(Integer id) {
         return studentRepository.findById(id).orElse(null);
     }
-
+    @Transactional
     @Override
-    public void deleteStudent(Integer id) {
-        studentRepository.deleteById(id);
+    public void deleteStudent(Integer idPersona) throws EntityNotFoundException {
+        PersonaEntity personaEntity = personaRepository.findById(idPersona)
+                .orElseThrow(() -> new EntityNotFoundException("La persona con ID: " + idPersona + " no fue encontrada."));
+
+        StudentEntity studentEntity = studentRepository.findByPersona(personaEntity);
+
+        if (studentEntity == null) {
+            throw new EntityNotFoundException("El estudiante con ID de persona: " + idPersona + " no fue encontrado.");
+        }
+
+        // Si el estudiante tiene registros en ProfesorEstudiante, los eliminamos primero
+        List<ProfesorEstudiante> profesorEstudiantes = profesorEstudianteRepository.findByStudent(studentEntity);
+
+        if (!profesorEstudiantes.isEmpty()){
+            profesorEstudianteRepository.deleteByStudent(studentEntity);
+        }
+
+        // Ahora es seguro eliminar el estudiante
+        studentRepository.deleteById(studentEntity.getIdStudent());
     }
+
+
+
 
     @Override
     public EstudianteFullDTO getStudentFullDetails(Integer id) {

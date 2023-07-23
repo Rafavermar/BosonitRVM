@@ -95,14 +95,21 @@ public class PersonaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> borrarPersona(@PathVariable Integer id) {
         try {
-            // Intentar eliminar un estudiante con el id de la persona
-            studentService.deleteStudent(id);
+            try {
+                // Intentar eliminar un estudiante con el id de la persona
+                studentService.deleteStudent(id);
+            } catch (EntityNotFoundException e) {
+                // Ignorar si no se encuentra el estudiante
+            }
 
-            // Intentar eliminar un profesor con el id de la persona
-            profesorService.deleteProfesor(id);
+            try {
+                // Intentar eliminar un profesor con el id de la persona
+                profesorService.deleteProfesor(id);
+            } catch (EntityNotFoundException e) {
+                // Ignorar si no se encuentra el profesor
+            }
 
-            // Si la persona no está asignada a un estudiante o profesor, o si se han eliminado con éxito,
-            // proceder a eliminar la persona
+            // Proceder a eliminar la persona
             personaService.borrarPersona(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (EntityNotFoundException e) {
@@ -113,4 +120,6 @@ public class PersonaController {
             return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
+
 }

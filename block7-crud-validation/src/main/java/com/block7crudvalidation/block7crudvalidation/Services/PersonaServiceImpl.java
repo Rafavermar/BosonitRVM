@@ -75,16 +75,28 @@ public class PersonaServiceImpl implements PersonaService {
         // Luego, busca cualquier StudentEntity relacionado
         StudentEntity studentEntity = studentRepository.findByPersona(personaEntity);
         if (studentEntity != null) {
-            // Primero, elimina todas las entidades ProfesorEstudiante que hacen referencia al estudiante
-            profesorEstudianteRepository.deleteByStudent(studentEntity);
+            // Setea el profesor del estudiante a null y guarda el cambio
+            studentEntity.setProfesor(null);
+            studentRepository.save(studentEntity);
+        }
 
-            // Luego, elimina el StudentEntity
-            studentRepository.delete(studentEntity);
+        // Busca cualquier ProfesorEntity relacionado
+        ProfesorEntity profesorEntity = profesorRepository.findByPersona(personaEntity);
+        if (profesorEntity != null) {
+            // Setea a null el profesor en todos los estudiantes relacionados y guarda los cambios
+            List<StudentEntity> students = profesorEntity.getStudents();
+            for (StudentEntity relatedStudent : students) {
+                relatedStudent.setProfesor(null);
+                studentRepository.save(relatedStudent);
+            }
+            // Ahora puedes eliminar el ProfesorEntity
+            profesorRepository.delete(profesorEntity);
         }
 
         // Finalmente, elimina la PersonaEntity
         personaRepository.delete(personaEntity);
     }
+
 
 
 

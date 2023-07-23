@@ -78,16 +78,39 @@ public class ProfesorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProfesorDTO> actualizarProfesor(@PathVariable Integer id, @RequestBody ProfesorDTO profesorDTO) {
-        ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorDTO);
-        ProfesorEntity updatedProfesor = profesorService.updateProfesor(id, profesorEntity);
-        ProfesorDTO updatedProfesorDTO = profesorMapper.toDTO(updatedProfesor);
-        return ResponseEntity.ok(updatedProfesorDTO);
+    public ResponseEntity<?> actualizarProfesor(@PathVariable Integer id, @RequestBody ProfesorDTO profesorDTO) {
+        try {
+            // Obtener el ID de persona desde el DTO del profesor
+            Integer idPersona = profesorDTO.getIdPersona();
+
+            // Buscar la entidad PersonaEntity por su ID desde el servicio
+            PersonaEntity personaEntity = personaService.buscarPorId(idPersona);
+
+            // Convertir el DTO a una entidad ProfesorEntity usando el mapper
+            ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorDTO);
+
+            // Establecer la entidad PersonaEntity en la nueva entidad ProfesorEntity
+            profesorEntity.setPersona(personaEntity);
+
+            // Actualizar el profesor en la base de datos
+            ProfesorEntity updatedProfesor = profesorService.updateProfesor(id, profesorEntity);
+
+            // Convertir el profesor actualizado a DTO y devolverlo en la respuesta
+            ProfesorDTO updatedProfesorDTO = profesorMapper.toDTO(updatedProfesor);
+            return ResponseEntity.ok(updatedProfesorDTO);
+        } catch (EntityNotFoundException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        } catch (UnprocessableEntityException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getExternalMessage());
+            return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProfesor(@PathVariable Integer id) {
+    public ResponseEntity<String> eliminarProfesor(@PathVariable Integer id) {
         profesorService.deleteProfesor(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Profesor eliminado con éxito");
     }
+
 }

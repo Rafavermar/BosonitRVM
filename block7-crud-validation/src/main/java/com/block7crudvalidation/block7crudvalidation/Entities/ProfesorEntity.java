@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,9 +33,14 @@ public class ProfesorEntity {
     String branch;
 
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL) // Relación uno a muchos con StudentEntity
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private List<StudentEntity> students = new ArrayList<>();
 
-    @OneToMany(mappedBy = "profesor")
+    @OneToMany(mappedBy = "profesor", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = false)
     private Set<ProfesorEstudiante> profesorEstudiantes = new HashSet<>();
+
+    @OneToMany(mappedBy = "profesor")
+    private Set<StudentEntity> studentEntitySet = new HashSet<>();
+
 
 }

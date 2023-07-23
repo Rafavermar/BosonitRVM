@@ -27,9 +27,10 @@ public class StudentEntity {
     @Column(name = "comments")
     String comments;
 
-    @ManyToOne
-    @JoinColumn(name = "idProfesor")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "idProfesor", nullable = true)
     ProfesorEntity profesor;
+
 
     @NotNull
     @Column(name = "branch")
