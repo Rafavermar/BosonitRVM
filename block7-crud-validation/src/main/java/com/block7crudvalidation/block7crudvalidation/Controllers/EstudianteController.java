@@ -11,6 +11,7 @@ import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundExc
 import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
 import com.block7crudvalidation.block7crudvalidation.Mapper.PersonaMapper;
 import com.block7crudvalidation.block7crudvalidation.Mapper.StudentMapper;
+import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
 import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
 import com.block7crudvalidation.block7crudvalidation.Services.ProfesorService;
 import com.block7crudvalidation.block7crudvalidation.Services.StudentService;
@@ -30,12 +31,15 @@ public class EstudianteController {
     private final StudentService studentService;
     private final StudentMapper studentMapper;
     private final PersonaService personaService;
+    private final ProfesorRepository profesorRepository;
 
     @Autowired
-    public EstudianteController(StudentService studentService, StudentMapper studentMapper, PersonaService personaService) {
+    public EstudianteController(StudentService studentService, StudentMapper studentMapper,
+                                PersonaService personaService, ProfesorRepository profesorRepository) {
         this.studentService = studentService;
         this.studentMapper = studentMapper;
         this.personaService = personaService;
+        this.profesorRepository = profesorRepository;
     }
 
     // Endpoint para obtener la lista de todos los estudiantes
@@ -89,21 +93,30 @@ public class EstudianteController {
         }
     }
 
-    // Endpoint para actualizar un estudiante por su ID
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarEstudiante(@PathVariable Integer id, @RequestBody StudentDTO studentDTO) {
         try {
             // Buscar la entidad PersonaEntity por su ID
-            PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getIdStudent());
+            PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getIdPersona());
 
             // Obtener el estudiante por su ID desde el servicio
             StudentEntity studentEntity = studentService.getStudentById(id);
+
+            // Buscar la entidad ProfesorEntity por su ID
+            ProfesorEntity profesorEntity = null;
+            if (studentDTO.getIdProfesor() != null) {
+                profesorEntity = profesorRepository.findById(studentDTO.getIdProfesor())
+                        .orElseThrow(() -> new EntityNotFoundException("Profesor with id " + studentDTO.getIdProfesor() + " not found"));
+            }
 
             // Establecer la entidad PersonaEntity en la entidad StudentEntity actualizada
             studentEntity.setPersona(personaEntity);
             studentEntity.setNumHoursWeek(studentDTO.getNumHoursWeek());
             studentEntity.setComments(studentDTO.getComments());
             studentEntity.setBranch(studentDTO.getBranch());
+
+            // Establecer la entidad ProfesorEntity en la entidad StudentEntity actualizada
+            studentEntity.setProfesor(profesorEntity);
 
             // Guardar el estudiante actualizado en la base de datos
             StudentEntity estudianteActualizado = studentService.saveStudent(studentEntity);
@@ -120,13 +133,14 @@ public class EstudianteController {
         }
     }
 
+
     // Endpoint para eliminar un estudiante por su ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarEstudiante(@PathVariable Integer id) {
         try {
             // Eliminar el estudiante por su ID desde el servicio
             studentService.deleteStudent(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.ok("Estudiante eliminado con éxito");
         } catch (EntityNotFoundException e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);

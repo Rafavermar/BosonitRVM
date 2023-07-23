@@ -36,7 +36,7 @@ public class ProfesorEntity {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private List<StudentEntity> students = new ArrayList<>();
 
-    @OneToMany(mappedBy = "profesor", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = false)
+    @OneToMany(mappedBy = "profesor", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<ProfesorEstudiante> profesorEstudiantes = new HashSet<>();
 
     @OneToMany(mappedBy = "profesor")

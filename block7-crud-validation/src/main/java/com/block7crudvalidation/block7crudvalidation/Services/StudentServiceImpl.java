@@ -57,6 +57,7 @@ public class StudentServiceImpl implements StudentService {
     public StudentEntity getStudentById(Integer id) {
         return studentRepository.findById(id).orElse(null);
     }
+
     @Transactional
     @Override
     public void deleteStudent(Integer idPersona) throws EntityNotFoundException {
@@ -69,14 +70,17 @@ public class StudentServiceImpl implements StudentService {
             throw new EntityNotFoundException("El estudiante con ID de persona: " + idPersona + " no fue encontrado.");
         }
 
-        // Si el estudiante tiene registros en ProfesorEstudiante, los eliminamos primero
+        // Find all records in ProfesorEstudiante associated with this student
         List<ProfesorEstudiante> profesorEstudiantes = profesorEstudianteRepository.findByStudent(studentEntity);
 
-        if (!profesorEstudiantes.isEmpty()){
-            profesorEstudianteRepository.deleteByStudent(studentEntity);
+        // Disassociate the student from any profesor in the ProfesorEstudiante table
+        for (ProfesorEstudiante pe : profesorEstudiantes) {
+            pe.getProfesor().getProfesorEstudiantes().remove(pe); // Remove the association from ProfesorEntity
+            pe.setProfesor(null); // Set the profesor to null in ProfesorEstudiante
+            profesorEstudianteRepository.delete(pe); // Now you can delete the ProfesorEstudiante entry
         }
 
-        // Ahora es seguro eliminar el estudiante
+        // Now it is safe to delete the student
         studentRepository.deleteById(studentEntity.getIdStudent());
     }
 

@@ -65,15 +65,20 @@ public class PersonaServiceImpl implements PersonaService {
         return personaRepository.findAll();
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void borrarPersona(Integer id) {
         // Primero, busca la PersonaEntity
         PersonaEntity personaEntity = personaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Persona with id " + id + " not found"));
 
-        // Luego, busca cualquier StudentEntity relacionado
+        // Eliminar las relaciones en la tabla profesor_estudiante que contengan a esta persona
         StudentEntity studentEntity = studentRepository.findByPersona(personaEntity);
+        if (studentEntity != null) {
+            profesorEstudianteRepository.deleteByStudent(studentEntity);
+        }
+
+        // Luego, busca cualquier StudentEntity relacionado
         if (studentEntity != null) {
             // Setea el profesor del estudiante a null y guarda el cambio
             studentEntity.setProfesor(null);
@@ -96,6 +101,7 @@ public class PersonaServiceImpl implements PersonaService {
         // Finalmente, elimina la PersonaEntity
         personaRepository.delete(personaEntity);
     }
+
 
 
 

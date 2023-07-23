@@ -36,7 +36,7 @@ public class StudentEntity {
     @Column(name = "branch")
     String branch;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProfesorEstudiante> profesorEstudiantes = new HashSet<>();
 
 }
