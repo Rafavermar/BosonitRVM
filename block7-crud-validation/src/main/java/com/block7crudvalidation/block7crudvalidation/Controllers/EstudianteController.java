@@ -19,6 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/estudiantes")
 public class EstudianteController {
@@ -32,6 +36,25 @@ public class EstudianteController {
         this.studentService = studentService;
         this.studentMapper = studentMapper;
         this.personaService = personaService;
+    }
+
+    // Endpoint para obtener la lista de todos los estudiantes
+    @GetMapping
+    public ResponseEntity<?> obtenerTodosLosEstudiantes() {
+        try {
+            // Obtener la lista de todas las entidades estudiante desde el servicio
+            List<StudentEntity> studentEntities = studentService.getAllStudents();
+
+            // Convertir la lista de entidades a lista de DTOs usando el mapper
+            List<StudentDTO> studentDTOs = studentEntities.stream()
+                    .map(studentMapper::toDTO)
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
+        } catch (Exception e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Endpoint para agregar un estudiante

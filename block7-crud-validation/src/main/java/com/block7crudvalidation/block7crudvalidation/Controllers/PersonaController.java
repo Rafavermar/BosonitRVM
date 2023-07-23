@@ -111,7 +111,7 @@ public class PersonaController {
 
             // Proceder a eliminar la persona
             personaService.borrarPersona(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.ok("Persona con id " + id + " eliminada correctamente");
         } catch (EntityNotFoundException e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
