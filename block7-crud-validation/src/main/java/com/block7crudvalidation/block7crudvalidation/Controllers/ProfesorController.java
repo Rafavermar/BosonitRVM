@@ -1,6 +1,7 @@
 package com.block7crudvalidation.block7crudvalidation.Controllers;
 
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.ProfesorDTO;
+import com.block7crudvalidation.block7crudvalidation.DTO.Output.ProfesorFullDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.Exception.CustomError;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/profesores")
 public class ProfesorController {
@@ -60,21 +63,65 @@ public class ProfesorController {
         }
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<ProfesorDTO> obtenerProfesorPorId(@PathVariable Integer id) {
-        ProfesorEntity profesorEntity = profesorService.getProfesorById(id);
-        if (profesorEntity == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> obtenerProfesorPorId(@PathVariable Integer id,
+                                                  @RequestParam(required = false, defaultValue = "simple") String outputType) {
+        try {
+            if ("full".equalsIgnoreCase(outputType)) {
+                // Obtener los datos completos del profesor y la persona asociada
+                ProfesorFullDTO profesorFullDTO = profesorService.getProfesorFullDetailsById(id);
+                return ResponseEntity.ok(profesorFullDTO);
+            } else {
+                // Obtener solo los datos básicos del profesor
+                ProfesorDTO profesorDTO = profesorService.getProfesorDTOById(id); // Necesitas implementar este método en el servicio
+                return ResponseEntity.ok(profesorDTO);
+            }
+        } catch (EntityNotFoundException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getMessage());
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
-        ProfesorDTO profesorDTO = profesorMapper.toDTO(profesorEntity);
-        return ResponseEntity.ok(profesorDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<ProfesorDTO>> obtenerTodosLosProfesores() {
+    public ResponseEntity<?> obtenerTodosLosProfesores(@RequestParam(required = false, defaultValue = "simple") String outputType) {
         List<ProfesorEntity> profesorEntities = profesorService.getAllProfesores();
-        List<ProfesorDTO> profesorDTOs = profesorMapper.toDTOList(profesorEntities);
-        return ResponseEntity.ok(profesorDTOs);
+
+        if ("full".equalsIgnoreCase(outputType)) {
+            // Obtener la versión completa de los profesores
+            List<ProfesorFullDTO> profesorFullDTOs = profesorEntities.stream()
+                    .map(profesor -> profesorService.getProfesorFullDetailsById(profesor.getIdProfesor()))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(profesorFullDTOs);
+        } else {
+            // Obtener la versión simple de los profesores
+            List<ProfesorDTO> profesorDTOs = profesorMapper.toDTOList(profesorEntities);
+            return ResponseEntity.ok(profesorDTOs);
+        }
+    }
+    @GetMapping("/nombre/{name}")
+    public ResponseEntity<?> getProfesoresByName(@PathVariable String name,
+                                                 @RequestParam(required = false, defaultValue = "simple") String outputType) {
+        try {
+            List<ProfesorDTO> profesorDTOs = profesorService.getProfesoresDTOByName(name);
+
+            if (!profesorDTOs.isEmpty()) {
+                if ("full".equalsIgnoreCase(outputType)) {
+                    List<ProfesorFullDTO> profesoresFullDTOs = profesorDTOs.stream()
+                            .map(profesorDTO -> profesorService.getProfesorFullDetailsById(profesorDTO.getIdProfesor()))
+                            .collect(Collectors.toList());
+                    return ResponseEntity.ok(profesoresFullDTOs);
+                } else {
+                    return ResponseEntity.ok(profesorDTOs);
+                }
+            } else {
+                CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), "Professors with name " + name + " not found");
+                return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+            }
+        } catch (EntityNotFoundException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")

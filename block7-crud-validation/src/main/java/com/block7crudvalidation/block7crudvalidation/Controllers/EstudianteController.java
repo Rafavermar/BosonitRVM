@@ -4,6 +4,7 @@ import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.ProfesorDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Output.EstudianteFullDTO;
+import com.block7crudvalidation.block7crudvalidation.DTO.Output.ProfesorFullDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
@@ -33,29 +34,40 @@ public class EstudianteController {
     private final StudentMapper studentMapper;
     private final PersonaService personaService;
     private final ProfesorRepository profesorRepository;
+    private final ProfesorService profesorService;
 
     @Autowired
     public EstudianteController(StudentService studentService, StudentMapper studentMapper,
-                                PersonaService personaService, ProfesorRepository profesorRepository) {
+                                PersonaService personaService, ProfesorRepository profesorRepository,
+                                ProfesorService profesorService) {
         this.studentService = studentService;
         this.studentMapper = studentMapper;
         this.personaService = personaService;
         this.profesorRepository = profesorRepository;
+        this.profesorService = profesorService;
     }
 
-    // Endpoint para obtener la lista de todos los estudiantes
     @GetMapping
-    public ResponseEntity<?> obtenerTodosLosEstudiantes() {
+    public ResponseEntity<?> obtenerTodosLosEstudiantes(@RequestParam(required = false, defaultValue = "simple") String outputType) {
         try {
             // Obtener la lista de todas las entidades estudiante desde el servicio
             List<StudentEntity> studentEntities = studentService.getAllStudents();
 
-            // Convertir la lista de entidades a lista de DTOs usando el mapper
-            List<StudentDTO> studentDTOs = studentEntities.stream()
-                    .map(studentMapper::toDTO)
-                    .collect(Collectors.toList());
+            if ("full".equalsIgnoreCase(outputType)) {
+                // Convertir la lista de entidades a lista de FullDTOs usando el servicio
+                List<EstudianteFullDTO> estudianteFullDTOs = studentEntities.stream()
+                        .map(studentEntity -> studentService.getStudentFullDetails(studentEntity.getIdStudent()))
+                        .collect(Collectors.toList());
 
-            return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
+                return new ResponseEntity<>(estudianteFullDTOs, HttpStatus.OK);
+            } else {
+                // Convertir la lista de entidades a lista de DTOs simples usando el mapper
+                List<StudentDTO> studentDTOs = studentEntities.stream()
+                        .map(studentMapper::toDTO)
+                        .collect(Collectors.toList());
+
+                return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
+            }
         } catch (Exception e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
             return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -78,10 +90,10 @@ public class EstudianteController {
         }
     }
 
-    // Endpoint para obtener un estudiante por su ID
     // Endpoint para obtener un estudiante por su ID y el tipo de salida (simple o full)
     @GetMapping("/{id}")
-    public ResponseEntity<?> getEstudianteById(@PathVariable Integer id, @RequestParam(required = false, defaultValue = "simple") String outputType) {
+    public ResponseEntity<?> obtenerEstudiantePorId(@PathVariable Integer id,
+                                                    @RequestParam(required = false, defaultValue = "simple") String outputType) {
         try {
             if ("full".equalsIgnoreCase(outputType)) {
                 // Obtener los datos completos del estudiante y la persona asociada
@@ -93,7 +105,7 @@ public class EstudianteController {
                 return ResponseEntity.ok(studentDTO);
             }
         } catch (EntityNotFoundException e) {
-            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
     }

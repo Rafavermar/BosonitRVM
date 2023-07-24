@@ -1,9 +1,12 @@
 package com.block7crudvalidation.block7crudvalidation.Services;
 
+import com.block7crudvalidation.block7crudvalidation.DTO.Input.ProfesorDTO;
+import com.block7crudvalidation.block7crudvalidation.DTO.Output.ProfesorFullDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEstudiante;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
+import com.block7crudvalidation.block7crudvalidation.Mapper.ProfesorMapper;
 import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorEstudianteRepository;
 import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
 import com.block7crudvalidation.block7crudvalidation.Respository.StudentRepository;
@@ -22,14 +25,17 @@ public class ProfesorServiceImpl implements ProfesorService {
     private final ProfesorRepository profesorRepository;
     private final StudentRepository studentRepository;
     private final ProfesorEstudianteRepository profesorEstudianteRepository;
+    private final ProfesorMapper profesorMapper;
 
     @Autowired
     public ProfesorServiceImpl(ProfesorRepository profesorRepository,
                                StudentRepository studentRepository,
-                               ProfesorEstudianteRepository profesorEstudianteRepository) {
+                               ProfesorEstudianteRepository profesorEstudianteRepository,
+                               ProfesorMapper profesorMapper) {
         this.profesorRepository = profesorRepository;
         this.studentRepository = studentRepository;
         this.profesorEstudianteRepository = profesorEstudianteRepository;
+        this.profesorMapper = profesorMapper;
     }
 
     @Override
@@ -85,4 +91,30 @@ public class ProfesorServiceImpl implements ProfesorService {
         }
         return null;
     }
+
+    @Override
+    public ProfesorDTO getProfesorDTOById(Integer id) {
+        ProfesorEntity profesorEntity = profesorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id));
+        return profesorMapper.toDTO(profesorEntity);
+    }
+
+    @Override
+    public List<ProfesorDTO> getProfesoresDTOByName(String name) {
+        List<ProfesorEntity> profesorEntities = profesorRepository.findByPersonaName(name);
+        return profesorMapper.toDTOList(profesorEntities);
+    }
+    @Override
+    public ProfesorFullDTO getProfesorFullDetailsById(Integer id) {
+        ProfesorEntity profesorEntity = profesorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id));
+        return profesorMapper.toFullDTO(profesorEntity);
+    }
+
+    @Override
+    public List<ProfesorFullDTO> getProfesorFullDetailsByName(String name) {
+        List<ProfesorEntity> profesorEntities = profesorRepository.findByPersonaName(name);
+        return profesorMapper.toFullDTOList(profesorEntities);
+    }
+
 }
