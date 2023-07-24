@@ -1,23 +1,19 @@
 package com.block7crudvalidation.block7crudvalidation.Controllers;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
-import com.block7crudvalidation.block7crudvalidation.DTO.Input.ProfesorDTO;
+
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Output.EstudianteFullDTO;
-import com.block7crudvalidation.block7crudvalidation.DTO.Output.ProfesorFullDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
 import com.block7crudvalidation.block7crudvalidation.Exception.CustomError;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
-import com.block7crudvalidation.block7crudvalidation.Mapper.PersonaMapper;
 import com.block7crudvalidation.block7crudvalidation.Mapper.StudentMapper;
 import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
 import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
 import com.block7crudvalidation.block7crudvalidation.Services.ProfesorService;
 import com.block7crudvalidation.block7crudvalidation.Services.StudentService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

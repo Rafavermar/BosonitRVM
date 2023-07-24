@@ -10,15 +10,15 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "EstudianteAsignatura")
-public class EstudianteAsignaturaEntity {
+@Table(name = "Asignatura")
+public class Asignatura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idStudy;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "EstudianteAsignatura_Estudiante",
+            name = "Asignatura-Estudiante",
             joinColumns = @JoinColumn(name = "idStudy"),
             inverseJoinColumns = @JoinColumn(name = "idStudent")
     )

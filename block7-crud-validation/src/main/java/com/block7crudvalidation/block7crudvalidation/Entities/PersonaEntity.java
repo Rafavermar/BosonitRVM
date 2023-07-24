@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.util.Date;
 
+// TODO añadir @column(lenght=10, nullable=false)
 
 @Getter
 @Setter

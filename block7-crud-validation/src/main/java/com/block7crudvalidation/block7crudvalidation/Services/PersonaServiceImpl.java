@@ -64,6 +64,9 @@ public class PersonaServiceImpl implements PersonaService {
     public List<PersonaEntity> mostrarTodos() {
         return personaRepository.findAll();
     }
+
+
+
     @Override
     @Transactional
     public void borrarPersona(Integer id) {
