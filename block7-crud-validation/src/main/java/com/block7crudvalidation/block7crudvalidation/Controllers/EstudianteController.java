@@ -99,20 +99,22 @@ public class EstudianteController {
     }
 
     @GetMapping("/nombre/{name}")
-    public ResponseEntity<?> getEstudianteByName(@PathVariable String name,
-                                                 @RequestParam(required = false, defaultValue = "simple") String outputType) {
+    public ResponseEntity<?> getEstudiantesByName(@PathVariable String name,
+                                                  @RequestParam(required = false, defaultValue = "simple") String outputType) {
         try {
-            StudentDTO studentDTO = studentService.getStudentDTOByName(name);
+            List<StudentDTO> studentDTOs = studentService.getStudentsDTOByName(name);
 
-            if (studentDTO != null) {
+            if (!studentDTOs.isEmpty()) {
                 if ("full".equalsIgnoreCase(outputType)) {
-                    EstudianteFullDTO estudianteFullDTO = studentService.getStudentFullDetailsByName(name);
-                    return ResponseEntity.ok(estudianteFullDTO);
+                    List<EstudianteFullDTO> estudiantesFullDTOs = studentDTOs.stream()
+                            .map(studentDTO -> studentService.getStudentFullDetails(studentDTO.getIdStudent()))
+                            .collect(Collectors.toList());
+                    return ResponseEntity.ok(estudiantesFullDTOs);
                 } else {
-                    return ResponseEntity.ok(studentDTO);
+                    return ResponseEntity.ok(studentDTOs);
                 }
             } else {
-                CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), "Student with name " + name + " not found");
+                CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), "Students with name " + name + " not found");
                 return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
             }
         } catch (EntityNotFoundException e) {
@@ -120,6 +122,7 @@ public class EstudianteController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarEstudiante(@PathVariable Integer id, @RequestBody StudentDTO studentDTO) {

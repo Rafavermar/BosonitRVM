@@ -23,9 +23,9 @@ public interface StudentService {
     // New method to get StudentDTO by id
     StudentDTO getStudentDTOById(Integer id);
 
-    // New method to get StudentDTO by name
-    StudentDTO getStudentDTOByName(String name);
+    // Updated method to get List<StudentDTO> by name
+    List<StudentDTO> getStudentsDTOByName(String name);
 
     // Métodos para obtener los detalles completos del estudiante, según el ID o el nombre
-    EstudianteFullDTO getStudentFullDetailsByName(String name);
+    List<EstudianteFullDTO> getStudentFullDetailsByName(String name);
 }

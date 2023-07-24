@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -168,21 +170,21 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
     @Override
-    public StudentDTO getStudentDTOByName(String name) {
-        // Find the student by name in the database
-        StudentEntity studentEntity = studentRepository.findByPersonaName(name);
+    public List<StudentDTO> getStudentsDTOByName(String name) {
+        // Find students by name in the database
+        List<StudentEntity> studentEntities = studentRepository.findByPersonaName(name);
 
-        // Convert the entity to DTO using the mapper
-        if (studentEntity != null) {
-            return studentMapper.toDTO(studentEntity);
-        } else {
-            return null;
-        }
+        // Convert the entities to DTOs using the mapper
+        return studentEntities.stream()
+                .map(studentMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public EstudianteFullDTO getStudentFullDetailsByName(String name) {
-        StudentEntity studentEntity = studentRepository.findByPersona_Name(name);
-        return studentEntity != null ? getStudentFullDetails(studentEntity.getIdStudent()) : null;
+    public List<EstudianteFullDTO> getStudentFullDetailsByName(String name) {
+        List<StudentEntity> studentEntities = studentRepository.findByPersona_Name(name);
+        return studentEntities.stream()
+                .map(studentEntity -> getStudentFullDetails(studentEntity.getIdStudent()))
+                .collect(Collectors.toList());
     }
 }
