@@ -18,6 +18,5 @@ public class AsignaturaInputDTO {
     private LocalDate initialDate;
     private LocalDate finishDate;
     private Integer idStudent;
-    private Integer idProfesor;
 
 }

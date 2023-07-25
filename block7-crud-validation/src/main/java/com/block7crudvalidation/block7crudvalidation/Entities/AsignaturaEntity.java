@@ -33,8 +33,4 @@ public class AsignaturaEntity {
     private StudentEntity student;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_profesor", nullable = false)
-    private ProfesorEntity profesor;
-
 }

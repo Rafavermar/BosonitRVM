@@ -12,13 +12,12 @@ import java.util.stream.Collectors;
 @Component
 public class AsignaturaMapper {
 
-    public AsignaturaEntity toEntity(AsignaturaInputDTO asignaturaDTO, StudentEntity studentEntity, ProfesorEntity profesorEntity) {
+    public AsignaturaEntity toEntity(AsignaturaInputDTO asignaturaDTO, StudentEntity studentEntity) {
         AsignaturaEntity asignaturaEntity = new AsignaturaEntity();
         asignaturaEntity.setComents(asignaturaDTO.getComents());
         asignaturaEntity.setInitialDate(asignaturaDTO.getInitialDate());
         asignaturaEntity.setFinishDate(asignaturaDTO.getFinishDate());
         asignaturaEntity.setStudent(studentEntity);
-        asignaturaEntity.setProfesor(profesorEntity);
         return asignaturaEntity;
     }
 
@@ -29,7 +28,6 @@ public class AsignaturaMapper {
         asignaturaInputDTO.setInitialDate(asignaturaEntity.getInitialDate());
         asignaturaInputDTO.setFinishDate(asignaturaEntity.getFinishDate());
         asignaturaInputDTO.setIdStudent(asignaturaEntity.getStudent().getIdStudent());
-        asignaturaInputDTO.setIdProfesor(asignaturaEntity.getProfesor().getIdProfesor());
         return asignaturaInputDTO;
     }
 

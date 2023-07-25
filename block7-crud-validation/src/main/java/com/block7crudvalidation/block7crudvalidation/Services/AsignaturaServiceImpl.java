@@ -38,8 +38,7 @@ public class AsignaturaServiceImpl implements AsignaturaService {
     @Override
     public AsignaturaInputDTO createAsignatura(AsignaturaInputDTO asignaturaInputDTO) {
         StudentEntity studentEntity = studentService.getStudentById(asignaturaInputDTO.getIdStudent());
-        ProfesorEntity profesorEntity = profesorService.getProfesorById(asignaturaInputDTO.getIdProfesor());
-        AsignaturaEntity newAsignatura = asignaturaMapper.toEntity(asignaturaInputDTO, studentEntity, profesorEntity);
+        AsignaturaEntity newAsignatura = asignaturaMapper.toEntity(asignaturaInputDTO, studentEntity);
         AsignaturaEntity savedAsignatura = asignaturaRepository.save(newAsignatura);
         return asignaturaMapper.toDTO(savedAsignatura);
     }
