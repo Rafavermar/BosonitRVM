@@ -185,4 +185,31 @@ public class EstudianteController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
     }
+
+    // Endpoint para asignar asignaturas a un estudiante
+    @PutMapping("/{idStudent}/asignaturas")
+    public ResponseEntity<?> assignAsignaturasToStudent(@PathVariable Integer idStudent, @RequestBody List<Integer> idsAsignaturas) {
+        try {
+            studentService.asignarAsignaturasStudent(idStudent, idsAsignaturas);
+            return ResponseEntity.ok("Asignaturas asignadas con éxito al estudiante.");
+        } catch (EntityNotFoundException e) {
+            // Aquí puedes manejar el error como mejor te parezca
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // Endpoint para desasignar asignaturas de un estudiante:
+    @PutMapping("/{idStudent}/desasignar-asignaturas")
+    public ResponseEntity<?> unassignAsignaturasFromStudent(@PathVariable Integer idStudent, @RequestBody List<Integer> idsAsignaturas) {
+        try {
+            studentService.desasignarAsignaturasStudent(idStudent, idsAsignaturas);
+            return ResponseEntity.ok("Asignaturas desasignadas con éxito del estudiante.");
+        } catch (EntityNotFoundException e) {
+            // Aquí puedes manejar el error como mejor te parezca
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
 }

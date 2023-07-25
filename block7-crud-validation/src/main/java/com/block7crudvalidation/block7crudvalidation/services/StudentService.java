@@ -28,4 +28,8 @@ public interface StudentService {
 
     // Métodos para obtener los detalles completos del estudiante, según el ID o el nombre
     List<EstudianteFullDTO> getStudentFullDetailsByName(String name);
+
+    void asignarAsignaturasStudent(Integer idStudent, List<Integer> idsAsignaturas);
+
+    void desasignarAsignaturasStudent(Integer idStudent, List<Integer> idsAsignaturas);
 }

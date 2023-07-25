@@ -192,4 +192,36 @@ public class StudentServiceImpl implements StudentService {
                 .map(studentEntity -> getStudentFullDetails(studentEntity.getIdStudent()))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void asignarAsignaturasStudent(Integer idStudent, List<Integer> idsAsignaturas) throws EntityNotFoundException {
+        StudentEntity student = studentRepository.findById(idStudent)
+                .orElseThrow(() -> new EntityNotFoundException("Estudiante no encontrado"));
+
+        List<AsignaturaEntity> asignaturas = asignaturaRepository.findAllById(idsAsignaturas);
+
+        for (AsignaturaEntity asignatura : asignaturas) {
+            asignatura.setStudent(student);
+        }
+
+        asignaturaRepository.saveAll(asignaturas);
+    }
+
+    @Transactional
+    public void desasignarAsignaturasStudent(Integer idStudent, List<Integer> idsAsignaturas) throws EntityNotFoundException {
+        StudentEntity student = studentRepository.findById(idStudent)
+                .orElseThrow(() -> new EntityNotFoundException("Estudiante no encontrado"));
+
+        List<AsignaturaEntity> asignaturas = asignaturaRepository.findAllById(idsAsignaturas);
+
+        for (AsignaturaEntity asignatura : asignaturas) {
+            if (asignatura.getStudent().equals(student)) {
+                asignatura.setStudent(null);
+            }
+        }
+
+        asignaturaRepository.saveAll(asignaturas);
+    }
+
+
 }
