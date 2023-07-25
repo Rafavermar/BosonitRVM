@@ -8,7 +8,7 @@ import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
-import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
+import com.block7crudvalidation.block7crudvalidation.services.PersonaService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

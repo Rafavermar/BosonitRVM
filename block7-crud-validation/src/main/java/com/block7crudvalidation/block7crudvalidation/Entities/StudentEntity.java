@@ -39,4 +39,6 @@ public class StudentEntity {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProfesorEstudiante> profesorEstudiantes = new HashSet<>();
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AsignaturaEntity> asignaturas = new HashSet<>();
 }

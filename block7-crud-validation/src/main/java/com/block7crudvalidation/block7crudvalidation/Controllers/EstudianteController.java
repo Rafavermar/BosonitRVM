@@ -11,9 +11,9 @@ import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundExc
 import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
 import com.block7crudvalidation.block7crudvalidation.Mapper.StudentMapper;
 import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
-import com.block7crudvalidation.block7crudvalidation.Services.PersonaService;
-import com.block7crudvalidation.block7crudvalidation.Services.ProfesorService;
-import com.block7crudvalidation.block7crudvalidation.Services.StudentService;
+import com.block7crudvalidation.block7crudvalidation.services.PersonaService;
+import com.block7crudvalidation.block7crudvalidation.services.ProfesorService;
+import com.block7crudvalidation.block7crudvalidation.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

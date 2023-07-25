@@ -1,23 +1,18 @@
-package com.block7crudvalidation.block7crudvalidation.Services;
+package com.block7crudvalidation.block7crudvalidation.services;
 
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
 import com.block7crudvalidation.block7crudvalidation.DTO.Output.EstudianteFullDTO;
-import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
-import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
-import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEstudiante;
-import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
+import com.block7crudvalidation.block7crudvalidation.Entities.*;
 import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.Mapper.StudentMapper;
-import com.block7crudvalidation.block7crudvalidation.Respository.PersonaRepository;
-import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorEstudianteRepository;
-import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
-import com.block7crudvalidation.block7crudvalidation.Respository.StudentRepository;
+import com.block7crudvalidation.block7crudvalidation.Respository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,11 +26,13 @@ public class StudentServiceImpl implements StudentService {
     private final ProfesorEstudianteRepository profesorEstudianteRepository;
     private final ProfesorService profesorService;
 
+    private final AsignaturaRepository asignaturaRepository;
+
     @Autowired
     public StudentServiceImpl(StudentRepository studentRepository, ProfesorRepository profesorRepository,
                               PersonaRepository personaRepository, StudentMapper studentMapper,
                               PersonaService personaService, ProfesorEstudianteRepository profesorEstudianteRepository,
-                              ProfesorService profesorService) {
+                              ProfesorService profesorService, AsignaturaRepository asignaturaRepository) {
         this.studentRepository = studentRepository;
         this.profesorRepository = profesorRepository;
         this.personaRepository = personaRepository;
@@ -43,6 +40,7 @@ public class StudentServiceImpl implements StudentService {
         this.personaService = personaService;
         this.profesorEstudianteRepository = profesorEstudianteRepository;
         this.profesorService = profesorService;
+        this.asignaturaRepository = asignaturaRepository;
     }
 
     @Override
@@ -66,13 +64,20 @@ public class StudentServiceImpl implements StudentService {
         StudentEntity studentEntity = studentRepository.findByIdStudent(idStudent)
                 .orElseThrow(() -> new EntityNotFoundException("El estudiante con ID: " + idStudent + " no fue encontrado."));
 
-        // Aquí mantenemos el mismo código para eliminar las relaciones con profesores en ProfesorEstudiante si es necesario
+        // Elimina las relaciones con ProfesorEntity en ProfesorEstudiante
         List<ProfesorEstudiante> profesorEstudiantes = profesorEstudianteRepository.findByStudent(studentEntity);
         if (!profesorEstudiantes.isEmpty()) {
             profesorEstudianteRepository.deleteByStudent(studentEntity);
         }
 
-        // Ahora es seguro eliminar el estudiante
+        // Elimina las relaciones con AsignaturaEntity
+        Set<AsignaturaEntity> asignaturas = studentEntity.getAsignaturas();
+        for(AsignaturaEntity asignatura : asignaturas) {
+            asignatura.setStudent(null); // Desvincula el estudiante de la asignatura
+            asignaturaRepository.save(asignatura); // Guarda la asignatura desvinculada
+        }
+
+        // Elimina el estudiante
         studentRepository.delete(studentEntity);
     }
 

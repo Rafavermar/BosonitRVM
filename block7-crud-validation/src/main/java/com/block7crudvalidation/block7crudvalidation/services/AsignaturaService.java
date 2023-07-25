@@ -1,4 +1,4 @@
-package com.block7crudvalidation.block7crudvalidation.Services;
+package com.block7crudvalidation.block7crudvalidation.services;
 
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.AsignaturaInputDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.AsignaturaEntity;

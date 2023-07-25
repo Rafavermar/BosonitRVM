@@ -3,7 +3,7 @@ package com.block7crudvalidation.block7crudvalidation.Controllers;
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.AsignaturaInputDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.AsignaturaEntity;
 import com.block7crudvalidation.block7crudvalidation.Mapper.AsignaturaMapper;
-import com.block7crudvalidation.block7crudvalidation.Services.AsignaturaService;
+import com.block7crudvalidation.block7crudvalidation.services.AsignaturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
