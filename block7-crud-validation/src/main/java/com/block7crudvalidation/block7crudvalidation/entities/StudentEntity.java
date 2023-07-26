@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 
-// TODO quitar el hashSet en SetProfesorEstudiante
+
 @Getter
 @Setter
 @Entity
@@ -41,7 +41,7 @@ public class StudentEntity {
     String branch;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProfesorEstudiante> profesorEstudiantes = new HashSet<>();
+    private Set<ProfesorEstudiante> profesorEstudiantes;
 
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
