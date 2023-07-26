@@ -6,6 +6,7 @@ import com.block7crudvalidation.block7crudvalidation.entities.StudentEntity;
 import com.block7crudvalidation.block7crudvalidation.exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.mapper.AsignaturaMapper;
 import com.block7crudvalidation.block7crudvalidation.repository.AsignaturaRepository;
+import com.block7crudvalidation.block7crudvalidation.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,8 @@ public class AsignaturaServiceImpl implements AsignaturaService {
 
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Autowired
     private ProfesorService profesorService;
@@ -51,12 +54,23 @@ public class AsignaturaServiceImpl implements AsignaturaService {
         Optional<AsignaturaEntity> asignatura = asignaturaRepository.findById(idAsignatura);
 
         if (asignatura.isPresent()) {
+            // obtiene los alumnos asociados a esta asignatura
+            List<StudentEntity> students = asignatura.get().getStudents();
+
+            // borra la asignatura para cada estudiente
+            for (StudentEntity student : students) {
+                student.getAsignaturas().remove(asignatura.get());
+                studentRepository.save(student);
+            }
+
+            // borra la asignatura
             asignaturaRepository.delete(asignatura.get());
             return new ResponseEntity<>("Asignatura eliminada correctamente", HttpStatus.OK);
         } else {
             throw new RuntimeException("Asignatura not found with id: " + idAsignatura);
         }
     }
+
 
     @Override
     public List<AsignaturaInputDTO> getAllAsignaturas() {
