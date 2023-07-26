@@ -1,7 +1,7 @@
 package com.block7crudvalidation.block7crudvalidation.mapper;
 
-import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorDTO;
-import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorInputDto;
+import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullOutputDto;
 import com.block7crudvalidation.block7crudvalidation.entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEntity;
 import org.springframework.stereotype.Component;
@@ -12,45 +12,45 @@ import java.util.List;
 @Component
 public class ProfesorMapper {
 
-    public ProfesorEntity toEntity(ProfesorDTO profesorDTO) {
+    public ProfesorEntity toEntity(ProfesorInputDto profesorInputDto) {
         ProfesorEntity profesorEntity = new ProfesorEntity();
-        profesorEntity.setIdProfesor(profesorDTO.getIdProfesor());
+        profesorEntity.setIdProfesor(profesorInputDto.getIdProfesor());
 
         // Establecer PersonaEntity con solo el ID establecido
         PersonaEntity personaEntity = new PersonaEntity();
-        personaEntity.setIdPersona(profesorDTO.getIdPersona());
+        personaEntity.setIdPersona(profesorInputDto.getIdPersona());
         profesorEntity.setPersona(personaEntity);
 
-        profesorEntity.setComments(profesorDTO.getComments());
-        profesorEntity.setBranch(profesorDTO.getBranch());
+        profesorEntity.setComments(profesorInputDto.getComments());
+        profesorEntity.setBranch(profesorInputDto.getBranch());
         return profesorEntity;
     }
 
-    public ProfesorDTO toDTO(ProfesorEntity profesorEntity) {
-        ProfesorDTO profesorDTO = new ProfesorDTO();
-        profesorDTO.setIdProfesor(profesorEntity.getIdProfesor());
+    public ProfesorInputDto toDTO(ProfesorEntity profesorEntity) {
+        ProfesorInputDto profesorInputDto = new ProfesorInputDto();
+        profesorInputDto.setIdProfesor(profesorEntity.getIdProfesor());
 
         // Establecer el idPersona de la entidad PersonaEntity asociada al profesor
         if (profesorEntity.getPersona() != null) {
-            profesorDTO.setIdPersona(profesorEntity.getPersona().getIdPersona());
+            profesorInputDto.setIdPersona(profesorEntity.getPersona().getIdPersona());
         }
 
-        profesorDTO.setComments(profesorEntity.getComments());
-        profesorDTO.setBranch(profesorEntity.getBranch());
-        return profesorDTO;
+        profesorInputDto.setComments(profesorEntity.getComments());
+        profesorInputDto.setBranch(profesorEntity.getBranch());
+        return profesorInputDto;
     }
 
-    public List<ProfesorDTO> toDTOList(List<ProfesorEntity> profesorEntities) {
-        List<ProfesorDTO> profesorDTOs = new ArrayList<>();
+    public List<ProfesorInputDto> toDTOList(List<ProfesorEntity> profesorEntities) {
+        List<ProfesorInputDto> profesorInputDtos = new ArrayList<>();
         for (ProfesorEntity profesorEntity : profesorEntities) {
-            profesorDTOs.add(toDTO(profesorEntity));
+            profesorInputDtos.add(toDTO(profesorEntity));
         }
-        return profesorDTOs;
+        return profesorInputDtos;
     }
 
 
-    public ProfesorFullDTO toFullDTO(ProfesorEntity profesorEntity) {
-        ProfesorFullDTO profesorFullDTO = new ProfesorFullDTO();
+    public ProfesorFullOutputDto toFullDTO(ProfesorEntity profesorEntity) {
+        ProfesorFullOutputDto profesorFullDTO = new ProfesorFullOutputDto();
         profesorFullDTO.setIdProfesor(profesorEntity.getIdProfesor());
 
         // Establecer el idPersona y otros detalles de la entidad PersonaEntity asociada al profesor
@@ -73,8 +73,8 @@ public class ProfesorMapper {
         return profesorFullDTO;
     }
 
-    public List<ProfesorFullDTO> toFullDTOList(List<ProfesorEntity> profesorEntities) {
-        List<ProfesorFullDTO> profesorFullDTOs = new ArrayList<>();
+    public List<ProfesorFullOutputDto> toFullDTOList(List<ProfesorEntity> profesorEntities) {
+        List<ProfesorFullOutputDto> profesorFullDTOs = new ArrayList<>();
         for (ProfesorEntity profesorEntity : profesorEntities) {
             profesorFullDTOs.add(toFullDTO(profesorEntity));
         }

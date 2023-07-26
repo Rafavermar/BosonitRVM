@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -25,10 +26,10 @@ public class AsignaturaEntity {
     private String coments;
 
     @Column(name = "initial_date", nullable = false)
-    private LocalDate initialDate;
+    private Date initialDate;
 
     @Column(name = "finish_date")
-    private LocalDate finishDate;
+    private Date finishDate;
 
     @ManyToMany(mappedBy = "asignaturas")
     private List<StudentEntity> students = new ArrayList<>();

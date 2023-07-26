@@ -1,17 +1,17 @@
 package com.block7crudvalidation.block7crudvalidation.dto.output;
 
+import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorInputDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EstudianteFullDTO extends EstudianteSimpleDTO {
+public class ProfesorFullOutputDto extends ProfesorInputDto {
 
     private Integer idPersona;
     private String usuario;
@@ -24,4 +24,5 @@ public class EstudianteFullDTO extends EstudianteSimpleDTO {
     private Date createdDate;
     private String imageUrl;
     private Date terminationDate;
+
 }

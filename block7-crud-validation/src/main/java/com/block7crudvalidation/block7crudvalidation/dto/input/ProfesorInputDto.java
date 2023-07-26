@@ -1,5 +1,4 @@
-package com.block7crudvalidation.block7crudvalidation.dto.output;
-
+package com.block7crudvalidation.block7crudvalidation.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EstudianteSimpleDTO {
-    private Integer idStudent;
-    private int numHoursWeek;
+public class ProfesorInputDto {
+    private Integer idProfesor;
+    private Integer idPersona;;
     private String comments;
+    private String branch;
 }

@@ -1,7 +1,7 @@
 package com.block7crudvalidation.block7crudvalidation.controllers;
 
-import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorDTO;
-import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorInputDto;
+import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullOutputDto;
 import com.block7crudvalidation.block7crudvalidation.entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.exception.CustomError;
@@ -34,16 +34,16 @@ public class ProfesorController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> agregarProfesor(@RequestBody ProfesorDTO profesorDTO) {
+    public ResponseEntity<?> agregarProfesor(@RequestBody ProfesorInputDto profesorInputDto) {
         try {
             // Obtener el ID de persona desde el DTO del profesor
-            Integer idPersona = profesorDTO.getIdPersona();
+            Integer idPersona = profesorInputDto.getIdPersona();
 
             // Buscar la entidad PersonaEntity por su ID desde el servicio
             PersonaEntity personaEntity = personaService.buscarPorId(idPersona);
 
             // Convertir el DTO a una entidad ProfesorEntity usando el mapper
-            ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorDTO);
+            ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorInputDto);
 
             // Establecer la entidad PersonaEntity en la nueva entidad ProfesorEntity
             profesorEntity.setPersona(personaEntity);
@@ -52,8 +52,8 @@ public class ProfesorController {
             ProfesorEntity nuevoProfesor = profesorService.saveProfesor(profesorEntity);
 
             // Convertir el profesor guardado a DTO y devolverlo en la respuesta
-            ProfesorDTO nuevoProfesorDTO = profesorMapper.toDTO(nuevoProfesor);
-            return new ResponseEntity<>(nuevoProfesorDTO, HttpStatus.CREATED);
+            ProfesorInputDto nuevoProfesorInputDto = profesorMapper.toDTO(nuevoProfesor);
+            return new ResponseEntity<>(nuevoProfesorInputDto, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
@@ -70,12 +70,12 @@ public class ProfesorController {
         try {
             if ("full".equalsIgnoreCase(outputType)) {
                 // Obtener los datos completos del profesor y la persona asociada
-                ProfesorFullDTO profesorFullDTO = profesorService.getProfesorFullDetailsById(id);
+                ProfesorFullOutputDto profesorFullDTO = profesorService.getProfesorFullDetailsById(id);
                 return ResponseEntity.ok(profesorFullDTO);
             } else {
                 // Obtener solo los datos básicos del profesor
-                ProfesorDTO profesorDTO = profesorService.getProfesorDTOById(id); // Necesitas implementar este método en el servicio
-                return ResponseEntity.ok(profesorDTO);
+                ProfesorInputDto profesorInputDto = profesorService.getProfesorDTOById(id); // Necesitas implementar este método en el servicio
+                return ResponseEntity.ok(profesorInputDto);
             }
         } catch (EntityNotFoundException e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getMessage());
@@ -89,30 +89,30 @@ public class ProfesorController {
 
         if ("full".equalsIgnoreCase(outputType)) {
             // Obtener la versión completa de los profesores
-            List<ProfesorFullDTO> profesorFullDTOs = profesorEntities.stream()
+            List<ProfesorFullOutputDto> profesorFullDTOs = profesorEntities.stream()
                     .map(profesor -> profesorService.getProfesorFullDetailsById(profesor.getIdProfesor()))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(profesorFullDTOs);
         } else {
             // Obtener la versión simple de los profesores
-            List<ProfesorDTO> profesorDTOs = profesorMapper.toDTOList(profesorEntities);
-            return ResponseEntity.ok(profesorDTOs);
+            List<ProfesorInputDto> profesorInputDtos = profesorMapper.toDTOList(profesorEntities);
+            return ResponseEntity.ok(profesorInputDtos);
         }
     }
     @GetMapping("/nombre/{name}")
     public ResponseEntity<?> getProfesoresByName(@PathVariable String name,
                                                  @RequestParam(required = false, defaultValue = "simple") String outputType) {
         try {
-            List<ProfesorDTO> profesorDTOs = profesorService.getProfesoresDTOByName(name);
+            List<ProfesorInputDto> profesorInputDtos = profesorService.getProfesoresDTOByName(name);
 
-            if (!profesorDTOs.isEmpty()) {
+            if (!profesorInputDtos.isEmpty()) {
                 if ("full".equalsIgnoreCase(outputType)) {
-                    List<ProfesorFullDTO> profesoresFullDTOs = profesorDTOs.stream()
+                    List<ProfesorFullOutputDto> profesoresFullDTOs = profesorInputDtos.stream()
                             .map(profesorDTO -> profesorService.getProfesorFullDetailsById(profesorDTO.getIdProfesor()))
                             .collect(Collectors.toList());
                     return ResponseEntity.ok(profesoresFullDTOs);
                 } else {
-                    return ResponseEntity.ok(profesorDTOs);
+                    return ResponseEntity.ok(profesorInputDtos);
                 }
             } else {
                 CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), "Professors with name " + name + " not found");
@@ -125,16 +125,16 @@ public class ProfesorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarProfesor(@PathVariable Integer id, @RequestBody ProfesorDTO profesorDTO) {
+    public ResponseEntity<?> actualizarProfesor(@PathVariable Integer id, @RequestBody ProfesorInputDto profesorInputDto) {
         try {
             // Obtener el ID de persona desde el DTO del profesor
-            Integer idPersona = profesorDTO.getIdPersona();
+            Integer idPersona = profesorInputDto.getIdPersona();
 
             // Buscar la entidad PersonaEntity por su ID desde el servicio
             PersonaEntity personaEntity = personaService.buscarPorId(idPersona);
 
             // Convertir el DTO a una entidad ProfesorEntity usando el mapper
-            ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorDTO);
+            ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorInputDto);
 
             // Establecer la entidad PersonaEntity en la nueva entidad ProfesorEntity
             profesorEntity.setPersona(personaEntity);
@@ -143,8 +143,8 @@ public class ProfesorController {
             ProfesorEntity updatedProfesor = profesorService.updateProfesor(id, profesorEntity);
 
             // Convertir el profesor actualizado a DTO y devolverlo en la respuesta
-            ProfesorDTO updatedProfesorDTO = profesorMapper.toDTO(updatedProfesor);
-            return ResponseEntity.ok(updatedProfesorDTO);
+            ProfesorInputDto updatedProfesorInputDto = profesorMapper.toDTO(updatedProfesor);
+            return ResponseEntity.ok(updatedProfesorInputDto);
         } catch (EntityNotFoundException e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);

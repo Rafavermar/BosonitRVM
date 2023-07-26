@@ -1,6 +1,6 @@
 package com.block7crudvalidation.block7crudvalidation.controllers;
 
-import com.block7crudvalidation.block7crudvalidation.dto.input.PersonaDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.input.PersonaInputDto;
 import com.block7crudvalidation.block7crudvalidation.entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.exception.CustomError;
 import com.block7crudvalidation.block7crudvalidation.exception.EntityNotFoundException;
@@ -32,16 +32,16 @@ public class PersonaController {
 
 
     @PostMapping()
-    public ResponseEntity<?> agregarPersona(@RequestBody PersonaDTO personaDTO) {
+    public ResponseEntity<?> agregarPersona(@RequestBody PersonaInputDto personaInputDto) {
         try {
             // Convertir el DTO a una entidad PersonaEntity usando el mapper
-            PersonaEntity nuevaPersonaEntity = personaMapper.toEntity(personaDTO);
+            PersonaEntity nuevaPersonaEntity = personaMapper.toEntity(personaInputDto);
 
             // Guardar la entidad en la base de datos
             PersonaEntity personaGuardada = personaService.agregarPersona(nuevaPersonaEntity);
 
             // Convertir la entidad guardada a DTO y devolverla en la respuesta
-            PersonaDTO personaGuardadaDTO = personaMapper.toDTO(personaGuardada);
+            PersonaInputDto personaGuardadaDTO = personaMapper.toDTO(personaGuardada);
 
             return new ResponseEntity<>(personaGuardadaDTO, HttpStatus.CREATED);
         } catch (UnprocessableEntityException e) {
@@ -70,16 +70,16 @@ public class PersonaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modificarPersona(@PathVariable Integer id, @RequestBody PersonaDTO personaDTO) {
+    public ResponseEntity<?> modificarPersona(@PathVariable Integer id, @RequestBody PersonaInputDto personaInputDto) {
         try {
             // Convertir el DTO a una entidad PersonaEntity usando el mapper
-            PersonaEntity personaEntity = personaMapper.toEntity(personaDTO);
+            PersonaEntity personaEntity = personaMapper.toEntity(personaInputDto);
 
             // Modificar la entidad en la base de datos
             PersonaEntity personaModificadaEntity = personaService.modificarPersona(id, personaEntity);
 
             // Convertir la entidad modificada a DTO y devolverla en la respuesta
-            PersonaDTO personaModificadaDTO = personaMapper.toDTO(personaModificadaEntity);
+            PersonaInputDto personaModificadaDTO = personaMapper.toDTO(personaModificadaEntity);
 
             return new ResponseEntity<>(personaModificadaDTO, HttpStatus.OK);
         } catch (EntityNotFoundException e) {

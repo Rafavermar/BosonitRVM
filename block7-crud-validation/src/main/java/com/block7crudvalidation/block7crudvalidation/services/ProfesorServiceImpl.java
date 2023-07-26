@@ -1,7 +1,7 @@
 package com.block7crudvalidation.block7crudvalidation.services;
 
-import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorDTO;
-import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorInputDto;
+import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullOutputDto;
 import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEstudiante;
 import com.block7crudvalidation.block7crudvalidation.entities.StudentEntity;
@@ -91,26 +91,26 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
-    public ProfesorDTO getProfesorDTOById(Integer id) {
+    public ProfesorInputDto getProfesorDTOById(Integer id) {
         ProfesorEntity profesorEntity = profesorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id));
         return profesorMapper.toDTO(profesorEntity);
     }
 
     @Override
-    public List<ProfesorDTO> getProfesoresDTOByName(String name) {
+    public List<ProfesorInputDto> getProfesoresDTOByName(String name) {
         List<ProfesorEntity> profesorEntities = profesorRepository.findByPersonaName(name);
         return profesorMapper.toDTOList(profesorEntities);
     }
     @Override
-    public ProfesorFullDTO getProfesorFullDetailsById(Integer id) {
+    public ProfesorFullOutputDto getProfesorFullDetailsById(Integer id) {
         ProfesorEntity profesorEntity = profesorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id));
         return profesorMapper.toFullDTO(profesorEntity);
     }
 
     @Override
-    public List<ProfesorFullDTO> getProfesorFullDetailsByName(String name) {
+    public List<ProfesorFullOutputDto> getProfesorFullDetailsByName(String name) {
         List<ProfesorEntity> profesorEntities = profesorRepository.findByPersonaName(name);
         return profesorMapper.toFullDTOList(profesorEntities);
     }

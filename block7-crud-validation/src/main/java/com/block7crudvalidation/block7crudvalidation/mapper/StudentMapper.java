@@ -1,8 +1,8 @@
 package com.block7crudvalidation.block7crudvalidation.mapper;
 
-import com.block7crudvalidation.block7crudvalidation.dto.input.PersonaDTO;
-import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorDTO;
-import com.block7crudvalidation.block7crudvalidation.dto.input.StudentDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.input.PersonaInputDto;
+import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorInputDto;
+import com.block7crudvalidation.block7crudvalidation.dto.input.StudentInputDto;
 import com.block7crudvalidation.block7crudvalidation.entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.entities.StudentEntity;
@@ -21,72 +21,72 @@ public class StudentMapper {
     @Autowired
     private ProfesorRepository profesorRepository;
 
-    public StudentEntity toEntity(StudentDTO studentDTO) {
+    public StudentEntity toEntity(StudentInputDto studentInputDto) {
         StudentEntity studentEntity = new StudentEntity();
-        studentEntity.setIdStudent(studentDTO.getIdStudent());
+        studentEntity.setIdStudent(studentInputDto.getIdStudent());
 
         // Buscar la entidad PersonaEntity por su ID
-        PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getIdPersona());
+        PersonaEntity personaEntity = personaService.buscarPorId(studentInputDto.getIdPersona());
         studentEntity.setPersona(personaEntity);
 
-        studentEntity.setNumHoursWeek(studentDTO.getNumHoursWeek());
-        studentEntity.setComments(studentDTO.getComments());
+        studentEntity.setNumHoursWeek(studentInputDto.getNumHoursWeek());
+        studentEntity.setComments(studentInputDto.getComments());
 
         // Buscar la entidad ProfesorEntity por su ID
-        if (studentDTO.getIdProfesor() != null) {
-            ProfesorEntity profesorEntity = profesorRepository.findById(studentDTO.getIdProfesor())
-                    .orElseThrow(() -> new EntityNotFoundException("Profesor with id " + studentDTO.getIdProfesor() + " not found"));
+        if (studentInputDto.getIdProfesor() != null) {
+            ProfesorEntity profesorEntity = profesorRepository.findById(studentInputDto.getIdProfesor())
+                    .orElseThrow(() -> new EntityNotFoundException("Profesor with id " + studentInputDto.getIdProfesor() + " not found"));
             studentEntity.setProfesor(profesorEntity);
         }
 
-        studentEntity.setBranch(studentDTO.getBranch());
+        studentEntity.setBranch(studentInputDto.getBranch());
 
         return studentEntity;
     }
 
-    public StudentDTO toDTO(StudentEntity studentEntity) {
-        StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setIdStudent(studentEntity.getIdStudent());
-        studentDTO.setIdPersona(studentEntity.getPersona().getIdPersona());
-        studentDTO.setNumHoursWeek(studentEntity.getNumHoursWeek());
-        studentDTO.setComments(studentEntity.getComments());
+    public StudentInputDto toDTO(StudentEntity studentEntity) {
+        StudentInputDto studentInputDto = new StudentInputDto();
+        studentInputDto.setIdStudent(studentEntity.getIdStudent());
+        studentInputDto.setIdPersona(studentEntity.getPersona().getIdPersona());
+        studentInputDto.setNumHoursWeek(studentEntity.getNumHoursWeek());
+        studentInputDto.setComments(studentEntity.getComments());
 
         // Mapear el ID del profesor a StudentDTO
         if (studentEntity.getProfesor() != null) {
-            studentDTO.setIdProfesor(studentEntity.getProfesor().getIdProfesor());
+            studentInputDto.setIdProfesor(studentEntity.getProfesor().getIdProfesor());
         }
 
-        studentDTO.setBranch(studentEntity.getBranch());
+        studentInputDto.setBranch(studentEntity.getBranch());
 
-        return studentDTO;
+        return studentInputDto;
     }
 
-    private PersonaDTO convertToDTO(PersonaEntity personaEntity) {
-        PersonaDTO personaDTO = new PersonaDTO();
-        personaDTO.setId(personaEntity.getIdPersona());
-        personaDTO.setUsuario(personaEntity.getUsuario());
-        personaDTO.setPassword(personaEntity.getPassword());
-        personaDTO.setName(personaEntity.getName());
-        personaDTO.setSurname(personaEntity.getSurname());
-        personaDTO.setCompany_email(personaEntity.getCompanyEmail());
-        personaDTO.setPersonal_email(personaEntity.getPersonalEmail());
-        personaDTO.setCity(personaEntity.getCity());
-        personaDTO.setActive(personaEntity.isActive());
-        personaDTO.setCreated_date(personaEntity.getCreatedDate());
-        personaDTO.setImagen_url(personaEntity.getImageUrl());
-        personaDTO.setTermination_date(personaEntity.getTerminationDate());
+    private PersonaInputDto convertToDTO(PersonaEntity personaEntity) {
+        PersonaInputDto personaInputDto = new PersonaInputDto();
+        personaInputDto.setId(personaEntity.getIdPersona());
+        personaInputDto.setUsuario(personaEntity.getUsuario());
+        personaInputDto.setPassword(personaEntity.getPassword());
+        personaInputDto.setName(personaEntity.getName());
+        personaInputDto.setSurname(personaEntity.getSurname());
+        personaInputDto.setCompanyEmail(personaEntity.getCompanyEmail());
+        personaInputDto.setPersonalEmail(personaEntity.getPersonalEmail());
+        personaInputDto.setCity(personaEntity.getCity());
+        personaInputDto.setActive(personaEntity.isActive());
+        personaInputDto.setCreated_date(personaEntity.getCreatedDate());
+        personaInputDto.setImagenUrl(personaEntity.getImageUrl());
+        personaInputDto.setTermination_date(personaEntity.getTerminationDate());
 
-        return personaDTO;
+        return personaInputDto;
     }
 
-    private ProfesorDTO convertToDTO(ProfesorEntity profesorEntity) {
-        ProfesorDTO profesorDTO = new ProfesorDTO();
+    private ProfesorInputDto convertToDTO(ProfesorEntity profesorEntity) {
+        ProfesorInputDto profesorInputDto = new ProfesorInputDto();
         if (profesorEntity != null) {
-            profesorDTO.setIdProfesor(profesorEntity.getIdProfesor());
-            profesorDTO.setIdPersona(profesorEntity.getPersona().getIdPersona());
-            profesorDTO.setComments(profesorEntity.getComments());
-            profesorDTO.setBranch(profesorEntity.getBranch());
+            profesorInputDto.setIdProfesor(profesorEntity.getIdProfesor());
+            profesorInputDto.setIdPersona(profesorEntity.getPersona().getIdPersona());
+            profesorInputDto.setComments(profesorEntity.getComments());
+            profesorInputDto.setBranch(profesorEntity.getBranch());
         }
-        return profesorDTO;
+        return profesorInputDto;
     }
 }

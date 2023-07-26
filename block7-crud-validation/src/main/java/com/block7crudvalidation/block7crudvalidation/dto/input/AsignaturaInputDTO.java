@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 
-// TODO cambiar localdate por DATE
 
 @Getter
 @Setter
@@ -18,8 +18,8 @@ public class AsignaturaInputDTO {
 
     private Integer idAsignatura;
     private String coments;
-    private LocalDate initialDate;
-    private LocalDate finishDate;
+    private Date initialDate;
+    private Date finishDate;
 
 }
 

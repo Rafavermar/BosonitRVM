@@ -1,7 +1,8 @@
 package com.block7crudvalidation.block7crudvalidation.services;
 
-import com.block7crudvalidation.block7crudvalidation.dto.input.StudentDTO;
-import com.block7crudvalidation.block7crudvalidation.dto.output.EstudianteFullDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.input.StudentInputDto;
+import com.block7crudvalidation.block7crudvalidation.dto.output.EstudianteFullOutDto;
+import com.block7crudvalidation.block7crudvalidation.dto.output.EstudianteSimpleOutDto;
 import com.block7crudvalidation.block7crudvalidation.entities.*;
 import com.block7crudvalidation.block7crudvalidation.exception.EntityNotFoundException;
 import com.block7crudvalidation.block7crudvalidation.mapper.StudentMapper;
@@ -83,10 +84,10 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public EstudianteFullDTO getStudentFullDetails(Integer id) {
+    public EstudianteFullOutDto getStudentFullDetails(Integer id) {
         Optional<StudentEntity> studentOptional = studentRepository.findById(id);
         return studentOptional.map(studentEntity -> {
-            EstudianteFullDTO studentFullDTO = new EstudianteFullDTO();
+            EstudianteFullOutDto studentFullDTO = new EstudianteFullOutDto();
             studentFullDTO.setIdStudent(studentEntity.getIdStudent());
             studentFullDTO.setNumHoursWeek(studentEntity.getNumHoursWeek());
             studentFullDTO.setComments(studentEntity.getComments());
@@ -115,22 +116,22 @@ public class StudentServiceImpl implements StudentService {
 
     // Método para agregar estudiante con el profesor
     @Override
-    public StudentDTO agregarEstudiante(StudentDTO studentDTO) {
+    public StudentInputDto agregarEstudiante(StudentInputDto studentInputDto) {
         // Buscar la entidad PersonaEntity por su ID
-        PersonaEntity personaEntity = personaService.buscarPorId(studentDTO.getIdPersona());
+        PersonaEntity personaEntity = personaService.buscarPorId(studentInputDto.getIdPersona());
         if (personaEntity == null) {
-            throw new EntityNotFoundException("Persona with id " + studentDTO.getIdPersona() + " not found");
+            throw new EntityNotFoundException("Persona with id " + studentInputDto.getIdPersona() + " not found");
         }
 
         // Buscar la entidad ProfesorEntity por su ID
         ProfesorEntity profesorEntity = null;
-        if (studentDTO.getIdProfesor() != null) {
-            profesorEntity = profesorRepository.findById(studentDTO.getIdProfesor())
-                    .orElseThrow(() -> new EntityNotFoundException("Profesor with id " + studentDTO.getIdProfesor() + " not found"));
+        if (studentInputDto.getIdProfesor() != null) {
+            profesorEntity = profesorRepository.findById(studentInputDto.getIdProfesor())
+                    .orElseThrow(() -> new EntityNotFoundException("Profesor with id " + studentInputDto.getIdProfesor() + " not found"));
         }
 
         // Convertir el DTO a una entidad StudentEntity usando el mapper
-        StudentEntity studentEntity = studentMapper.toEntity(studentDTO);
+        StudentEntity studentEntity = studentMapper.toEntity(studentInputDto);
 
         // Establecer la entidad PersonaEntity en la nueva entidad StudentEntity
         studentEntity.setPersona(personaEntity);
@@ -167,7 +168,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDTO getStudentDTOById(Integer id) {
+    public StudentInputDto getStudentDTOById(Integer id) {
         StudentEntity studentEntity = getStudentById(id);
         if (studentEntity != null) {
             return studentMapper.toDTO(studentEntity);
@@ -175,7 +176,7 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
     @Override
-    public List<StudentDTO> getStudentsDTOByName(String name) {
+    public List<StudentInputDto> getStudentsDTOByName(String name) {
         // Find students by name in the database
         List<StudentEntity> studentEntities = studentRepository.findByPersonaName(name);
 
@@ -186,7 +187,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<EstudianteFullDTO> getStudentFullDetailsByName(String name) {
+    public List<EstudianteFullOutDto> getStudentFullDetailsByName(String name) {
         List<StudentEntity> studentEntities = studentRepository.findByPersona_Name(name);
         return studentEntities.stream()
                 .map(studentEntity -> getStudentFullDetails(studentEntity.getIdStudent()))
@@ -209,6 +210,28 @@ public class StudentServiceImpl implements StudentService {
         student.getAsignaturas().removeAll(asignaturas);
         asignaturas.forEach(a -> a.getStudents().remove(student));
         studentRepository.save(student);
+    }
+    @Override
+    public List<EstudianteFullOutDto> getStudentFullDetails() {
+        List<StudentEntity> studentEntities = studentRepository.findAll();
+        return studentEntities.stream()
+                .map(studentEntity -> getStudentFullDetails(studentEntity.getIdStudent()))
+                .collect(Collectors.toList());
+    }
+
+    public List<EstudianteSimpleOutDto> getAllStudentsSimpleDetails() {
+        List<StudentEntity> studentEntities = studentRepository.findAll();
+        return studentEntities.stream()
+                .map(this::convertToSimpleDto)
+                .collect(Collectors.toList());
+    }
+
+    private EstudianteSimpleOutDto convertToSimpleDto(StudentEntity entity) {
+        EstudianteSimpleOutDto dto = new EstudianteSimpleOutDto();
+        dto.setIdStudent(entity.getIdStudent());
+        dto.setNumHoursWeek(entity.getNumHoursWeek());
+        dto.setComments(entity.getComments());
+        return dto;
     }
 
 

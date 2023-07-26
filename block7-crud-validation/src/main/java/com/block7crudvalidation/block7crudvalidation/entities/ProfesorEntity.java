@@ -30,14 +30,12 @@ public class ProfesorEntity {
     @Column(name = "branch")
     String branch;
 
-    // Cambia la configuración de cascada para que no incluya CascadeType.REMOVE
+
     @OneToMany(mappedBy = "profesor", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<StudentEntity> students = new ArrayList<>();
 
     @OneToMany(mappedBy = "profesor", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<ProfesorEstudiante> profesorEstudiantes = new HashSet<>();
 
-    // Esta relación parece duplicada y podría causar problemas, te recomendaría que la elimines
-    //@OneToMany(mappedBy = "profesor")
-    //private Set<StudentEntity> studentEntitySet = new HashSet<>();
+
 }

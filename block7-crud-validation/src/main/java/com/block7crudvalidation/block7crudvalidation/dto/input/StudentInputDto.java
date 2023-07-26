@@ -9,9 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfesorDTO {
-    private Integer idProfesor;
+public class StudentInputDto {
+    private Integer idStudent;
     private Integer idPersona;;
+    private int numHoursWeek;
     private String comments;
+    private Integer idProfesor;
     private String branch;
 }

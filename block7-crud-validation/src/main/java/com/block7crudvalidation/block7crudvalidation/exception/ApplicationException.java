@@ -1,10 +1,13 @@
 package com.block7crudvalidation.block7crudvalidation.exception;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 public class ApplicationException extends RuntimeException {
     private final String externalMessage;
     private final HttpStatus statusCode;
+
+
 
     public ApplicationException(String externalMessage, HttpStatus statusCode) {
         this.externalMessage = externalMessage;
@@ -15,6 +18,8 @@ public class ApplicationException extends RuntimeException {
         this.externalMessage = String.format(externalMessage, args);
         this.statusCode = statusCode;
     }
+
+
 
     public String getExternalMessage() {
         return externalMessage;

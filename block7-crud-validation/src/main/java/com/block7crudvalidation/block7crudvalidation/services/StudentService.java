@@ -1,33 +1,33 @@
 package com.block7crudvalidation.block7crudvalidation.services;
 
-import com.block7crudvalidation.block7crudvalidation.dto.input.StudentDTO;
-import com.block7crudvalidation.block7crudvalidation.dto.output.EstudianteFullDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.input.StudentInputDto;
+import com.block7crudvalidation.block7crudvalidation.dto.output.EstudianteFullOutDto;
+import com.block7crudvalidation.block7crudvalidation.dto.output.EstudianteSimpleOutDto;
 import com.block7crudvalidation.block7crudvalidation.entities.StudentEntity;
 
-import java.util.List;
-
-public interface StudentService {
+import java.util.List;public interface StudentService {
 
     StudentEntity saveStudent(StudentEntity student);
 
     List<StudentEntity> getAllStudents();
 
+    List<EstudianteSimpleOutDto> getAllStudentsSimpleDetails();  // Aquí está el nuevo método
+
     StudentEntity getStudentById(Integer id);
 
     void deleteStudent(Integer id);
 
-    EstudianteFullDTO getStudentFullDetails(Integer id);
+    List<EstudianteFullOutDto> getStudentFullDetails();
 
-    StudentDTO agregarEstudiante(StudentDTO studentDTO);
+    EstudianteFullOutDto getStudentFullDetails(Integer id);
 
-    // New method to get StudentDTO by id
-    StudentDTO getStudentDTOById(Integer id);
+    StudentInputDto agregarEstudiante(StudentInputDto studentInputDto);
 
-    // Updated method to get List<StudentDTO> by name
-    List<StudentDTO> getStudentsDTOByName(String name);
+    StudentInputDto getStudentDTOById(Integer id);
 
-    // Métodos para obtener los detalles completos del estudiante, según el ID o el nombre
-    List<EstudianteFullDTO> getStudentFullDetailsByName(String name);
+    List<StudentInputDto> getStudentsDTOByName(String name);
+
+    List<EstudianteFullOutDto> getStudentFullDetailsByName(String name);
 
     void asignarAsignaturasStudent(Integer idStudent, List<Integer> idsAsignaturas);
 

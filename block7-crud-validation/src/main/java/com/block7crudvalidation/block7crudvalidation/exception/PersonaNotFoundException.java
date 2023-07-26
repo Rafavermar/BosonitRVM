@@ -1,8 +1,9 @@
 package com.block7crudvalidation.block7crudvalidation.exception;
 
 import org.springframework.http.HttpStatus;
-// TODO añadir a la clase @RestcontrollerAdvice
-// TODO Añarid sobre el metodo @ExceptionHandler(EntityByNaemNotFoundException.class)
+
+
+
 public class PersonaNotFoundException extends ApplicationException {
 
     private static final String EXTERNAL_MESSAGE = "La persona con id: %s no existe.";

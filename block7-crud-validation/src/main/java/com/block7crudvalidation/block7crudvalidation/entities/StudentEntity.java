@@ -36,8 +36,8 @@ public class StudentEntity {
     ProfesorEntity profesor;
 
 
-    @NotNull
-    @Column(name = "branch")
+
+    @Column(name = "branch", nullable = false)
     String branch;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)

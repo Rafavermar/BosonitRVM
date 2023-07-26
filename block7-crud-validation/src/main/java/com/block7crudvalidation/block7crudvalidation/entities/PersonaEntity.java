@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import java.util.Date;
 
-// TODO añadir @column(lenght=10, nullable=false)
 
 @Getter
 @Setter
@@ -24,36 +23,35 @@ public class PersonaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPersona;
 
-    @Size(min = 6, max = 10)
-    @NotNull
+    @Column(length  = 10, nullable=false)
     private String usuario;
 
-    @NotNull
+    @Column(nullable = false)
     private String password;
 
-    @NotNull
+    @Column(nullable = false)
     private String name;
 
     private String surname;
 
-    @NotNull
+    @Column(nullable = false)
     private String companyEmail;
 
-    @NotNull
+    @Column(nullable = false)
     private String personalEmail;
 
-    @NotNull
+    @Column(nullable = false)
     private String city;
 
-    @NotNull
+    @Column(nullable = false)
     private boolean active;
 
-    @NotNull
+    @Column(nullable = false)
     private Date createdDate;
 
-    @Column(name = "imagen_url")
+    @Column(name = "imagen_url", nullable = false)
     private String imageUrl;
 
-    @Column(name = "termination_date")
+    @Column(name = "termination_date", nullable = false)
     private Date terminationDate;
 }
