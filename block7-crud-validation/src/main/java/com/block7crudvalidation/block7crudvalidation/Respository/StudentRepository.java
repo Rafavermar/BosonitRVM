@@ -21,5 +21,4 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
     List<StudentEntity> findByPersonaName(String name);
 
 
-
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,9 +30,9 @@ public class AsignaturaEntity {
     @Column(name = "finish_date")
     private LocalDate finishDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_student", nullable = false)
-    private StudentEntity student;
+    @ManyToMany(mappedBy = "asignaturas")
+    private List<StudentEntity> students = new ArrayList<>();
+
 
 
 }

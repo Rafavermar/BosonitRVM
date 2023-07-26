@@ -7,6 +7,10 @@ import lombok.Setter;
 
 import java.util.Date;
 
+
+// TODO Cambiar los nombres de DTO  a DTO input y DTO OUTPUT
+// TODO cambiar nombre variable imagen_url por imagenUrl
+
 @Getter
 @Setter
 @AllArgsConstructor

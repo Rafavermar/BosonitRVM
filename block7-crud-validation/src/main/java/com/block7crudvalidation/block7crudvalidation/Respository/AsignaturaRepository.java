@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface AsignaturaRepository extends JpaRepository<AsignaturaEntity, Integer> {
 
-    List<AsignaturaEntity> findAllByStudent_IdStudent(Integer idStudent);
+    List<AsignaturaEntity> findAllByStudents_IdStudent(Integer idStudent);
 }

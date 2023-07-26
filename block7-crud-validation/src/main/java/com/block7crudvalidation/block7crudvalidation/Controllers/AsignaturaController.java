@@ -2,6 +2,7 @@ package com.block7crudvalidation.block7crudvalidation.Controllers;
 
 import com.block7crudvalidation.block7crudvalidation.DTO.Input.AsignaturaInputDTO;
 import com.block7crudvalidation.block7crudvalidation.Entities.AsignaturaEntity;
+import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
 import com.block7crudvalidation.block7crudvalidation.Mapper.AsignaturaMapper;
 import com.block7crudvalidation.block7crudvalidation.services.AsignaturaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,13 @@ public class AsignaturaController {
         List<AsignaturaEntity> asignaturas = asignaturaService.getAsignaturasByStudentId(idStudent);
         return ResponseEntity.ok(asignaturaMapper.toDTOList(asignaturas));
     }
+
+    @GetMapping("/{idAsignatura}/students")
+    public ResponseEntity<List<StudentEntity>> getStudentsByAsignaturaId(@PathVariable Integer idAsignatura) {
+        List<StudentEntity> students = asignaturaService.getStudentByAsignaturaId(idAsignatura);
+        return ResponseEntity.ok(students);
+    }
+
 
     @PostMapping
     public ResponseEntity<AsignaturaInputDTO> createAsignatura(@RequestBody AsignaturaInputDTO asignaturaInputDTO) {

@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+
+// TODO cambiar localdate por DATE
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,6 +20,6 @@ public class AsignaturaInputDTO {
     private String coments;
     private LocalDate initialDate;
     private LocalDate finishDate;
-    private Integer idStudent;
 
 }
+

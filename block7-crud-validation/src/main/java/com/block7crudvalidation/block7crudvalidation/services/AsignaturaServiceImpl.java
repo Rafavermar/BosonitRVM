@@ -32,16 +32,20 @@ public class AsignaturaServiceImpl implements AsignaturaService {
 
     @Override
     public List<AsignaturaEntity> getAsignaturasByStudentId(Integer idStudent) {
-        return asignaturaRepository.findAllByStudent_IdStudent(idStudent);
+        return asignaturaRepository.findAllByStudents_IdStudent(idStudent);
     }
 
     @Override
     public AsignaturaInputDTO createAsignatura(AsignaturaInputDTO asignaturaInputDTO) {
-        StudentEntity studentEntity = studentService.getStudentById(asignaturaInputDTO.getIdStudent());
-        AsignaturaEntity newAsignatura = asignaturaMapper.toEntity(asignaturaInputDTO, studentEntity);
+        // Ya no necesitamos obtener el estudiante, ya que no lo vinculamos durante la creación
+        // StudentEntity studentEntity = studentService.getStudentById(asignaturaInputDTO.getIdStudent());
+
+        // Solo pasamos el DTO al mapper
+        AsignaturaEntity newAsignatura = asignaturaMapper.toEntity(asignaturaInputDTO);
         AsignaturaEntity savedAsignatura = asignaturaRepository.save(newAsignatura);
         return asignaturaMapper.toDTO(savedAsignatura);
     }
+
 
     @Override
     public ResponseEntity<?> deleteAsignatura(Integer idAsignatura) {
@@ -60,4 +64,12 @@ public class AsignaturaServiceImpl implements AsignaturaService {
         List<AsignaturaEntity> asignaturaEntities = asignaturaRepository.findAll();
         return asignaturaMapper.toDTOList(asignaturaEntities);
     }
+
+    @Override
+    public List<StudentEntity> getStudentByAsignaturaId(Integer idAsignatura) {
+        AsignaturaEntity asignatura = asignaturaRepository.findById(idAsignatura)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró una asignatura con el id: " + idAsignatura));
+        return asignatura.getStudents();
+    }
+
 }

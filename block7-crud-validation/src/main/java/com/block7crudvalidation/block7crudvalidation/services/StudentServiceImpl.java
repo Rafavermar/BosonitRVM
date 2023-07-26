@@ -71,11 +71,12 @@ public class StudentServiceImpl implements StudentService {
         }
 
         // Elimina las relaciones con AsignaturaEntity
-        Set<AsignaturaEntity> asignaturas = studentEntity.getAsignaturas();
+        List<AsignaturaEntity> asignaturas = studentEntity.getAsignaturas();
         for(AsignaturaEntity asignatura : asignaturas) {
-            asignatura.setStudent(null); // Desvincula el estudiante de la asignatura
-            asignaturaRepository.save(asignatura); // Guarda la asignatura desvinculada
+            asignatura.getStudents().remove(studentEntity); // Desvincula el estudiante de la asignatura
         }
+        studentEntity.getAsignaturas().clear(); // Limpia la lista de asignaturas del estudiante
+        studentRepository.save(studentEntity); // Guarda el estudiante desvinculado
 
         // Elimina el estudiante
         studentRepository.delete(studentEntity);
@@ -194,33 +195,21 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Transactional
-    public void asignarAsignaturasStudent(Integer idStudent, List<Integer> idsAsignaturas) throws EntityNotFoundException {
-        StudentEntity student = studentRepository.findById(idStudent)
-                .orElseThrow(() -> new EntityNotFoundException("Estudiante no encontrado"));
-
+    public void asignarAsignaturasStudent(Integer idStudent, List<Integer> idsAsignaturas) {
+        StudentEntity student = studentRepository.findById(idStudent).orElseThrow(() -> new EntityNotFoundException(idStudent.toString()));
         List<AsignaturaEntity> asignaturas = asignaturaRepository.findAllById(idsAsignaturas);
-
-        for (AsignaturaEntity asignatura : asignaturas) {
-            asignatura.setStudent(student);
-        }
-
-        asignaturaRepository.saveAll(asignaturas);
+        student.getAsignaturas().addAll(asignaturas);
+        asignaturas.forEach(a -> a.getStudents().add(student));
+        studentRepository.save(student);
     }
 
     @Transactional
-    public void desasignarAsignaturasStudent(Integer idStudent, List<Integer> idsAsignaturas) throws EntityNotFoundException {
-        StudentEntity student = studentRepository.findById(idStudent)
-                .orElseThrow(() -> new EntityNotFoundException("Estudiante no encontrado"));
-
+    public void desasignarAsignaturasStudent(Integer idStudent, List<Integer> idsAsignaturas) {
+        StudentEntity student = studentRepository.findById(idStudent).orElseThrow(() -> new EntityNotFoundException(idStudent.toString()));
         List<AsignaturaEntity> asignaturas = asignaturaRepository.findAllById(idsAsignaturas);
-
-        for (AsignaturaEntity asignatura : asignaturas) {
-            if (asignatura.getStudent().equals(student)) {
-                asignatura.setStudent(null);
-            }
-        }
-
-        asignaturaRepository.saveAll(asignaturas);
+        student.getAsignaturas().removeAll(asignaturas);
+        asignaturas.forEach(a -> a.getStudents().remove(student));
+        studentRepository.save(student);
     }
 
 

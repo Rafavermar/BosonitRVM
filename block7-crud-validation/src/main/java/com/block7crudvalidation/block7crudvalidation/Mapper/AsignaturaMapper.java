@@ -8,16 +8,18 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Component
 public class AsignaturaMapper {
 
-    public AsignaturaEntity toEntity(AsignaturaInputDTO asignaturaDTO, StudentEntity studentEntity) {
+    public AsignaturaEntity toEntity(AsignaturaInputDTO asignaturaDTO) {
         AsignaturaEntity asignaturaEntity = new AsignaturaEntity();
         asignaturaEntity.setComents(asignaturaDTO.getComents());
         asignaturaEntity.setInitialDate(asignaturaDTO.getInitialDate());
         asignaturaEntity.setFinishDate(asignaturaDTO.getFinishDate());
-        asignaturaEntity.setStudent(studentEntity);
+
+        // Quitamos la vinculación al estudiante
+        // asignaturaEntity.setStudent(studentEntity);
+
         return asignaturaEntity;
     }
 
@@ -27,9 +29,15 @@ public class AsignaturaMapper {
         asignaturaInputDTO.setComents(asignaturaEntity.getComents());
         asignaturaInputDTO.setInitialDate(asignaturaEntity.getInitialDate());
         asignaturaInputDTO.setFinishDate(asignaturaEntity.getFinishDate());
-        asignaturaInputDTO.setIdStudent(asignaturaEntity.getStudent().getIdStudent());
+
+        // Verificar si la asignatura está asociada a un estudiante antes de obtener su id
+        // if (asignaturaEntity.getStudent() != null) {
+        //     asignaturaInputDTO.setIdStudent(asignaturaEntity.getStudent().getIdStudent());
+        // }
+
         return asignaturaInputDTO;
     }
+
 
     // Método para convertir una lista de entidades a una lista de DTOs
     public List<AsignaturaInputDTO> toDTOList(List<AsignaturaEntity> asignaturaEntities) {
@@ -38,4 +46,3 @@ public class AsignaturaMapper {
                 .collect(Collectors.toList());
     }
 }
-
