@@ -1,22 +1,19 @@
 package com.block7crudvalidation.block7crudvalidation.services;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.Input.PersonaDTO;
-import com.block7crudvalidation.block7crudvalidation.Entities.PersonaEntity;
-import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
-import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
-import com.block7crudvalidation.block7crudvalidation.Exception.EntityByNameNotFoundException;
-import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
-import com.block7crudvalidation.block7crudvalidation.Exception.UnprocessableEntityException;
-import com.block7crudvalidation.block7crudvalidation.Mapper.PersonaMapper;
-import com.block7crudvalidation.block7crudvalidation.Respository.PersonaRepository;
-import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorEstudianteRepository;
-import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
-import com.block7crudvalidation.block7crudvalidation.Respository.StudentRepository;
+import com.block7crudvalidation.block7crudvalidation.entities.PersonaEntity;
+import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEntity;
+import com.block7crudvalidation.block7crudvalidation.entities.StudentEntity;
+import com.block7crudvalidation.block7crudvalidation.exception.EntityByNameNotFoundException;
+import com.block7crudvalidation.block7crudvalidation.exception.EntityNotFoundException;
+import com.block7crudvalidation.block7crudvalidation.exception.UnprocessableEntityException;
+import com.block7crudvalidation.block7crudvalidation.repository.PersonaRepository;
+import com.block7crudvalidation.block7crudvalidation.repository.ProfesorEstudianteRepository;
+import com.block7crudvalidation.block7crudvalidation.repository.ProfesorRepository;
+import com.block7crudvalidation.block7crudvalidation.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 @Service
 public class PersonaServiceImpl implements PersonaService {

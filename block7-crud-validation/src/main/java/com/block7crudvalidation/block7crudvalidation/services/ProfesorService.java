@@ -1,8 +1,8 @@
 package com.block7crudvalidation.block7crudvalidation.services;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.Input.ProfesorDTO;
-import com.block7crudvalidation.block7crudvalidation.DTO.Output.ProfesorFullDTO;
-import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
+import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullDTO;
+import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEntity;
 
 import java.util.List;
 

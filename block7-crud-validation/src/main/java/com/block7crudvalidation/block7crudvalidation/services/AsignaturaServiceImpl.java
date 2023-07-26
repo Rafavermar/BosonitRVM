@@ -1,12 +1,11 @@
 package com.block7crudvalidation.block7crudvalidation.services;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.Input.AsignaturaInputDTO;
-import com.block7crudvalidation.block7crudvalidation.Entities.AsignaturaEntity;
-import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
-import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
-import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
-import com.block7crudvalidation.block7crudvalidation.Mapper.AsignaturaMapper;
-import com.block7crudvalidation.block7crudvalidation.Respository.AsignaturaRepository;
+import com.block7crudvalidation.block7crudvalidation.dto.input.AsignaturaInputDTO;
+import com.block7crudvalidation.block7crudvalidation.entities.AsignaturaEntity;
+import com.block7crudvalidation.block7crudvalidation.entities.StudentEntity;
+import com.block7crudvalidation.block7crudvalidation.exception.EntityNotFoundException;
+import com.block7crudvalidation.block7crudvalidation.mapper.AsignaturaMapper;
+import com.block7crudvalidation.block7crudvalidation.repository.AsignaturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

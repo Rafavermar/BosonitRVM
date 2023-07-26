@@ -1,8 +1,8 @@
 package com.block7crudvalidation.block7crudvalidation.services;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.Input.AsignaturaInputDTO;
-import com.block7crudvalidation.block7crudvalidation.Entities.AsignaturaEntity;
-import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
+import com.block7crudvalidation.block7crudvalidation.dto.input.AsignaturaInputDTO;
+import com.block7crudvalidation.block7crudvalidation.entities.AsignaturaEntity;
+import com.block7crudvalidation.block7crudvalidation.entities.StudentEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

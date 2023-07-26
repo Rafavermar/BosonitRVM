@@ -1,18 +1,17 @@
 package com.block7crudvalidation.block7crudvalidation.services;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.Input.StudentDTO;
-import com.block7crudvalidation.block7crudvalidation.DTO.Output.EstudianteFullDTO;
-import com.block7crudvalidation.block7crudvalidation.Entities.*;
-import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
-import com.block7crudvalidation.block7crudvalidation.Mapper.StudentMapper;
-import com.block7crudvalidation.block7crudvalidation.Respository.*;
+import com.block7crudvalidation.block7crudvalidation.dto.input.StudentDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.output.EstudianteFullDTO;
+import com.block7crudvalidation.block7crudvalidation.entities.*;
+import com.block7crudvalidation.block7crudvalidation.exception.EntityNotFoundException;
+import com.block7crudvalidation.block7crudvalidation.mapper.StudentMapper;
+import com.block7crudvalidation.block7crudvalidation.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

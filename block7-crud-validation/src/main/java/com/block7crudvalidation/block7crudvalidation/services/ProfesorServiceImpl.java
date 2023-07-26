@@ -1,23 +1,21 @@
 package com.block7crudvalidation.block7crudvalidation.services;
 
-import com.block7crudvalidation.block7crudvalidation.DTO.Input.ProfesorDTO;
-import com.block7crudvalidation.block7crudvalidation.DTO.Output.ProfesorFullDTO;
-import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEntity;
-import com.block7crudvalidation.block7crudvalidation.Entities.ProfesorEstudiante;
-import com.block7crudvalidation.block7crudvalidation.Entities.StudentEntity;
-import com.block7crudvalidation.block7crudvalidation.Exception.EntityNotFoundException;
-import com.block7crudvalidation.block7crudvalidation.Mapper.ProfesorMapper;
-import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorEstudianteRepository;
-import com.block7crudvalidation.block7crudvalidation.Respository.ProfesorRepository;
-import com.block7crudvalidation.block7crudvalidation.Respository.StudentRepository;
+import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorDTO;
+import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullDTO;
+import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEntity;
+import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEstudiante;
+import com.block7crudvalidation.block7crudvalidation.entities.StudentEntity;
+import com.block7crudvalidation.block7crudvalidation.exception.EntityNotFoundException;
+import com.block7crudvalidation.block7crudvalidation.mapper.ProfesorMapper;
+import com.block7crudvalidation.block7crudvalidation.repository.ProfesorEstudianteRepository;
+import com.block7crudvalidation.block7crudvalidation.repository.ProfesorRepository;
+import com.block7crudvalidation.block7crudvalidation.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class ProfesorServiceImpl implements ProfesorService {
