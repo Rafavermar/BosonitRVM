@@ -11,11 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-// TODO el repository sacarlo del contraler
-// TODO en meotod obtener todos los estudiantes evitar usar el trycatch y pasar el codio al servicio
-
-// TODO en Agregar estudiante quitar el churro y diractmente crear public Student DTO
-
 @RestController
 @RequestMapping("/estudiantes")
 public class EstudianteController {

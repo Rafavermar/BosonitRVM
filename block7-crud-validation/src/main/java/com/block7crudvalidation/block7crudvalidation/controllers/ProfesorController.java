@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+
 @RestController
 @RequestMapping("/profesores")
 public class ProfesorController {
@@ -36,32 +38,14 @@ public class ProfesorController {
     @PostMapping()
     public ResponseEntity<?> agregarProfesor(@RequestBody ProfesorInputDto profesorInputDto) {
         try {
-            // Obtener el ID de persona desde el DTO del profesor
-            Integer idPersona = profesorInputDto.getIdPersona();
-
-            // Buscar la entidad PersonaEntity por su ID desde el servicio
-            PersonaEntity personaEntity = personaService.buscarPorId(idPersona);
-
-            // Convertir el DTO a una entidad ProfesorEntity usando el mapper
-            ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorInputDto);
-
-            // Establecer la entidad PersonaEntity en la nueva entidad ProfesorEntity
-            profesorEntity.setPersona(personaEntity);
-
-            // Guardar el profesor en la base de datos
-            ProfesorEntity nuevoProfesor = profesorService.saveProfesor(profesorEntity);
-
-            // Convertir el profesor guardado a DTO y devolverlo en la respuesta
-            ProfesorInputDto nuevoProfesorInputDto = profesorMapper.toDTO(nuevoProfesor);
+            ProfesorInputDto nuevoProfesorInputDto = profesorService.createProfesor(profesorInputDto);
             return new ResponseEntity<>(nuevoProfesorInputDto, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
-            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        } catch (UnprocessableEntityException e) {
-            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getExternalMessage());
-            return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
 
 
     @GetMapping("/{id}")
@@ -127,23 +111,7 @@ public class ProfesorController {
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarProfesor(@PathVariable Integer id, @RequestBody ProfesorInputDto profesorInputDto) {
         try {
-            // Obtener el ID de persona desde el DTO del profesor
-            Integer idPersona = profesorInputDto.getIdPersona();
-
-            // Buscar la entidad PersonaEntity por su ID desde el servicio
-            PersonaEntity personaEntity = personaService.buscarPorId(idPersona);
-
-            // Convertir el DTO a una entidad ProfesorEntity usando el mapper
-            ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorInputDto);
-
-            // Establecer la entidad PersonaEntity en la nueva entidad ProfesorEntity
-            profesorEntity.setPersona(personaEntity);
-
-            // Actualizar el profesor en la base de datos
-            ProfesorEntity updatedProfesor = profesorService.updateProfesor(id, profesorEntity);
-
-            // Convertir el profesor actualizado a DTO y devolverlo en la respuesta
-            ProfesorInputDto updatedProfesorInputDto = profesorMapper.toDTO(updatedProfesor);
+            ProfesorInputDto updatedProfesorInputDto = profesorService.updateProfesor(id, profesorInputDto);
             return ResponseEntity.ok(updatedProfesorInputDto);
         } catch (EntityNotFoundException e) {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getExternalMessage());
@@ -153,6 +121,7 @@ public class ProfesorController {
             return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarProfesor(@PathVariable Integer id) {

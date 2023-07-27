@@ -18,6 +18,8 @@ public interface ProfesorService {
 
     ProfesorEntity updateProfesor(Integer id, ProfesorEntity profesor);
 
+    ProfesorEntity updateProfesorEntity(Integer id, ProfesorEntity profesorEntity);
+
     // New methods
     ProfesorInputDto getProfesorDTOById(Integer id);
 
@@ -26,4 +28,7 @@ public interface ProfesorService {
     ProfesorFullOutputDto getProfesorFullDetailsById(Integer id);
 
     List<ProfesorFullOutputDto> getProfesorFullDetailsByName(String name);
+
+    ProfesorInputDto createProfesor(ProfesorInputDto profesorInputDto);
+    ProfesorInputDto updateProfesor(Integer id, ProfesorInputDto profesorInputDto);
 }

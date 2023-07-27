@@ -2,6 +2,7 @@ package com.block7crudvalidation.block7crudvalidation.services;
 
 import com.block7crudvalidation.block7crudvalidation.dto.input.ProfesorInputDto;
 import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullOutputDto;
+import com.block7crudvalidation.block7crudvalidation.entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEntity;
 import com.block7crudvalidation.block7crudvalidation.entities.ProfesorEstudiante;
 import com.block7crudvalidation.block7crudvalidation.entities.StudentEntity;
@@ -24,16 +25,18 @@ public class ProfesorServiceImpl implements ProfesorService {
     private final StudentRepository studentRepository;
     private final ProfesorEstudianteRepository profesorEstudianteRepository;
     private final ProfesorMapper profesorMapper;
+    private final PersonaService personaService;
 
     @Autowired
     public ProfesorServiceImpl(ProfesorRepository profesorRepository,
                                StudentRepository studentRepository,
                                ProfesorEstudianteRepository profesorEstudianteRepository,
-                               ProfesorMapper profesorMapper) {
+                               ProfesorMapper profesorMapper, PersonaService personaService) {
         this.profesorRepository = profesorRepository;
         this.studentRepository = studentRepository;
         this.profesorEstudianteRepository = profesorEstudianteRepository;
         this.profesorMapper = profesorMapper;
+        this.personaService = personaService;
     }
 
     @Override
@@ -113,6 +116,48 @@ public class ProfesorServiceImpl implements ProfesorService {
     public List<ProfesorFullOutputDto> getProfesorFullDetailsByName(String name) {
         List<ProfesorEntity> profesorEntities = profesorRepository.findByPersonaName(name);
         return profesorMapper.toFullDTOList(profesorEntities);
+    }
+    @Override
+    public ProfesorInputDto createProfesor(ProfesorInputDto profesorInputDto) {
+        // Mueve la lógica desde el controlador aquí.
+        // Obtener el ID de persona desde el DTO del profesor
+        Integer idPersona = profesorInputDto.getIdPersona();
+
+        // Buscar la entidad PersonaEntity por su ID desde el servicio
+        PersonaEntity personaEntity = personaService.buscarPorId(idPersona);
+
+        // Convertir el DTO a una entidad ProfesorEntity usando el mapper
+        ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorInputDto);
+
+        // Establecer la entidad PersonaEntity en la nueva entidad ProfesorEntity
+        profesorEntity.setPersona(personaEntity);
+
+        // Guardar el profesor en la base de datos
+        ProfesorEntity nuevoProfesor = saveProfesor(profesorEntity);
+
+        // Convertir el profesor guardado a DTO
+        return profesorMapper.toDTO(nuevoProfesor);
+    }
+
+    @Override
+    public ProfesorInputDto updateProfesor(Integer id, ProfesorInputDto profesorInputDto) {
+        Integer idPersona = profesorInputDto.getIdPersona();
+        PersonaEntity personaEntity = personaService.buscarPorId(idPersona);
+        ProfesorEntity profesorEntity = profesorMapper.toEntity(profesorInputDto);
+        profesorEntity.setPersona(personaEntity);
+        ProfesorEntity updatedProfesor = updateProfesorEntity(id, profesorEntity);
+        return profesorMapper.toDTO(updatedProfesor);
+    }
+    @Override
+    public ProfesorEntity updateProfesorEntity(Integer id, ProfesorEntity profesorEntity) {
+        ProfesorEntity existingProfesor = profesorRepository.findById(id).orElse(null);
+        if (existingProfesor != null) {
+            existingProfesor.setPersona(profesorEntity.getPersona());
+            existingProfesor.setComments(profesorEntity.getComments());
+            existingProfesor.setBranch(profesorEntity.getBranch());
+            return profesorRepository.save(existingProfesor);
+        }
+        return null;
     }
 
 }
