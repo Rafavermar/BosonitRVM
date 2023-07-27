@@ -1,6 +1,8 @@
 package com.block7crudvalidation.block7crudvalidation.controllers;
 
+import com.block7crudvalidation.block7crudvalidation.clients.ProfesorClient;
 import com.block7crudvalidation.block7crudvalidation.dto.input.PersonaInputDto;
+import com.block7crudvalidation.block7crudvalidation.dto.output.ProfesorFullOutputDto;
 import com.block7crudvalidation.block7crudvalidation.entities.PersonaEntity;
 import com.block7crudvalidation.block7crudvalidation.exception.CustomError;
 import com.block7crudvalidation.block7crudvalidation.exception.EntityNotFoundException;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-// TODO quitar Trycatch
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/personas")
@@ -32,6 +34,14 @@ public class PersonaController {
     private StudentService studentService;
     @Autowired
     private ProfesorService profesorService;
+
+    @Autowired
+    private ProfesorClient profesorClient;
+
+    @GetMapping("/profesores/{id}")
+    public ProfesorFullOutputDto getProfesor(@PathVariable Integer id) {
+        return profesorClient.getProfesor(id, "full");
+    }
 
 
     @PostMapping()
