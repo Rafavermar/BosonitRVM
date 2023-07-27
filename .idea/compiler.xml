@@ -15,6 +15,7 @@
         <module name="block5-profiles" />
         <module name="block6-person-controllers3" />
         <module name="block3-create-repo-git" />
+        <module name="block10-dockerize-app" />
         <module name="block3-maven-package" />
         <module name="block5-Logging" />
         <module name="block1d-process-file-and-streams" />
@@ -44,20 +45,21 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="block5-Logging" options="" />
-      <module name="block5-command-line-runner" options="" />
+      <module name="block10-dockerize-app" options="-parameters" />
+      <module name="block5-Logging" options="-parameters" />
+      <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />
-      <module name="block5-profiles" options="" />
-      <module name="block5-properties" options="" />
-      <module name="block6-path-variable-headers" options="" />
+      <module name="block5-profiles" options="-parameters" />
+      <module name="block5-properties" options="-parameters" />
+      <module name="block6-path-variable-headers" options="-parameters" />
       <module name="block6-person-controllers" options="-parameters" />
-      <module name="block6-person-controllers1" options="" />
-      <module name="block6-person-controllers2" options="" />
-      <module name="block6-person-controllers3" options="" />
+      <module name="block6-person-controllers1" options="-parameters" />
+      <module name="block6-person-controllers2" options="-parameters" />
+      <module name="block6-person-controllers3" options="-parameters" />
       <module name="block6-person.controllers1" options="-parameters" />
-      <module name="block6-simple-controller" options="" />
+      <module name="block6-simple-controller" options="-parameters" />
       <module name="block6-simple-controllers" options="-parameters" />
-      <module name="block7-crud" options="" />
+      <module name="block7-crud" options="-parameters" />
       <module name="block7-crud-validation" options="-parameters" />
     </option>
   </component>
