@@ -23,6 +23,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
+@CrossOrigin(origins = "https://codepen.io")
 @RequestMapping("/personas")
 public class PersonaController {
 
@@ -37,6 +38,16 @@ public class PersonaController {
 
     @Autowired
     private ProfesorClient profesorClient;
+
+    @PostMapping("/addperson")
+    public PersonaEntity addPerson(@RequestBody PersonaEntity person) {
+        return personaService.agregarPersona(person);
+    }
+
+    @GetMapping("/getall")
+    public List<PersonaEntity> getAllPersons() {
+        return personaService.mostrarTodos();
+    }
 
     @GetMapping("/profesores/{id}")
     public ProfesorFullOutputDto getProfesor(@PathVariable Integer id) {
