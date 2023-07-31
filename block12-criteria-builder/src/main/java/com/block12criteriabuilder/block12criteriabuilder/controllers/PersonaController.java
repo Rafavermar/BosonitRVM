@@ -12,11 +12,13 @@ import com.block12criteriabuilder.block12criteriabuilder.services.ProfesorServic
 import com.block12criteriabuilder.block12criteriabuilder.services.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.block12criteriabuilder.block12criteriabuilder.exception.UnprocessableEntityException;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -35,6 +37,19 @@ public class PersonaController {
     @Autowired
     private ProfesorService profesorService;
 
+
+    @GetMapping("cb/search")
+    public ResponseEntity<List<PersonaEntity>> buscarPersonas(
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String surname,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaCreacionDesde,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaCreacionHasta,
+            @RequestParam(required = false) String orderBy) {
+
+        List<PersonaEntity> personasEntity = personaService.buscarPersonas(user, name, surname, fechaCreacionDesde, fechaCreacionHasta, orderBy);
+        return new ResponseEntity<>(personasEntity, HttpStatus.OK);
+    }
 
 
     @CrossOrigin(origins = "https://cdpn.io")

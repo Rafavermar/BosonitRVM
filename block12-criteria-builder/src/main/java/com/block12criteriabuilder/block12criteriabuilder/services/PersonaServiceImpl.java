@@ -11,10 +11,20 @@ import com.block12criteriabuilder.block12criteriabuilder.repository.PersonaRepos
 import com.block12criteriabuilder.block12criteriabuilder.repository.ProfesorEstudianteRepository;
 import com.block12criteriabuilder.block12criteriabuilder.repository.ProfesorRepository;
 import com.block12criteriabuilder.block12criteriabuilder.repository.StudentRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -28,6 +38,9 @@ public class PersonaServiceImpl implements PersonaService {
     private final StudentRepository studentRepository;
 
     private final ProfesorEstudianteRepository profesorEstudianteRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public PersonaServiceImpl(PersonaRepository personaRepository, ProfesorRepository profesorRepository,
@@ -130,5 +143,32 @@ public class PersonaServiceImpl implements PersonaService {
 
         // Guardar la entidad actualizada en la base de datos
         return personaRepository.save(personaActual);
+    }
+
+    @Override
+    public List<PersonaEntity> buscarPersonas(String user, String name, String surname, Date fechaCreacionDesde, Date fechaCreacionHasta, String orderBy) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PersonaEntity> cq = cb.createQuery(PersonaEntity.class);
+        Root<PersonaEntity> root = cq.from(PersonaEntity.class);
+
+        // Lista de predicados para las condiciones
+        List<Predicate> predicates = new ArrayList<>();
+        if (user != null) predicates.add(cb.equal(root.get("usuario"), user));
+        if (name != null) predicates.add(cb.equal(root.get("name"), name));
+        if (surname != null) predicates.add(cb.equal(root.get("surname"), surname));
+        if (fechaCreacionDesde != null) predicates.add(cb.greaterThanOrEqualTo(root.get("createdDate"), fechaCreacionDesde));
+        if (fechaCreacionHasta != null) predicates.add(cb.lessThanOrEqualTo(root.get("createdDate"), fechaCreacionHasta));
+
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        // Ordenamiento opcional
+        if ("user".equalsIgnoreCase(orderBy)) {
+            cq.orderBy(cb.asc(root.get("usuario")));
+        } else if ("name".equalsIgnoreCase(orderBy)) {
+            cq.orderBy(cb.asc(root.get("name")));
+        }
+
+        TypedQuery<PersonaEntity> query = entityManager.createQuery(cq);
+        return query.getResultList();
     }
 }
