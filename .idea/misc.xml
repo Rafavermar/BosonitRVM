@@ -43,6 +43,8 @@
         <option value="$PROJECT_DIR$/block11-upload-download-files/pom.xml" />
         <option value="$PROJECT_DIR$/../block11-upload-download-files/pom.xml" />
         <option value="$PROJECT_DIR$/block6-path-variable-headers/pom.xml" />
+        <option value="$PROJECT_DIR$/../block12-criteria-builder/pom.xml" />
+        <option value="$PROJECT_DIR$/block12-criteria-builder/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

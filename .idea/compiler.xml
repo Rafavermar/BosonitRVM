@@ -10,6 +10,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="block12-criteria-builder" />
         <module name="block7-crud-validation" />
         <module name="block7-crud" />
         <module name="block5-profiles" />
@@ -48,6 +49,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="block10-dockerize-app" options="-parameters" />
       <module name="block11-upload-download-files" options="-parameters" />
+      <module name="block12-criteria-builder" options="-parameters" />
       <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />
