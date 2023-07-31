@@ -29,6 +29,7 @@
         <module name="com.BosonitRVM" />
         <module name="block1b-process-file-and-streams" />
         <module name="block1-process-file-and-streams" />
+        <module name="block11-upload-download-files" />
         <module name="block6-path-variable-headers" />
       </profile>
     </annotationProcessing>
@@ -46,6 +47,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="block10-dockerize-app" options="-parameters" />
+      <module name="block11-upload-download-files" options="-parameters" />
       <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />
