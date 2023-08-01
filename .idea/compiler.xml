@@ -16,6 +16,7 @@
         <module name="block5-profiles" />
         <module name="block6-person-controllers3" />
         <module name="block3-create-repo-git" />
+        <module name="jpa-cascade" />
         <module name="block10-dockerize-app" />
         <module name="block3-maven-package" />
         <module name="block5-Logging" />
@@ -65,6 +66,7 @@
       <module name="block6-simple-controllers" options="-parameters" />
       <module name="block7-crud" options="-parameters" />
       <module name="block7-crud-validation" options="-parameters" />
+      <module name="jpa-cascade" options="-parameters" />
     </option>
   </component>
 </project>
