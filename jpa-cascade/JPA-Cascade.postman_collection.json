@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "bea47f3f-3c33-4c35-9e5d-a3e63fe80fa4",
+		"name": "JPA-Cascade",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28457072"
+	},
+	"item": [
+		{
+			"name": "Obtener facturas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/factura",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"factura"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar Factura",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/factura/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"factura",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Añadir linea a factura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"producto\": \"Nombre del producto\",\r\n    \"cantidad\": 5,\r\n    \"importe\": 100.0,\r\n    \"idFra\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/factura/linea/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"factura",
+						"linea",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Factura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cliCodi\": 1,\r\n    \"lineas\": [\r\n        {\r\n            \"producto\": \"Producto A\",\r\n            \"cantidad\": 5,\r\n            \"importe\": 100,\r\n            \"idFra\": 123\r\n        },\r\n        {\r\n            \"producto\": \"Producto B\",\r\n            \"cantidad\": 2,\r\n            \"importe\": 50,\r\n            \"idFra\": 123 \r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/factura",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"factura"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear cliente",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Nombre del Cliente\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/factura/cliente",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"factura",
+						"cliente"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener clientes",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public interface FacturaMapper {
     @Mapping(source = "cliCodi.id", target = "clienteOutputDto.id")
     @Mapping(source = "cliCodi.nombre", target = "clienteOutputDto.nombre")
+    @Mapping(source = "lineas", target = "lineaOutputDtoList", qualifiedByName = "mapLineas") // Agrega esta línea
     FacturaOutputDto toFacturaDto(CabeceraFra cabeceraFra);
 
     LineaOutputDto toLineaDto(LineasFra lineasFra);

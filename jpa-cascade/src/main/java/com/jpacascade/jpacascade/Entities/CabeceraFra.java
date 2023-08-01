@@ -21,9 +21,9 @@ public class CabeceraFra {
     @ManyToOne
     private Cliente cliCodi;
 
-    private Double importeFra;
+    private Double importe;
 
     @OneToMany(mappedBy = "cabeceraFra", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LineasFra> lineas;
+    private List<LineasFra> lineas = new ArrayList<>();
 
 }

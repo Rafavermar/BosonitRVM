@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class FacturaOutputDto {
     private int id;
-    private double importeFra;
+    private double importe;
     private ClienteOutputDto clienteOutputDto;
     private List<LineaOutputDto> lineaOutputDtoList;
 }

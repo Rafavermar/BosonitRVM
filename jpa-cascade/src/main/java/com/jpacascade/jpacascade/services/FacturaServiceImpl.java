@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,18 +74,28 @@ public class FacturaServiceImpl implements FacturaService {
         CabeceraFra cabeceraFra = new CabeceraFra();
         cabeceraFra.setCliCodi(cliente);
 
-
-        cabeceraFra = cabeceraFraRepository.save(cabeceraFra);
+        List<LineasFra> lineas = new ArrayList<>(); // Lista para guardar las líneas de la factura
+        double importeTotal = 0.0;
 
         for (LineaInputDto lineaInputDto : facturaInputDto.getLineas()) {
             LineasFra lineasFra = new LineasFra();
             lineasFra.setProNomb(lineaInputDto.getProducto());
             lineasFra.setCantidad(lineaInputDto.getCantidad());
             lineasFra.setPrecio(lineaInputDto.getImporte());
-            lineasFra.setIdFra(cabeceraFra.getId());
-            lineasFraRepository.save(lineasFra);
+            lineasFra.setCabeceraFra(cabeceraFra); // Establece la referencia a la factura
+
+            importeTotal += lineaInputDto.getImporte(); // Calcula el importe
+            lineas.add(lineasFra); // Añade la línea a la lista
         }
+
+        cabeceraFra.setLineas(lineas); // Asigna la lista de líneas a la cabecera
+        cabeceraFra.setImporte(importeTotal); // Establece el importe total en la cabecera
+        cabeceraFra = cabeceraFraRepository.save(cabeceraFra);
+
+        lineas.forEach(lineasFraRepository::save); // Guarda las líneas en la base de datos
 
         return facturaMapper.toFacturaDto(cabeceraFra);
     }
+
+
 }
