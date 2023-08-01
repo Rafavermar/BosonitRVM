@@ -1,9 +1,15 @@
 package com.jpacascade.jpacascade.Controllers;
 
+import com.jpacascade.jpacascade.Entities.Cliente;
+import com.jpacascade.jpacascade.dtos.input.FacturaInputDto;
 import com.jpacascade.jpacascade.dtos.input.LineaInputDto;
+import com.jpacascade.jpacascade.dtos.output.ClienteOutputDto;
 import com.jpacascade.jpacascade.dtos.output.FacturaOutputDto;
 
 import com.jpacascade.jpacascade.exceptions.NotFoundException;
+
+import com.jpacascade.jpacascade.repositories.ClienteRepository;
+import com.jpacascade.jpacascade.services.ClienteService;
 import com.jpacascade.jpacascade.services.FacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +25,12 @@ public class FacturaController {
 
     @Autowired
     private FacturaService facturaService;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @GetMapping
     public ResponseEntity<List<FacturaOutputDto>> getAllFacturas() {
@@ -50,5 +62,20 @@ public class FacturaController {
         FacturaOutputDto factura = facturaService.createFactura(facturaInputDto);
         return new ResponseEntity<>(factura, HttpStatus.CREATED);
     }
+
+    @PostMapping("/cliente")
+    public ResponseEntity<Cliente> createCliente(@RequestBody Cliente cliente) {
+        Cliente createdCliente = clienteRepository.save(cliente);
+        return new ResponseEntity<>(createdCliente, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/clientes")
+    public ResponseEntity<List<ClienteOutputDto>> getAllClientes() {
+        List<ClienteOutputDto> clientes = clienteService.getAllClientes(); // Usa el servicio inyectado
+        return new ResponseEntity<>(clientes, HttpStatus.OK);
+    }
+
+
+
 
 }

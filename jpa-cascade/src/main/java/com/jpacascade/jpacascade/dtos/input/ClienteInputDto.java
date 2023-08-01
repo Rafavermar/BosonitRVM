@@ -9,11 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LineaInputDto {
-    private String producto;
-    private double cantidad;
-    private double importe;
-    private int idFra;
-
+public class ClienteInputDto {
+    private String nombre;
 }
-

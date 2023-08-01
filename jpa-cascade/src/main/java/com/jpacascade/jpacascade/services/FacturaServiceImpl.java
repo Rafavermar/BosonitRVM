@@ -1,7 +1,9 @@
 package com.jpacascade.jpacascade.services;
 
 import com.jpacascade.jpacascade.Entities.CabeceraFra;
+import com.jpacascade.jpacascade.Entities.Cliente;
 import com.jpacascade.jpacascade.Entities.LineasFra;
+import com.jpacascade.jpacascade.dtos.input.FacturaInputDto;
 import com.jpacascade.jpacascade.dtos.input.LineaInputDto;
 import com.jpacascade.jpacascade.dtos.output.FacturaOutputDto;
 import com.jpacascade.jpacascade.exceptions.NotFoundException;
@@ -34,7 +36,7 @@ public class FacturaServiceImpl implements FacturaService {
     @Override
     public List<FacturaOutputDto> getAllFacturas() {
         return cabeceraFraRepository.findAll().stream()
-                .map(facturaMapper::toDto)
+                .map(facturaMapper::toFacturaDto)
                 .collect(Collectors.toList());
     }
 
@@ -52,14 +54,37 @@ public class FacturaServiceImpl implements FacturaService {
                 .orElseThrow(() -> new NotFoundException("Factura no encontrada"));
 
         LineasFra nuevaLinea = new LineasFra();
-        nuevaLinea.setProNomb(linea.getProNomb());
+        nuevaLinea.setProNomb(linea.getProducto());
         nuevaLinea.setCantidad(linea.getCantidad());
-        nuevaLinea.setPrecio(linea.getPrecio());
+        nuevaLinea.setPrecio(linea.getImporte());
         nuevaLinea.setCabeceraFra(factura);
 
         factura.getLineas().add(nuevaLinea);
         cabeceraFraRepository.save(factura);
 
-        return facturaMapper.toDto(factura);
+        return facturaMapper.toFacturaDto(factura);
+    }
+
+    @Override
+    public FacturaOutputDto createFactura(FacturaInputDto facturaInputDto) {
+        Cliente cliente = clienteRepository.findById(facturaInputDto.getCliCodi())
+                .orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
+
+        CabeceraFra cabeceraFra = new CabeceraFra();
+        cabeceraFra.setCliCodi(cliente);
+
+
+        cabeceraFra = cabeceraFraRepository.save(cabeceraFra);
+
+        for (LineaInputDto lineaInputDto : facturaInputDto.getLineas()) {
+            LineasFra lineasFra = new LineasFra();
+            lineasFra.setProNomb(lineaInputDto.getProducto());
+            lineasFra.setCantidad(lineaInputDto.getCantidad());
+            lineasFra.setPrecio(lineaInputDto.getImporte());
+            lineasFra.setIdFra(cabeceraFra.getId());
+            lineasFraRepository.save(lineasFra);
+        }
+
+        return facturaMapper.toFacturaDto(cabeceraFra);
     }
 }
