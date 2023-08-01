@@ -12,6 +12,8 @@ import com.block12criteriabuilder.block12criteriabuilder.services.ProfesorServic
 import com.block12criteriabuilder.block12criteriabuilder.services.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,9 +47,13 @@ public class PersonaController {
             @RequestParam(required = false) String surname,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaCreacionDesde,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaCreacionHasta,
-            @RequestParam(required = false) String orderBy) {
+            @RequestParam(required = false) String orderBy,
+            @RequestParam int page) {
 
-        List<PersonaEntity> personasEntity = personaService.buscarPersonas(user, name, surname, fechaCreacionDesde, fechaCreacionHasta, orderBy);
+        int pageSize = 10; // Tamaño de página por defecto
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        List<PersonaEntity> personasEntity = personaService.buscarPersonas(user, name, surname, fechaCreacionDesde, fechaCreacionHasta, orderBy, pageable);
         return new ResponseEntity<>(personasEntity, HttpStatus.OK);
     }
 

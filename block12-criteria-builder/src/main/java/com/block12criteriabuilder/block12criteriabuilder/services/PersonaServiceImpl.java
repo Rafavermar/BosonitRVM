@@ -19,6 +19,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -146,7 +147,7 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public List<PersonaEntity> buscarPersonas(String user, String name, String surname, Date fechaCreacionDesde, Date fechaCreacionHasta, String orderBy) {
+    public List<PersonaEntity> buscarPersonas(String user, String name, String surname, Date fechaCreacionDesde, Date fechaCreacionHasta, String orderBy, Pageable pageable) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<PersonaEntity> cq = cb.createQuery(PersonaEntity.class);
         Root<PersonaEntity> root = cq.from(PersonaEntity.class);
@@ -169,6 +170,8 @@ public class PersonaServiceImpl implements PersonaService {
         }
 
         TypedQuery<PersonaEntity> query = entityManager.createQuery(cq);
+        query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+        query.setMaxResults(pageable.getPageSize());
         return query.getResultList();
     }
 }
