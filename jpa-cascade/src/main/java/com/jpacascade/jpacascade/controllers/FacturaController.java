@@ -71,7 +71,7 @@ public class FacturaController {
 
     @GetMapping("/clientes")
     public ResponseEntity<List<ClienteOutputDto>> getAllClientes() {
-        List<ClienteOutputDto> clientes = clienteService.getAllClientes(); // Usa el servicio inyectado
+        List<ClienteOutputDto> clientes = clienteService.getAllClientes();
         return new ResponseEntity<>(clientes, HttpStatus.OK);
     }
 

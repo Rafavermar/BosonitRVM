@@ -8,6 +8,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ClienteMapper {
-    ClienteOutputDto toDto(Cliente cliente); // Mapeo para Cliente
+    ClienteOutputDto toDto(Cliente cliente);
     List<ClienteOutputDto> toDtos(List<Cliente> clientes);
 }

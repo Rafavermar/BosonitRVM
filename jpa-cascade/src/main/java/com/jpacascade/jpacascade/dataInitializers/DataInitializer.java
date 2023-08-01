@@ -51,7 +51,7 @@ public class DataInitializer {
                 .sum();
         cabeceraFra.setImporte(importeTotal);
 
-        // Solo se debe realizar un save para insertar las 2 líneas y la cabecera de fra
+        //  un save para insertar las 2 líneas y la cabecera de fra
         cabeceraFra = cabeceraFraRepository.save(cabeceraFra);
     }
 }
