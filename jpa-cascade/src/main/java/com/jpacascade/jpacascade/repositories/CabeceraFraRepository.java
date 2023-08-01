@@ -1,6 +1,6 @@
 package com.jpacascade.jpacascade.repositories;
 
-import com.jpacascade.jpacascade.Entities.CabeceraFra;
+import com.jpacascade.jpacascade.entities.CabeceraFra;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

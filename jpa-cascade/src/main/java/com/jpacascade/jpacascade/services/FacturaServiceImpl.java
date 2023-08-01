@@ -1,8 +1,8 @@
 package com.jpacascade.jpacascade.services;
 
-import com.jpacascade.jpacascade.Entities.CabeceraFra;
-import com.jpacascade.jpacascade.Entities.Cliente;
-import com.jpacascade.jpacascade.Entities.LineasFra;
+import com.jpacascade.jpacascade.entities.CabeceraFra;
+import com.jpacascade.jpacascade.entities.Cliente;
+import com.jpacascade.jpacascade.entities.LineasFra;
 import com.jpacascade.jpacascade.dtos.input.FacturaInputDto;
 import com.jpacascade.jpacascade.dtos.input.LineaInputDto;
 import com.jpacascade.jpacascade.dtos.output.FacturaOutputDto;

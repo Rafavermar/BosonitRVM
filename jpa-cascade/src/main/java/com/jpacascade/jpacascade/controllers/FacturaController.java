@@ -1,6 +1,6 @@
-package com.jpacascade.jpacascade.Controllers;
+package com.jpacascade.jpacascade.controllers;
 
-import com.jpacascade.jpacascade.Entities.Cliente;
+import com.jpacascade.jpacascade.entities.Cliente;
 import com.jpacascade.jpacascade.dtos.input.FacturaInputDto;
 import com.jpacascade.jpacascade.dtos.input.LineaInputDto;
 import com.jpacascade.jpacascade.dtos.output.ClienteOutputDto;

@@ -1,9 +1,7 @@
 package com.jpacascade.jpacascade.mappers;
 
-import com.jpacascade.jpacascade.Entities.CabeceraFra;
-import com.jpacascade.jpacascade.Entities.Cliente;
-import com.jpacascade.jpacascade.Entities.LineasFra;
-import com.jpacascade.jpacascade.dtos.output.ClienteOutputDto;
+import com.jpacascade.jpacascade.entities.CabeceraFra;
+import com.jpacascade.jpacascade.entities.LineasFra;
 import com.jpacascade.jpacascade.dtos.output.FacturaOutputDto;
 import com.jpacascade.jpacascade.dtos.output.LineaOutputDto;
 import org.mapstruct.Mapper;

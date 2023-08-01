@@ -1,6 +1,6 @@
 package com.jpacascade.jpacascade.mappers;
 
-import com.jpacascade.jpacascade.Entities.Cliente;
+import com.jpacascade.jpacascade.entities.Cliente;
 import com.jpacascade.jpacascade.dtos.output.ClienteOutputDto;
 import org.mapstruct.Mapper;
 

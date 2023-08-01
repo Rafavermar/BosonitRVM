@@ -1,4 +1,4 @@
-package com.jpacascade.jpacascade.Entities;
+package com.jpacascade.jpacascade.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
