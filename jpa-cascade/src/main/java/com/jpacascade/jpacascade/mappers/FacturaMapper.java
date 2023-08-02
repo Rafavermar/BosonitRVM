@@ -17,7 +17,9 @@ public interface FacturaMapper {
     @Mapping(source = "cliCodi.nombre", target = "clienteOutputDto.nombre")
     @Mapping(source = "lineas", target = "lineaOutputDtoList", qualifiedByName = "mapLineas")
     FacturaOutputDto toFacturaDto(CabeceraFra cabeceraFra);
-
+    @Mapping(source = "proNomb", target = "producto")
+    @Mapping(source = "cantidad", target = "cantidad")
+    @Mapping(expression = "java(lineasFra.getCantidad() * lineasFra.getPrecio())", target = "importe")
     LineaOutputDto toLineaDto(LineasFra lineasFra);
 
     List<FacturaOutputDto> toFacturaDtos(List<CabeceraFra> cabeceras);
