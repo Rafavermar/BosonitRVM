@@ -17,6 +17,7 @@
         <module name="block6-person-controllers3" />
         <module name="block3-create-repo-git" />
         <module name="jpa-cascade" />
+        <module name="block13-mongodb" />
         <module name="block10-dockerize-app" />
         <module name="block3-maven-package" />
         <module name="block5-Logging" />
@@ -51,6 +52,7 @@
       <module name="block10-dockerize-app" options="-parameters" />
       <module name="block11-upload-download-files" options="-parameters" />
       <module name="block12-criteria-builder" options="-parameters" />
+      <module name="block13-mongodb" options="-parameters" />
       <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />

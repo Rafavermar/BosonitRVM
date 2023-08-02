@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$USER_HOME$/Desktop/block13-mongodb/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bloc1d-process-file-and-streams/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bloc1d-process-file-and-streams/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block1-process-file-and-streams/src/main/java" charset="UTF-8" />
@@ -11,6 +12,8 @@
     <file url="file://$PROJECT_DIR$/block11-upload-download-files/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block12-criteria-builder/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block12-criteria-builder/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/block13-mongodb/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/block13-mongodb/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block1a-process-file-and-streams/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block1a-process-file-and-streams/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block1b-process-file-and-streams/src/main/java" charset="UTF-8" />
