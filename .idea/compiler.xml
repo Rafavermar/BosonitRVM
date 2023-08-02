@@ -10,30 +10,31 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="block12-criteria-builder" />
         <module name="block7-crud-validation" />
-        <module name="block7-crud" />
-        <module name="block5-profiles" />
         <module name="block6-person-controllers3" />
         <module name="block3-create-repo-git" />
-        <module name="jpa-cascade" />
         <module name="block13-mongodb" />
-        <module name="block10-dockerize-app" />
-        <module name="block3-maven-package" />
         <module name="block5-Logging" />
         <module name="block1d-process-file-and-streams" />
         <module name="block6-person-controllers2" />
-        <module name="block1a-process-file-and-streams" />
         <module name="block6-person-controllers1" />
-        <module name="block1c-process-file-and-streams" />
-        <module name="block5-command-line-runner" />
         <module name="block6-simple-controller" />
         <module name="block5-properties" />
+        <module name="block13-testing-crud" />
+        <module name="block11-upload-download-files" />
+        <module name="block6-path-variable-headers" />
+        <module name="block12-criteria-builder" />
+        <module name="block7-crud" />
+        <module name="block5-profiles" />
+        <module name="jpa-cascade" />
+        <module name="block10-dockerize-app" />
+        <module name="block3-maven-package" />
+        <module name="block1a-process-file-and-streams" />
+        <module name="block1c-process-file-and-streams" />
+        <module name="block5-command-line-runner" />
         <module name="com.BosonitRVM" />
         <module name="block1b-process-file-and-streams" />
         <module name="block1-process-file-and-streams" />
-        <module name="block11-upload-download-files" />
-        <module name="block6-path-variable-headers" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -53,6 +54,7 @@
       <module name="block11-upload-download-files" options="-parameters" />
       <module name="block12-criteria-builder" options="-parameters" />
       <module name="block13-mongodb" options="-parameters" />
+      <module name="block13-testing-crud" options="-parameters" />
       <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />
