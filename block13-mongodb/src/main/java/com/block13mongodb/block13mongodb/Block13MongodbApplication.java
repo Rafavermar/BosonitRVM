@@ -18,7 +18,7 @@ public class Block13MongodbApplication implements CommandLineRunner {
 
 	private static final Logger LOG = LoggerFactory.getLogger("AppsDeveloperBlog");
 	private final PersonDAL personDAL;
-	
+
 	@Autowired
 	public Block13MongodbApplication(PersonDAL personDAL) {
 		this.personDAL = personDAL;
