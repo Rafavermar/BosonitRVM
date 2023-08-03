@@ -8,6 +8,7 @@ import com.block13testingcrud.block13testingcrud.entities.ProfesorEntity;
 import com.block13testingcrud.block13testingcrud.entities.ProfesorEstudiante;
 import com.block13testingcrud.block13testingcrud.entities.StudentEntity;
 import com.block13testingcrud.block13testingcrud.exception.EntityNotFoundException;
+import com.block13testingcrud.block13testingcrud.exception.UnprocessableEntityException;
 import com.block13testingcrud.block13testingcrud.mapper.ProfesorMapper;
 import com.block13testingcrud.block13testingcrud.repository.ProfesorEstudianteRepository;
 import com.block13testingcrud.block13testingcrud.repository.ProfesorRepository;
@@ -120,7 +121,9 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
     @Override
     public ProfesorInputDto createProfesor(ProfesorInputDto profesorInputDto) {
-        // Mueve la lógica desde el controlador aquí.
+        if (profesorInputDto.getComments() == null) { // o cualquier otra validación necesaria
+            throw new UnprocessableEntityException("Los campos requeridos están en blanco o nulos");
+        }
         // Obtener el ID de persona desde el DTO del profesor
         Integer idPersona = profesorInputDto.getIdPersona();
 

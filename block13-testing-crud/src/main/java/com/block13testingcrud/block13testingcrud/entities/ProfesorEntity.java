@@ -1,7 +1,7 @@
 package com.block13testingcrud.block13testingcrud.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,8 +26,8 @@ public class ProfesorEntity {
     @Column(name = "comments")
     String comments;
 
-    @NotNull
-    @Column(name = "branch")
+
+    @Column(name = "branch", nullable = false)
     String branch;
 
 
