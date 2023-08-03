@@ -16,7 +16,7 @@ public class PersonDALImpl implements PersonDAL {
 
     private final MongoTemplate mongoTemplate;
 
-    @Autowired
+
     public PersonDALImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
