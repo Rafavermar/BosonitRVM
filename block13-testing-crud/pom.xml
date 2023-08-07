@@ -102,6 +102,12 @@
 						<goals>
 							<goal>report</goal>
 						</goals>
+						<configuration>
+							<excludes>
+								<!-- Aquí excluimos la clase principal de la cobertura -->
+								<exclude>**/Block13TestingCrudApplication.class</exclude>
+							</excludes>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

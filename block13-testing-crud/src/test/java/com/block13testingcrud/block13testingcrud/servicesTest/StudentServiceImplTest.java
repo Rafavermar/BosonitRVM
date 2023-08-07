@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 
 import com.block13testingcrud.block13testingcrud.dto.input.StudentInputDto;
 import com.block13testingcrud.block13testingcrud.dto.output.EstudianteFullOutDto;
+import com.block13testingcrud.block13testingcrud.dto.output.EstudianteSimpleOutDto;
 import com.block13testingcrud.block13testingcrud.entities.*;
 import com.block13testingcrud.block13testingcrud.exception.EntityNotFoundException;
 import com.block13testingcrud.block13testingcrud.mapper.StudentMapper;
@@ -219,6 +220,161 @@ public class StudentServiceImplTest {
         // Añadir más aserciones si es necesario
         // Por ejemplo, si quieres comprobar que ciertos métodos fueron llamados, etc.
     }
+    @Test
+    void testGetStudentsDTOByName() {
+        // Arrange
+        String name = "John";
+        List<StudentEntity> mockEntities = Arrays.asList(new StudentEntity());
+        List<StudentInputDto> mockDtos = Arrays.asList(new StudentInputDto());
 
+        when(studentRepository.findByPersonaName(name)).thenReturn(mockEntities);
+        when(studentMapper.toDTO(any(StudentEntity.class))).thenReturn(mockDtos.get(0));
+
+        // Act
+        List<StudentInputDto> returnedDtos = studentService.getStudentsDTOByName(name);
+
+        // Assert
+        assertNotNull(returnedDtos);
+        assertEquals(mockDtos.size(), returnedDtos.size());
+
+    }
+
+
+    @Test
+    void testGetStudentFullDetailsByName() {
+        // Arrange
+        String name = "John";
+        StudentEntity mockStudentEntity = new StudentEntity();
+        PersonaEntity mockPersona = new PersonaEntity();
+        mockStudentEntity.setPersona(mockPersona);
+
+        List<StudentEntity> mockEntities = Arrays.asList(mockStudentEntity);
+        EstudianteFullOutDto mockDto = new EstudianteFullOutDto();
+
+        when(studentRepository.findByPersona_Name(name)).thenReturn(mockEntities);
+
+
+        // Act
+        List<EstudianteFullOutDto> returnedDtos = studentService.getStudentFullDetailsByName(name);
+
+        // Assert
+        assertNotNull(returnedDtos);
+        assertEquals(1, returnedDtos.size());
+    }
+
+
+    @Test
+    void testGetAllStudentsSimpleDetails() {
+        // Arrange
+        StudentEntity mockEntity1 = new StudentEntity();
+        mockEntity1.setIdStudent(1);
+        mockEntity1.setNumHoursWeek(20);
+        mockEntity1.setComments("Test comments 1");
+
+        StudentEntity mockEntity2 = new StudentEntity();
+        mockEntity2.setIdStudent(2);
+        mockEntity2.setNumHoursWeek(25);
+        mockEntity2.setComments("Test comments 2");
+
+        when(studentRepository.findAll()).thenReturn(Arrays.asList(mockEntity1, mockEntity2));
+
+        // Act
+        List<EstudianteSimpleOutDto> resultDtos = studentService.getAllStudentsSimpleDetails();
+
+        // Assert
+        assertEquals(2, resultDtos.size());
+
+        EstudianteSimpleOutDto resultDto1 = resultDtos.get(0);
+        assertEquals(mockEntity1.getIdStudent(), resultDto1.getIdStudent());
+        assertEquals(mockEntity1.getNumHoursWeek(), resultDto1.getNumHoursWeek());
+        assertEquals(mockEntity1.getComments(), resultDto1.getComments());
+
+        EstudianteSimpleOutDto resultDto2 = resultDtos.get(1);
+        assertEquals(mockEntity2.getIdStudent(), resultDto2.getIdStudent());
+        assertEquals(mockEntity2.getNumHoursWeek(), resultDto2.getNumHoursWeek());
+        assertEquals(mockEntity2.getComments(), resultDto2.getComments());
+    }
+
+    @Test
+    void testAsignarAsignaturasStudent() {
+        // Arrange
+        Integer mockStudentId = 1;
+        List<Integer> mockAsignaturasIds = Arrays.asList(1, 2);
+
+        StudentEntity mockStudent = mock(StudentEntity.class);
+        AsignaturaEntity mockAsignatura1 = mock(AsignaturaEntity.class);
+        AsignaturaEntity mockAsignatura2 = mock(AsignaturaEntity.class);
+        List<AsignaturaEntity> mockAsignaturasList = Arrays.asList(mockAsignatura1, mockAsignatura2);
+
+        when(studentRepository.findById(mockStudentId)).thenReturn(Optional.of(mockStudent));
+        when(asignaturaRepository.findAllById(mockAsignaturasIds)).thenReturn(mockAsignaturasList);
+
+        // Act
+        studentService.asignarAsignaturasStudent(mockStudentId, mockAsignaturasIds);
+
+        // Assert
+        verify(mockStudent).getAsignaturas(); // Verifica que se llamó al método
+        verify(studentRepository).save(mockStudent);
+    }
+
+    @Test
+    void testDesasignarAsignaturasStudent() {
+        // Arrange
+        Integer mockStudentId = 1;
+        List<Integer> mockAsignaturasIds = Arrays.asList(1, 2);
+
+        StudentEntity mockStudent = mock(StudentEntity.class);
+        AsignaturaEntity mockAsignatura1 = mock(AsignaturaEntity.class);
+        AsignaturaEntity mockAsignatura2 = mock(AsignaturaEntity.class);
+        List<AsignaturaEntity> mockAsignaturasList = Arrays.asList(mockAsignatura1, mockAsignatura2);
+
+        when(studentRepository.findById(mockStudentId)).thenReturn(Optional.of(mockStudent));
+        when(asignaturaRepository.findAllById(mockAsignaturasIds)).thenReturn(mockAsignaturasList);
+
+        // Act
+        studentService.desasignarAsignaturasStudent(mockStudentId, mockAsignaturasIds);
+
+        // Assert
+        verify(mockStudent).getAsignaturas();
+        verify(studentRepository).save(mockStudent);
+    }
+
+    // TODO arregla estos test
+   /** @Test
+    void testGetStudentDTOById() {
+        // Arrange
+        Integer mockStudentId = 1;
+
+        StudentEntity mockStudentEntity = mock(StudentEntity.class);
+        StudentInputDto mockStudentInputDto = mock(StudentInputDto.class);
+
+        when(studentService.getStudentDTOById(mockStudentId)).thenReturn(mockStudentInputDto);
+        when(studentMapper.toDTO(mockStudentEntity)).thenReturn(mockStudentInputDto);
+
+        // Act
+        StudentInputDto result = studentService.getStudentDTOById(mockStudentId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(mockStudentInputDto, result);
+    }
+   **/
+
+// TODO arregla estos test
+   /**
+    @Test
+    void testGetStudentDTOByIdWhenEntityIsNull() {
+        // Arrange
+        Integer mockStudentId = 1;
+
+        when(studentService.getStudentById(mockStudentId)).thenReturn(null);
+
+        // Act
+        StudentInputDto result = studentService.getStudentDTOById(mockStudentId);
+
+        // Assert
+        assertNull(result);
+    }
+**/
 
 }
