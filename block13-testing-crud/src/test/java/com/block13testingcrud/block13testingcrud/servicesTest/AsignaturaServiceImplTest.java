@@ -9,23 +9,29 @@ import com.block13testingcrud.block13testingcrud.repository.AsignaturaRepository
 import com.block13testingcrud.block13testingcrud.repository.StudentRepository;
 import com.block13testingcrud.block13testingcrud.services.AsignaturaServiceImpl;
 import com.block13testingcrud.block13testingcrud.services.StudentService;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-@Transactional
-@RunWith(MockitoJUnitRunner.class)
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class AsignaturaServiceImplTest {
 
@@ -60,7 +66,7 @@ public class AsignaturaServiceImplTest {
         Mockito.verify(asignaturaRepository).findAllByStudents_IdStudent(studentId);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(asignaturas, result);
+        assertEquals(asignaturas, result);
     }
 
     @Test
@@ -85,7 +91,7 @@ public class AsignaturaServiceImplTest {
         Mockito.verify(asignaturaMapper).toDTO(savedAsignaturaEntity);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(outputDTO, result);
+        assertEquals(outputDTO, result);
     }
 
   /*  @Test(expected = RuntimeException.class)
@@ -128,8 +134,8 @@ public class AsignaturaServiceImplTest {
         Mockito.verify(asignaturaRepository).findById(idAsignatura);
 
         // Verifica que los estudiantes tengan la asignatura eliminada
-        Assert.assertTrue(student1.getAsignaturas().isEmpty());
-        Assert.assertTrue(student2.getAsignaturas().isEmpty());
+        assertTrue(student1.getAsignaturas().isEmpty());
+        assertTrue(student2.getAsignaturas().isEmpty());
 
         // Verifica que el método del repositorio haya sido llamado para guardar los estudiantes
         Mockito.verify(studentRepository, Mockito.times(2)).save(Mockito.any(StudentEntity.class));
@@ -138,11 +144,11 @@ public class AsignaturaServiceImplTest {
         Mockito.verify(asignaturaRepository).delete(asignatura);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(new ResponseEntity<>("Asignatura eliminada correctamente", HttpStatus.OK), responseEntity);
+        assertEquals(new ResponseEntity<>("Asignatura eliminada correctamente", HttpStatus.OK), responseEntity);
     }
 
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testDeleteAsignaturaNotFound() {
         // Define el id de una asignatura que no existe en la base de datos
         Integer idAsignatura = 999;
@@ -151,7 +157,7 @@ public class AsignaturaServiceImplTest {
         Mockito.when(asignaturaRepository.findById(idAsignatura)).thenReturn(Optional.empty());
 
         // Ejecuta el método que queremos probar, esperando que lance una excepción
-        asignaturaService.deleteAsignatura(idAsignatura);
+        assertThrows(RuntimeException.class, () -> asignaturaService.deleteAsignatura(idAsignatura));
     }
 
     @Test
@@ -185,8 +191,8 @@ public class AsignaturaServiceImplTest {
         Mockito.verify(asignaturaRepository).findById(idAsignatura);
 
         // Verifica que los estudiantes ya no tengan la asignatura asociada
-        Assert.assertTrue(student1.getAsignaturas().isEmpty());
-        Assert.assertTrue(student2.getAsignaturas().isEmpty());
+        assertTrue(student1.getAsignaturas().isEmpty());
+        assertTrue(student2.getAsignaturas().isEmpty());
 
         // Verifica que el método del repositorio haya sido llamado para guardar los estudiantes
         Mockito.verify(studentRepository, Mockito.times(2)).save(Mockito.any(StudentEntity.class));
@@ -195,7 +201,7 @@ public class AsignaturaServiceImplTest {
         Mockito.verify(asignaturaRepository).delete(asignatura);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(new ResponseEntity<>("Asignatura eliminada correctamente", HttpStatus.OK), responseEntity);
+        assertEquals(new ResponseEntity<>("Asignatura eliminada correctamente", HttpStatus.OK), responseEntity);
     }
 
 
@@ -216,7 +222,7 @@ public class AsignaturaServiceImplTest {
         Mockito.verify(asignaturaRepository).findAll();
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(asignaturaMapper.toDTOList(asignaturaEntities), result);
+        assertEquals(asignaturaMapper.toDTOList(asignaturaEntities), result);
     }
 
     @Test
@@ -247,11 +253,12 @@ public class AsignaturaServiceImplTest {
         Mockito.verify(asignaturaRepository).findById(idAsignatura);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(students, result);
+        assertEquals(students, result);
     }
 
 
-    @Test(expected = EntityNotFoundException.class)
+
+    @Test
     public void testGetStudentByAsignaturaIdNotFound() {
         // Define el id de una asignatura que no existe en la base de datos
         Integer idAsignatura = 999;
@@ -260,7 +267,7 @@ public class AsignaturaServiceImplTest {
         Mockito.when(asignaturaRepository.findById(idAsignatura)).thenReturn(Optional.empty());
 
         // Ejecuta el método que queremos probar, esperando que lance una excepción
-        asignaturaService.getStudentByAsignaturaId(idAsignatura);
+        assertThrows(EntityNotFoundException.class, () -> asignaturaService.getStudentByAsignaturaId(idAsignatura));
     }
 
 

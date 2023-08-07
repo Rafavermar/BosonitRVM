@@ -3,23 +3,29 @@ package com.block13testingcrud.block13testingcrud.mappersTest;
 import com.block13testingcrud.block13testingcrud.dto.input.AsignaturaInputDTO;
 import com.block13testingcrud.block13testingcrud.entities.AsignaturaEntity;
 import com.block13testingcrud.block13testingcrud.mapper.AsignaturaMapper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
-import java.time.LocalDate;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+
+import org.mockito.junit.jupiter.MockitoExtension;
+
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-@RunWith(MockitoJUnitRunner.class)
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@ExtendWith(MockitoExtension.class)
 public class AsignaturaMapperTest {
 
     private AsignaturaMapper asignaturaMapper;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Inicializa el mapper antes de cada prueba
         asignaturaMapper = new AsignaturaMapper();
@@ -41,12 +47,12 @@ public class AsignaturaMapperTest {
         AsignaturaEntity result = asignaturaMapper.toEntity(asignaturaInputDTO);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos del DTO se hayan mapeado correctamente a la entidad
-        Assert.assertEquals(asignaturaInputDTO.getComents(), result.getComents());
-        Assert.assertEquals(asignaturaInputDTO.getInitialDate(), result.getInitialDate());
-        Assert.assertEquals(asignaturaInputDTO.getFinishDate(), result.getFinishDate());
+        assertEquals(asignaturaInputDTO.getComents(), result.getComents());
+        assertEquals(asignaturaInputDTO.getInitialDate(), result.getInitialDate());
+        assertEquals(asignaturaInputDTO.getFinishDate(), result.getFinishDate());
     }
 
     @Test
@@ -66,13 +72,13 @@ public class AsignaturaMapperTest {
         AsignaturaInputDTO result = asignaturaMapper.toDTO(asignaturaEntity);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos de la entidad se hayan mapeado correctamente al DTO
-        Assert.assertEquals(asignaturaEntity.getIdAsignatura(), result.getIdAsignatura());
-        Assert.assertEquals(asignaturaEntity.getComents(), result.getComents());
-        Assert.assertEquals(asignaturaEntity.getInitialDate(), result.getInitialDate());
-        Assert.assertEquals(asignaturaEntity.getFinishDate(), result.getFinishDate());
+        assertEquals(asignaturaEntity.getIdAsignatura(), result.getIdAsignatura());
+        assertEquals(asignaturaEntity.getComents(), result.getComents());
+        assertEquals(asignaturaEntity.getInitialDate(), result.getInitialDate());
+        assertEquals(asignaturaEntity.getFinishDate(), result.getFinishDate());
     }
 
     @Test
@@ -105,18 +111,18 @@ public class AsignaturaMapperTest {
         List<AsignaturaInputDTO> result = asignaturaMapper.toDTOList(asignaturaEntities);
 
         // Verifica que el resultado no sea nulo y tenga el tamaño correcto
-        Assert.assertNotNull(result);
-        Assert.assertEquals(asignaturaEntities.size(), result.size());
+        assertNotNull(result);
+        assertEquals(asignaturaEntities.size(), result.size());
 
         // Verifica que los atributos de las entidades se hayan mapeado correctamente a los DTOs
-        Assert.assertEquals(asignaturaEntity1.getIdAsignatura(), result.get(0).getIdAsignatura());
-        Assert.assertEquals(asignaturaEntity1.getComents(), result.get(0).getComents());
-        Assert.assertEquals(asignaturaEntity1.getInitialDate(), result.get(0).getInitialDate());
-        Assert.assertEquals(asignaturaEntity1.getFinishDate(), result.get(0).getFinishDate());
+        assertEquals(asignaturaEntity1.getIdAsignatura(), result.get(0).getIdAsignatura());
+        assertEquals(asignaturaEntity1.getComents(), result.get(0).getComents());
+        assertEquals(asignaturaEntity1.getInitialDate(), result.get(0).getInitialDate());
+        assertEquals(asignaturaEntity1.getFinishDate(), result.get(0).getFinishDate());
 
-        Assert.assertEquals(asignaturaEntity2.getIdAsignatura(), result.get(1).getIdAsignatura());
-        Assert.assertEquals(asignaturaEntity2.getComents(), result.get(1).getComents());
-        Assert.assertEquals(asignaturaEntity2.getInitialDate(), result.get(1).getInitialDate());
-        Assert.assertEquals(asignaturaEntity2.getFinishDate(), result.get(1).getFinishDate());
+        assertEquals(asignaturaEntity2.getIdAsignatura(), result.get(1).getIdAsignatura());
+        assertEquals(asignaturaEntity2.getComents(), result.get(1).getComents());
+        assertEquals(asignaturaEntity2.getInitialDate(), result.get(1).getInitialDate());
+        assertEquals(asignaturaEntity2.getFinishDate(), result.get(1).getFinishDate());
     }
 }

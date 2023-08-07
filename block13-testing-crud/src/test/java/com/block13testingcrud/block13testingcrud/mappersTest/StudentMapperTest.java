@@ -8,18 +8,25 @@ import com.block13testingcrud.block13testingcrud.entities.StudentEntity;
 import com.block13testingcrud.block13testingcrud.mapper.StudentMapper;
 import com.block13testingcrud.block13testingcrud.repository.ProfesorRepository;
 import com.block13testingcrud.block13testingcrud.services.PersonaService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Clase de pruebas para el mapeador StudentMapper.
@@ -30,7 +37,7 @@ import java.util.Optional;
  * en todas las pruebas, pero sigue siendo necesario para otras.
  */
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StudentMapperTest {
 
     private StudentMapper studentMapper;
@@ -41,7 +48,7 @@ public class StudentMapperTest {
     @Mock
     private ProfesorRepository profesorRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Inicializa el mapper antes de cada prueba
         studentMapper = new StudentMapper();
@@ -76,15 +83,15 @@ public class StudentMapperTest {
         StudentEntity result = studentMapper.toEntity(studentInputDto);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos del DTO se hayan mapeado correctamente a la entidad
-        Assert.assertEquals(studentInputDto.getIdStudent(), result.getIdStudent());
-        Assert.assertEquals(personaEntityMock, result.getPersona());
-        Assert.assertEquals(studentInputDto.getNumHoursWeek(), result.getNumHoursWeek());
-        Assert.assertEquals(studentInputDto.getComments(), result.getComments());
-        Assert.assertEquals(profesorEntityMock, result.getProfesor());
-        Assert.assertEquals(studentInputDto.getBranch(), result.getBranch());
+        assertEquals(studentInputDto.getIdStudent(), result.getIdStudent());
+        assertEquals(personaEntityMock, result.getPersona());
+        assertEquals(studentInputDto.getNumHoursWeek(), result.getNumHoursWeek());
+        assertEquals(studentInputDto.getComments(), result.getComments());
+        assertEquals(profesorEntityMock, result.getProfesor());
+        assertEquals(studentInputDto.getBranch(), result.getBranch());
     }
 
     @Test
@@ -110,15 +117,15 @@ public class StudentMapperTest {
         StudentInputDto result = studentMapper.toDTO(studentEntity);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos de la entidad se hayan mapeado correctamente al DTO
-        Assert.assertEquals(studentEntity.getIdStudent(), result.getIdStudent());
-        Assert.assertEquals(studentEntity.getPersona().getIdPersona(), result.getIdPersona());
-        Assert.assertEquals(studentEntity.getNumHoursWeek(), result.getNumHoursWeek());
-        Assert.assertEquals(studentEntity.getComments(), result.getComments());
-        Assert.assertEquals(studentEntity.getProfesor().getIdProfesor(), result.getIdProfesor());
-        Assert.assertEquals(studentEntity.getBranch(), result.getBranch());
+        assertEquals(studentEntity.getIdStudent(), result.getIdStudent());
+        assertEquals(studentEntity.getPersona().getIdPersona(), result.getIdPersona());
+        assertEquals(studentEntity.getNumHoursWeek(), result.getNumHoursWeek());
+        assertEquals(studentEntity.getComments(), result.getComments());
+        assertEquals(studentEntity.getProfesor().getIdProfesor(), result.getIdProfesor());
+        assertEquals(studentEntity.getBranch(), result.getBranch());
     }
 
     @Test
@@ -141,20 +148,20 @@ public class StudentMapperTest {
         PersonaInputDto result = studentMapper.convertToDTO(personaEntity);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos de la entidad se hayan mapeado correctamente al DTO
-        Assert.assertEquals(personaEntity.getIdPersona(), result.getId());
-        Assert.assertEquals(personaEntity.getUsuario(), result.getUsuario());
-        Assert.assertEquals(personaEntity.getName(), result.getName());
-        Assert.assertEquals(personaEntity.getSurname(), result.getSurname());
-        Assert.assertEquals(personaEntity.getCompanyEmail(), result.getCompanyEmail());
-        Assert.assertEquals(personaEntity.getPersonalEmail(), result.getPersonalEmail());
-        Assert.assertEquals(personaEntity.getCity(), result.getCity());
-        Assert.assertEquals(personaEntity.isActive(), result.isActive());
-        Assert.assertEquals(personaEntity.getCreatedDate(), result.getCreated_date());
-        Assert.assertEquals(personaEntity.getImageUrl(), result.getImagenUrl());
-        Assert.assertEquals(personaEntity.getTerminationDate(), result.getTermination_date());
+        assertEquals(personaEntity.getIdPersona(), result.getId());
+        assertEquals(personaEntity.getUsuario(), result.getUsuario());
+        assertEquals(personaEntity.getName(), result.getName());
+        assertEquals(personaEntity.getSurname(), result.getSurname());
+        assertEquals(personaEntity.getCompanyEmail(), result.getCompanyEmail());
+        assertEquals(personaEntity.getPersonalEmail(), result.getPersonalEmail());
+        assertEquals(personaEntity.getCity(), result.getCity());
+        assertEquals(personaEntity.isActive(), result.isActive());
+        assertEquals(personaEntity.getCreatedDate(), result.getCreated_date());
+        assertEquals(personaEntity.getImageUrl(), result.getImagenUrl());
+        assertEquals(personaEntity.getTerminationDate(), result.getTermination_date());
     }
 
     @Test
@@ -176,13 +183,13 @@ public class StudentMapperTest {
         List<PersonaInputDto> result = studentMapper.toDTOList(personaEntities);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que la lista resultante tenga la misma cantidad de elementos que la lista de entidades
-        Assert.assertEquals(personaEntities.size(), result.size());
+        assertEquals(personaEntities.size(), result.size());
 
         // Verifica que los atributos de las entidades se hayan mapeado correctamente a los DTOs
-        Assert.assertEquals(personaEntities.get(0).getIdPersona(), result.get(0).getId());
-        Assert.assertEquals(personaEntities.get(1).getIdPersona(), result.get(1).getId());
+        assertEquals(personaEntities.get(0).getIdPersona(), result.get(0).getId());
+        assertEquals(personaEntities.get(1).getIdPersona(), result.get(1).getId());
     }
 }

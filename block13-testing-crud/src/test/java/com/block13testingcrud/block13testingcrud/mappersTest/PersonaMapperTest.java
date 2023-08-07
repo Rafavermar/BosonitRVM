@@ -3,21 +3,27 @@ package com.block13testingcrud.block13testingcrud.mappersTest;
 import com.block13testingcrud.block13testingcrud.dto.input.PersonaInputDto;
 import com.block13testingcrud.block13testingcrud.entities.PersonaEntity;
 import com.block13testingcrud.block13testingcrud.mapper.PersonaMapper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@ExtendWith(MockitoExtension.class)
 public class PersonaMapperTest {
 
     private PersonaMapper personaMapper;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Inicializa el mapper antes de cada prueba
         personaMapper = new PersonaMapper();
@@ -45,20 +51,20 @@ public class PersonaMapperTest {
         PersonaEntity result = personaMapper.toEntity(personaInputDto);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos del DTO se hayan mapeado correctamente a la entidad
-        Assert.assertEquals(personaInputDto.getUsuario(), result.getUsuario());
-        Assert.assertEquals(personaInputDto.getPassword(), result.getPassword());
-        Assert.assertEquals(personaInputDto.getName(), result.getName());
-        Assert.assertEquals(personaInputDto.getSurname(), result.getSurname());
-        Assert.assertEquals(personaInputDto.getCompanyEmail(), result.getCompanyEmail());
-        Assert.assertEquals(personaInputDto.getPersonalEmail(), result.getPersonalEmail());
-        Assert.assertEquals(personaInputDto.getCity(), result.getCity());
-        Assert.assertEquals(personaInputDto.isActive(), result.isActive());
-        Assert.assertEquals(personaInputDto.getCreated_date(), result.getCreatedDate());
-        Assert.assertEquals(personaInputDto.getImagenUrl(), result.getImageUrl());
-        Assert.assertEquals(personaInputDto.getTermination_date(), result.getTerminationDate());
+        assertEquals(personaInputDto.getUsuario(), result.getUsuario());
+        assertEquals(personaInputDto.getPassword(), result.getPassword());
+        assertEquals(personaInputDto.getName(), result.getName());
+        assertEquals(personaInputDto.getSurname(), result.getSurname());
+        assertEquals(personaInputDto.getCompanyEmail(), result.getCompanyEmail());
+        assertEquals(personaInputDto.getPersonalEmail(), result.getPersonalEmail());
+        assertEquals(personaInputDto.getCity(), result.getCity());
+        assertEquals(personaInputDto.isActive(), result.isActive());
+        assertEquals(personaInputDto.getCreated_date(), result.getCreatedDate());
+        assertEquals(personaInputDto.getImagenUrl(), result.getImageUrl());
+        assertEquals(personaInputDto.getTermination_date(), result.getTerminationDate());
     }
 
     @Test
@@ -84,20 +90,20 @@ public class PersonaMapperTest {
         PersonaInputDto result = personaMapper.toDTO(personaEntity);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos de la entidad se hayan mapeado correctamente al DTO
-        Assert.assertEquals(personaEntity.getIdPersona(), result.getId());
-        Assert.assertEquals(personaEntity.getUsuario(), result.getUsuario());
-        Assert.assertEquals(personaEntity.getPassword(), result.getPassword());
-        Assert.assertEquals(personaEntity.getName(), result.getName());
-        Assert.assertEquals(personaEntity.getSurname(), result.getSurname());
-        Assert.assertEquals(personaEntity.getCompanyEmail(), result.getCompanyEmail());
-        Assert.assertEquals(personaEntity.getPersonalEmail(), result.getPersonalEmail());
-        Assert.assertEquals(personaEntity.getCity(), result.getCity());
-        Assert.assertEquals(personaEntity.isActive(), result.isActive());
-        Assert.assertEquals(personaEntity.getCreatedDate(), result.getCreated_date());
-        Assert.assertEquals(personaEntity.getImageUrl(), result.getImagenUrl());
-        Assert.assertEquals(personaEntity.getTerminationDate(), result.getTermination_date());
+        assertEquals(personaEntity.getIdPersona(), result.getId());
+        assertEquals(personaEntity.getUsuario(), result.getUsuario());
+        assertEquals(personaEntity.getPassword(), result.getPassword());
+        assertEquals(personaEntity.getName(), result.getName());
+        assertEquals(personaEntity.getSurname(), result.getSurname());
+        assertEquals(personaEntity.getCompanyEmail(), result.getCompanyEmail());
+        assertEquals(personaEntity.getPersonalEmail(), result.getPersonalEmail());
+        assertEquals(personaEntity.getCity(), result.getCity());
+        assertEquals(personaEntity.isActive(), result.isActive());
+        assertEquals(personaEntity.getCreatedDate(), result.getCreated_date());
+        assertEquals(personaEntity.getImageUrl(), result.getImagenUrl());
+        assertEquals(personaEntity.getTerminationDate(), result.getTermination_date());
     }
 }

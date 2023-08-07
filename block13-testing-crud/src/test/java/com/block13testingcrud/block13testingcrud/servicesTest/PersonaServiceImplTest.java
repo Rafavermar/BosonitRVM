@@ -9,38 +9,52 @@ import com.block13testingcrud.block13testingcrud.repository.ProfesorEstudianteRe
 import com.block13testingcrud.block13testingcrud.repository.ProfesorRepository;
 import com.block13testingcrud.block13testingcrud.repository.StudentRepository;
 import com.block13testingcrud.block13testingcrud.services.PersonaServiceImpl;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-@Transactional
-@RunWith(MockitoJUnitRunner.class)
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class PersonaServiceImplTest {
 
     @InjectMocks
+    @Autowired
     private PersonaServiceImpl personaService;
 
-    @Mock
+    @MockBean
     private PersonaRepository personaRepository;
 
-    @Mock
+    @MockBean
     private ProfesorRepository profesorRepository;
 
-    @Mock
+    @MockBean
     private StudentRepository studentRepository;
 
-    @Mock
+    @MockBean
     private ProfesorEstudianteRepository profesorEstudianteRepository;
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     public void testAgregarPersona() {
@@ -60,16 +74,17 @@ public class PersonaServiceImplTest {
         Mockito.verify(personaRepository).save(persona);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(persona, result);
+        assertEquals(persona, result);
     }
 
-    @Test(expected = UnprocessableEntityException.class)
+
+    @Test
     public void testAgregarPersonaMissingFields() {
         // Define una persona de prueba sin campos requeridos
         PersonaEntity persona = new PersonaEntity();
 
-        // Ejecuta el método que queremos probar, esperando que lance una excepción
-        personaService.agregarPersona(persona);
+        // Ejecuta el método que queremos probar y verifica si lanza una excepción
+        assertThrows(UnprocessableEntityException.class, () -> personaService.agregarPersona(persona));
     }
 
     @Test
@@ -90,18 +105,19 @@ public class PersonaServiceImplTest {
         Mockito.verify(personaRepository).findById(id);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(persona, result);
+        assertEquals(persona, result);
     }
 
-    @Test(expected = EntityNotFoundException.class)
+
+    @Test
     public void testBuscarPorIdNotFound() {
         Integer id = 999;
 
         // Define el comportamiento esperado del repositorio
         Mockito.when(personaRepository.findById(id)).thenReturn(Optional.empty());
 
-        // Ejecuta el método que queremos probar, esperando que lance una excepción
-        personaService.buscarPorId(id);
+        // Ejecuta el método que queremos probar y verifica si lanza una excepción
+        assertThrows(EntityNotFoundException.class, () -> personaService.buscarPorId(id));
     }
 
     @Test
@@ -123,18 +139,18 @@ public class PersonaServiceImplTest {
         Mockito.verify(personaRepository).findByUsuario(usuario);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(persona, result);
+        assertEquals(persona, result);
     }
 
-    @Test(expected = EntityByNameNotFoundException.class)
+    @Test
     public void testBuscarPorUsuarioNotFound() {
         String usuario = "usuario999";
 
         // Define el comportamiento esperado del repositorio
         Mockito.when(personaRepository.findByUsuario(usuario)).thenReturn(Optional.empty());
 
-        // Ejecuta el método que queremos probar, esperando que lance una excepción
-        personaService.buscarPorUsuario(usuario);
+        // Ejecuta el método que queremos probar y verifica si lanza una excepción
+        assertThrows(EntityByNameNotFoundException.class, () -> personaService.buscarPorUsuario(usuario));
     }
 
     @Test
@@ -154,7 +170,7 @@ public class PersonaServiceImplTest {
         Mockito.verify(personaRepository).findAll();
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(personas, result);
+        assertEquals(personas, result);
     }
 
     @Test
@@ -208,12 +224,12 @@ public class PersonaServiceImplTest {
         Mockito.verify(personaRepository).findById(id);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(personaModificar.getUsuario(), result.getUsuario());
-        Assert.assertEquals(personaModificar.getName(), result.getName());
-        Assert.assertEquals(personaModificar.getCity(), result.getCity());
+        assertEquals(personaModificar.getUsuario(), result.getUsuario());
+        assertEquals(personaModificar.getName(), result.getName());
+        assertEquals(personaModificar.getCity(), result.getCity());
     }
 
-    @Test(expected = UnprocessableEntityException.class)
+    @Test
     public void testModificarPersonaMissingFields() {
         Integer id = 1;
 
@@ -227,8 +243,8 @@ public class PersonaServiceImplTest {
         // Define una persona de prueba sin campos requeridos
         PersonaEntity personaModificar = new PersonaEntity();
 
-        // Ejecuta el método que queremos probar, esperando que lance una excepción
-        personaService.modificarPersona(id, personaModificar);
+        // Ejecuta el método que queremos probar y verifica si lanza una excepción
+        assertThrows(UnprocessableEntityException.class, () -> personaService.modificarPersona(id, personaModificar));
     }
 
 }

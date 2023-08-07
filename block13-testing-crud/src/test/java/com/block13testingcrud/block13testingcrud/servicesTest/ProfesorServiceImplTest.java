@@ -12,53 +12,63 @@ import com.block13testingcrud.block13testingcrud.mapper.ProfesorMapper;
 import com.block13testingcrud.block13testingcrud.repository.ProfesorEstudianteRepository;
 import com.block13testingcrud.block13testingcrud.repository.ProfesorRepository;
 import com.block13testingcrud.block13testingcrud.repository.StudentRepository;
-import com.block13testingcrud.block13testingcrud.services.PersonaService;
+
+import com.block13testingcrud.block13testingcrud.services.PersonaServiceImpl;
 import com.block13testingcrud.block13testingcrud.services.ProfesorServiceImpl;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.runner.RunWith;
+
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-@Transactional
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class ProfesorServiceImplTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ProfesorServiceImplTest.class);
 
     @InjectMocks
+    @Autowired
     private ProfesorServiceImpl profesorService;
 
-    @Mock
+    @MockBean
     private ProfesorRepository profesorRepository;
 
-    @Mock
+    @MockBean
     private StudentRepository studentRepository;
 
-    @Mock
+    @MockBean
     private ProfesorEstudianteRepository profesorEstudianteRepository;
 
-    @Mock
+    @MockBean
     private ProfesorMapper profesorMapper;
 
-    @Mock
-    private PersonaService personaService;
+    @MockBean
+    @Autowired
+    private PersonaServiceImpl personaService;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -67,16 +77,16 @@ public class ProfesorServiceImplTest {
         ProfesorEntity profesor = new ProfesorEntity();
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.save(profesor)).thenReturn(profesor);
+        when(profesorRepository.save(profesor)).thenReturn(profesor);
 
         // Ejecuta el método que queremos probar
         ProfesorEntity result = profesorService.saveProfesor(profesor);
 
         // Verifica que el método del repositorio haya sido llamado con el profesor correcto
-        Mockito.verify(profesorRepository).save(profesor);
+        verify(profesorRepository).save(profesor);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(profesor, result);
+        assertEquals(profesor, result);
     }
 
     @Test
@@ -87,54 +97,79 @@ public class ProfesorServiceImplTest {
         profesores.add(new ProfesorEntity());
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findAll()).thenReturn(profesores);
+        when(profesorRepository.findAll()).thenReturn(profesores);
 
         // Ejecuta el método que queremos probar
         List<ProfesorEntity> result = profesorService.getAllProfesores();
 
         // Verifica que el método del repositorio haya sido llamado
-        Mockito.verify(profesorRepository).findAll();
+        verify(profesorRepository).findAll();
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(profesores, result);
+        assertEquals(profesores, result);
     }
 
     @Test
-    public void testGetProfesorById() {
+    public void testGetProfesorDTOById() {
         Integer id = 1;
 
         // Define un profesor de prueba con el ID dado
         ProfesorEntity profesor = new ProfesorEntity();
         profesor.setIdProfesor(id);
 
-        // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findById(id)).thenReturn(Optional.of(profesor));
+        // Define el DTO esperado
+        ProfesorInputDto expectedDto = new ProfesorInputDto();
+        expectedDto.setIdProfesor(id);
+
+        // Define el comportamiento esperado del repositorio y del mapper
+        when(profesorRepository.findById(id)).thenReturn(Optional.of(profesor));
+        when(profesorMapper.toDTO(profesor)).thenReturn(expectedDto);
 
         // Ejecuta el método que queremos probar
-        ProfesorEntity result = profesorService.getProfesorById(id);
+        ProfesorInputDto result = profesorService.getProfesorDTOById(id);
 
         // Verifica que el método del repositorio haya sido llamado con el ID correcto
-        Mockito.verify(profesorRepository).findById(id);
+        verify(profesorRepository).findById(id);
+
+        // Verifica que el método del mapper haya sido llamado con el ProfesorEntity correcto
+        verify(profesorMapper).toDTO(profesor);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(profesor, result);
+        assertEquals(expectedDto, result);
     }
+
+    @Test
+    public void testGetProfesorDTOByIdThrowsException() {
+        Integer id = 1;
+
+        // Define el comportamiento esperado del repositorio para lanzar la excepción
+        when(profesorRepository.findById(id)).thenReturn(Optional.empty());
+
+        // Esperamos que se lance una excepción de tipo EntityNotFoundException
+        assertThrows(EntityNotFoundException.class, () -> {
+            profesorService.getProfesorDTOById(id);
+        });
+
+        // Verifica que el método del repositorio haya sido llamado con el ID correcto
+        verify(profesorRepository).findById(id);
+    }
+
 
     @Test
     public void testGetProfesorByIdNotFound() {
         Integer id = 999;
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findById(id)).thenReturn(Optional.empty());
+        when(profesorRepository.findById(id)).thenReturn(Optional.empty());
 
         // Ejecuta el método que queremos probar
         ProfesorEntity result = profesorService.getProfesorById(id);
 
         // Verifica que el método del repositorio haya sido llamado con el ID correcto
-        Mockito.verify(profesorRepository).findById(id);
+        verify(profesorRepository).findById(id);
 
         // Verifica que el resultado sea nulo
-        Assert.assertNull(result);
+        assertNull(result);
     }
     /**
      * Test para verificar el comportamiento del método deleteProfesor en ProfesorService.
@@ -171,7 +206,7 @@ public class ProfesorServiceImplTest {
         profesor.setProfesorEstudiantes(profesorEstudiantes);
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findById(idProfesor)).thenReturn(Optional.of(profesor));
+        when(profesorRepository.findById(idProfesor)).thenReturn(Optional.of(profesor));
 
         // Ejecuta el método que queremos probar
         logger.info("Before deleteProfesor");
@@ -179,27 +214,27 @@ public class ProfesorServiceImplTest {
         logger.info("After deleteProfesor");
 
         // Verifica que el método del repositorio haya sido llamado con el ID correcto
-        Mockito.verify(profesorRepository).findById(idProfesor);
+        verify(profesorRepository).findById(idProfesor);
 
         // Verifica que los métodos delete se llamen con los objetos correctos
-        Mockito.verify(profesorEstudianteRepository).delete(profesorEstudiante);
+        verify(profesorEstudianteRepository).delete(profesorEstudiante);
 
-        Mockito.verify(profesorRepository).delete(profesor);
+        verify(profesorRepository).delete(profesor);
     }
 
 
 
-
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     public void testDeleteProfesorNotFound() {
         Integer id = 999;
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findById(id)).thenReturn(Optional.empty());
+       // when(profesorRepository.findById(id)).thenReturn(Optional.empty());
 
         // Ejecuta el método que queremos probar, esperando que lance una excepción
-        profesorService.deleteProfesor(id);
+        assertThrows(EntityNotFoundException.class, () -> profesorService.deleteProfesor(id));
     }
+
 
 
     @Test
@@ -218,18 +253,18 @@ public class ProfesorServiceImplTest {
         profesorActualizado.setBranch("Rama actualizada");
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findById(id)).thenReturn(Optional.of(profesor));
-        Mockito.when(profesorRepository.save(profesor)).thenReturn(profesorActualizado);
+        when(profesorRepository.findById(id)).thenReturn(Optional.of(profesor));
+        when(profesorRepository.save(profesor)).thenReturn(profesorActualizado);
 
         // Ejecuta el método que queremos probar
         ProfesorEntity result = profesorService.updateProfesor(id, profesorActualizado);
 
         // Verifica que el método del repositorio haya sido llamado con el ID correcto
-        Mockito.verify(profesorRepository).findById(id);
-        Mockito.verify(profesorRepository).save(profesor);
+        verify(profesorRepository).findById(id);
+        verify(profesorRepository).save(profesor);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(profesorActualizado, result);
+        assertEquals(profesorActualizado, result);
     }
 
     @Test
@@ -244,53 +279,48 @@ public class ProfesorServiceImplTest {
         profesorActualizado.setBranch("Rama actualizada");
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findById(id)).thenReturn(Optional.empty());
+        when(profesorRepository.findById(id)).thenReturn(Optional.empty());
 
         // Ejecuta el método que queremos probar
         ProfesorEntity result = profesorService.updateProfesor(id, profesorActualizado);
 
         // Verifica que el método del repositorio haya sido llamado con el ID correcto
-        Mockito.verify(profesorRepository).findById(id);
+        verify(profesorRepository).findById(id);
 
         // Verifica que el resultado sea nulo
-        Assert.assertNull(result);
+        assertNull(result);
     }
 
     @Test
-    public void testGetProfesorDTOById() {
-        Integer id = 1;
+    public void testGetProfesorDTOByIdFound() {
+        Integer idProfesor = 1;
+        ProfesorEntity mockProfesor = new ProfesorEntity();
 
-        // Define un profesor de prueba con el ID dado
-        ProfesorEntity profesor = new ProfesorEntity();
-        profesor.setIdProfesor(id);
+        ProfesorInputDto mockDto = new ProfesorInputDto();
 
-        // Define un DTO de profesor de prueba
-        ProfesorInputDto profesorDTO = new ProfesorInputDto();
-        profesorDTO.setIdProfesor(id);
+        when(profesorRepository.findById(idProfesor)).thenReturn(Optional.of(mockProfesor));
+        when(profesorMapper.toDTO(mockProfesor)).thenReturn(mockDto);
 
-        // Define el comportamiento esperado del repositorio y del mapper
-        Mockito.when(profesorRepository.findById(id)).thenReturn(Optional.of(profesor));
-        Mockito.when(profesorMapper.toDTO(profesor)).thenReturn(profesorDTO);
+        ProfesorInputDto resultDto = profesorService.getProfesorDTOById(idProfesor);
 
-        // Ejecuta el método que queremos probar
-        ProfesorInputDto result = profesorService.getProfesorDTOById(id);
-
-        // Verifica que el método del repositorio haya sido llamado con el ID correcto
-        Mockito.verify(profesorRepository).findById(id);
-
-        // Verifica que el resultado sea el esperado
-        Assert.assertEquals(profesorDTO, result);
+        assertNotNull(resultDto);
+        verify(profesorRepository).findById(idProfesor);
+        verify(profesorMapper).toDTO(mockProfesor);
     }
 
-    @Test(expected = EntityNotFoundException.class)
+
+
+
+
+    @Test
     public void testGetProfesorDTOByIdNotFound() {
         Integer id = 999;
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findById(id)).thenReturn(Optional.empty());
+       // when(profesorRepository.findById(id)).thenReturn(Optional.empty());
 
         // Ejecuta el método que queremos probar, esperando que lance una excepción
-        profesorService.getProfesorDTOById(id);
+        assertThrows(EntityNotFoundException.class, () -> profesorService.getProfesorDTOById(id));
     }
 
     @Test
@@ -308,17 +338,17 @@ public class ProfesorServiceImplTest {
         profesorDTO.setIdProfesor(1);
 
         // Define el comportamiento esperado del repositorio y del mapper
-        Mockito.when(profesorRepository.findByPersonaName(name)).thenReturn(profesores);
-        Mockito.when(profesorMapper.toDTOList(profesores)).thenReturn(Collections.singletonList(profesorDTO));
+        when(profesorRepository.findByPersonaName(name)).thenReturn(profesores);
+        when(profesorMapper.toDTOList(profesores)).thenReturn(Collections.singletonList(profesorDTO));
 
         // Ejecuta el método que queremos probar
         List<ProfesorInputDto> result = profesorService.getProfesoresDTOByName(name);
 
         // Verifica que el método del repositorio haya sido llamado con el nombre correcto
-        Mockito.verify(profesorRepository).findByPersonaName(name);
+        verify(profesorRepository).findByPersonaName(name);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(Collections.singletonList(profesorDTO), result);
+        assertEquals(Collections.singletonList(profesorDTO), result);
     }
 
     @Test
@@ -326,16 +356,16 @@ public class ProfesorServiceImplTest {
         String name = "NombreInexistente";
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findByPersonaName(name)).thenReturn(Collections.emptyList());
+        when(profesorRepository.findByPersonaName(name)).thenReturn(Collections.emptyList());
 
         // Ejecuta el método que queremos probar
         List<ProfesorInputDto> result = profesorService.getProfesoresDTOByName(name);
 
         // Verifica que el método del repositorio haya sido llamado con el nombre correcto
-        Mockito.verify(profesorRepository).findByPersonaName(name);
+        verify(profesorRepository).findByPersonaName(name);
 
         // Verifica que el resultado sea una lista vacía
-        Assert.assertTrue(result.isEmpty());
+        assertTrue(result.isEmpty());
     }
 
     @Test
@@ -351,28 +381,28 @@ public class ProfesorServiceImplTest {
         profesorFullDTO.setIdProfesor(id);
 
         // Define el comportamiento esperado del repositorio y del mapper
-        Mockito.when(profesorRepository.findById(id)).thenReturn(Optional.of(profesor));
-        Mockito.when(profesorMapper.toFullDTO(profesor)).thenReturn(profesorFullDTO);
+        when(profesorRepository.findById(id)).thenReturn(Optional.of(profesor));
+        when(profesorMapper.toFullDTO(profesor)).thenReturn(profesorFullDTO);
 
         // Ejecuta el método que queremos probar
         ProfesorFullOutputDto result = profesorService.getProfesorFullDetailsById(id);
 
         // Verifica que el método del repositorio haya sido llamado con el ID correcto
-        Mockito.verify(profesorRepository).findById(id);
+        verify(profesorRepository).findById(id);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(profesorFullDTO, result);
+        assertEquals(profesorFullDTO, result);
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     public void testGetProfesorFullDetailsByIdNotFound() {
         Integer id = 999;
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findById(id)).thenReturn(Optional.empty());
+        when(profesorRepository.findById(id)).thenReturn(Optional.empty());
 
         // Ejecuta el método que queremos probar, esperando que lance una excepción
-        profesorService.getProfesorFullDetailsById(id);
+        assertThrows(EntityNotFoundException.class, () -> profesorService.getProfesorFullDetailsById(id));
     }
 
     @Test
@@ -390,17 +420,17 @@ public class ProfesorServiceImplTest {
         profesorFullDTO.setIdProfesor(1);
 
         // Define el comportamiento esperado del repositorio y del mapper
-        Mockito.when(profesorRepository.findByPersonaName(name)).thenReturn(profesores);
-        Mockito.when(profesorMapper.toFullDTOList(profesores)).thenReturn(Collections.singletonList(profesorFullDTO));
+        when(profesorRepository.findByPersonaName(name)).thenReturn(profesores);
+        when(profesorMapper.toFullDTOList(profesores)).thenReturn(Collections.singletonList(profesorFullDTO));
 
         // Ejecuta el método que queremos probar
         List<ProfesorFullOutputDto> result = profesorService.getProfesorFullDetailsByName(name);
 
         // Verifica que el método del repositorio haya sido llamado con el nombre correcto
-        Mockito.verify(profesorRepository).findByPersonaName(name);
+        verify(profesorRepository).findByPersonaName(name);
 
         // Verifica que el resultado sea el esperado
-        Assert.assertEquals(Collections.singletonList(profesorFullDTO), result);
+        assertEquals(Collections.singletonList(profesorFullDTO), result);
     }
 
     @Test
@@ -408,16 +438,16 @@ public class ProfesorServiceImplTest {
         String name = "NombreInexistente";
 
         // Define el comportamiento esperado del repositorio
-        Mockito.when(profesorRepository.findByPersonaName(name)).thenReturn(Collections.emptyList());
+        when(profesorRepository.findByPersonaName(name)).thenReturn(Collections.emptyList());
 
         // Ejecuta el método que queremos probar
         List<ProfesorFullOutputDto> result = profesorService.getProfesorFullDetailsByName(name);
 
         // Verifica que el método del repositorio haya sido llamado con el nombre correcto
-        Mockito.verify(profesorRepository).findByPersonaName(name);
+        verify(profesorRepository).findByPersonaName(name);
 
         // Verifica que el resultado sea una lista vacía
-        Assert.assertTrue(result.isEmpty());
+        assertTrue(result.isEmpty());
     }
     /**
      * Esta prueba fue diseñada para esperar una excepción UnprocessableEntityException.
@@ -455,44 +485,47 @@ public class ProfesorServiceImplTest {
      *
      * @see ProfesorServiceImpl#createProfesor(ProfesorInputDto)
      */
-    @Test(expected = UnprocessableEntityException.class)
-    public void testCreateProfesor() {
-        // Define el ID de persona para el profesor
+
+    @Test
+    void testCreateProfesor() {
+        // Arrange
+        ProfesorInputDto profesor = new ProfesorInputDto();
+        profesor.setIdProfesor(1);
+        profesor.setComments("John Doe");
+        profesor.setBranch("Branch");
+
         Integer idPersona = 1;
+        profesor.setIdPersona(idPersona);
 
-        // Define un DTO de profesor de prueba
-        ProfesorInputDto profesorDTO = new ProfesorInputDto();
-        profesorDTO.setIdPersona(idPersona);
-
-        // Define una entidad PersonaEntity de prueba
-        PersonaEntity personaEntity = new PersonaEntity();
-        personaEntity.setIdPersona(idPersona);
-
-        // Define un profesor de prueba
         ProfesorEntity profesorEntity = new ProfesorEntity();
-        profesorEntity.setIdProfesor(1);
+        ProfesorEntity savedProfesorEntity = new ProfesorEntity();
 
-       /** // Define el comportamiento esperado del servicio de personas y del repositorio
-        Mockito.when(personaService.buscarPorId(idPersona)).thenReturn(personaEntity);
-        Mockito.when(profesorMapper.toEntity(profesorDTO)).thenReturn(profesorEntity);
-        Mockito.when(profesorRepository.save(profesorEntity)).thenReturn(profesorEntity);
-        Mockito.when(profesorMapper.toDTO(profesorEntity)).thenReturn(profesorDTO);
-**/
-        // Ejecuta el método que queremos probar
-        ProfesorInputDto result = profesorService.createProfesor(profesorDTO);
+        PersonaEntity personaEntity = new PersonaEntity();
 
-        // Verifica que el método del servicio de personas haya sido llamado con el ID correcto
-        Mockito.verify(personaService).buscarPorId(idPersona);
+        when(profesorMapper.toEntity(profesor)).thenReturn(profesorEntity);
+        when(profesorMapper.toDTO(savedProfesorEntity)).thenReturn(profesor);
+        when(personaService.buscarPorId(idPersona)).thenReturn(personaEntity);
+        when(profesorService.saveProfesor(profesorEntity)).thenReturn(savedProfesorEntity);
 
-        // Verifica que el método del mapper haya sido llamado con el DTO correcto
-        Mockito.verify(profesorMapper).toEntity(profesorDTO);
+        // Act
+        try {
+            ProfesorInputDto createdProfesor = profesorService.createProfesor(profesor);
 
-        // Verifica que el método del repositorio haya sido llamado con el profesor correcto
-        Mockito.verify(profesorRepository).save(profesorEntity);
+            // Assert
+            assertNotNull(createdProfesor);
+            assertEquals(profesor.getIdProfesor(), createdProfesor.getIdProfesor());
+            assertEquals(profesor.getComments(), createdProfesor.getComments());
+            assertEquals(profesor.getBranch(), createdProfesor.getBranch());
 
-        // Verifica que el resultado sea el esperado
-        Assert.assertEquals(profesorDTO, result);
+        } catch (UnprocessableEntityException e) {
+            // Handle the expected exception. In this case, we will fail the test deliberately
+            fail("UnprocessableEntityException should not have been thrown. Message: " + e.getMessage());
+        } catch (Exception e) {
+            // Catch other unexpected exceptions and fail the test with their details
+            fail("Unexpected exception was thrown. Message: " + e.getMessage());
+        }
     }
+
 
     @Test
     public void testCreateProfesorMissingFields() {
@@ -505,10 +538,5 @@ public class ProfesorServiceImplTest {
         assertThrows(UnprocessableEntityException.class, () -> profesorService.createProfesor(profesorDTO));
 
     }
-
-
-
-
-
 
 }

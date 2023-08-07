@@ -36,27 +36,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Jacoco -->
+		<!-- junit-jupiter-api -->
 		<dependency>
-			<groupId>org.jacoco</groupId>
-			<artifactId>jacoco-maven-plugin</artifactId>
-			<version>0.8.10</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.jacoco/org.jacoco.agent -->
-		<dependency>
-			<groupId>org.jacoco</groupId>
-			<artifactId>org.jacoco.agent</artifactId>
-			<version>0.8.10</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.10.0</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.jacoco/org.jacoco.core -->
-		<dependency>
-			<groupId>org.jacoco</groupId>
-			<artifactId>org.jacoco.core</artifactId>
-			<version>0.8.10</version>
-		</dependency>
-
-
 		<!-- SONARQUBE-->
 		<dependency>
 			<groupId>org.sonarsource.scanner.maven</groupId>
@@ -97,21 +83,22 @@
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>3.8.0.2131</version>
 			</plugin>
+
+
 			<!-- Plugin JACOCO-->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.8</version>
+				<version>0.8.7</version>
 				<executions>
 					<execution>
-						<id>jacoco-initialize</id>
+						<id>prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
 					<execution>
-						<id>jacoco-site</id>
-						<phase>package</phase>
+						<id>report</id>
 						<goals>
 							<goal>report</goal>
 						</goals>

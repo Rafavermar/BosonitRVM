@@ -11,58 +11,52 @@ import com.block13testingcrud.block13testingcrud.repository.*;
 import com.block13testingcrud.block13testingcrud.services.PersonaService;
 import com.block13testingcrud.block13testingcrud.services.ProfesorService;
 import com.block13testingcrud.block13testingcrud.services.StudentServiceImpl;
+
 import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.*;
+@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class StudentServiceImplTest {
 
     @InjectMocks
+    @Autowired
     private StudentServiceImpl studentService;
 
-    @Mock
+    @MockBean
     private StudentRepository studentRepository;
-    @Mock
+    @MockBean
     private ProfesorRepository profesorRepository;
-    @Mock
+    @MockBean
     private PersonaRepository personaRepository;
-    @Mock
+    @MockBean
     private StudentMapper studentMapper;
-    @Mock
+    @MockBean
     private ProfesorEstudianteRepository profesorEstudianteRepository;
-    @Mock
+    @MockBean
     private AsignaturaRepository asignaturaRepository;
-    @Mock
+    @MockBean
     private PersonaService personaService;
-    @Mock
+    @MockBean
     private ProfesorService profesorService;
 
     @BeforeEach
-    public void init() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-
-
-
-
-
-
-/*    @Test
-    public void testDeleteStudent() {
-        Integer id = 1;
-        StudentEntity student = new StudentEntity();
-        when(studentRepository.findByIdStudent(id)).thenReturn(Optional.of(student));
-
-        studentService.deleteStudent(id);
-
-        verify(profesorEstudianteRepository, times(1)).deleteByStudent(student);
-        verify(studentRepository, times(1)).delete(student);
-    }*/
 
 
     @Test
@@ -158,22 +152,24 @@ public class StudentServiceImplTest {
         student.setIdStudent(1);
         when(studentRepository.findByIdStudent(1)).thenReturn(Optional.of(student));
 
-        // Agrega más comportamientos simulados según sea necesario
 
         studentService.deleteStudent(1);
 
-        // Agrega más aserciones según sea necesario
+
     }
     @Test
     public void testGetStudentFullDetails() {
         // Crear datos ficticios
         StudentEntity studentEntity = new StudentEntity();
         studentEntity.setIdStudent(1);
-        // (Establecer más propiedades aquí)
+
 
         PersonaEntity personaEntity = new PersonaEntity();
         personaEntity.setIdPersona(2);
-        // (Establecer más propiedades aquí)
+
+
+        // Ensure that the StudentEntity instance has its PersonaEntity set
+        studentEntity.setPersona(personaEntity);
 
         // Configurar las respuestas de los repositorios
         when(studentRepository.findById(1)).thenReturn(Optional.of(studentEntity));
@@ -185,33 +181,44 @@ public class StudentServiceImplTest {
         // Verificar el resultado
         assertEquals(1, result.getIdStudent().intValue());
         assertEquals(2, result.getIdPersona().intValue());
-        // (Verificar más propiedades aquí)
+
     }
 
+
     @Test
-    public void testAgregarEstudiante() {
-        // Crear datos ficticios
+    public void agregarEstudianteTest() {
+        // Datos de prueba
         StudentInputDto studentInputDto = new StudentInputDto();
         studentInputDto.setIdPersona(1);
         studentInputDto.setIdProfesor(2);
-        // (Establecer más propiedades aquí)
 
         PersonaEntity personaEntity = new PersonaEntity();
-        // (Establecer propiedades aquí)
-
         ProfesorEntity profesorEntity = new ProfesorEntity();
-        // (Establecer propiedades aquí)
+        profesorEntity.setStudents(new ArrayList<>());
+        profesorEntity.setProfesorEstudiantes(new HashSet<>());
 
-        // Configurar las respuestas de los servicios/repositorios
+
+        StudentEntity studentEntity = new StudentEntity();
+        StudentEntity savedStudentEntity = new StudentEntity();
+
+        // Configuraciones mock
         when(personaService.buscarPorId(1)).thenReturn(personaEntity);
         when(profesorRepository.findById(2)).thenReturn(Optional.of(profesorEntity));
-        // (Configurar más respuestas aquí)
+        when(studentMapper.toEntity(studentInputDto)).thenReturn(studentEntity);
+        when(studentRepository.save(studentEntity)).thenReturn(savedStudentEntity);
 
-        // Llamar al método que se está probando
-        StudentInputDto result = studentService.agregarEstudiante(studentInputDto);
+        // Este es solo un ejemplo, podrías tener que mockear más métodos según tu implementación real
+        when(studentMapper.toDTO(savedStudentEntity)).thenReturn(new StudentInputDto());
+
+        // Llamar al método a probar
+        StudentInputDto resultDto = studentService.agregarEstudiante(studentInputDto);
 
         // Verificar el resultado
-        // (Asegúrate de verificar las propiedades y las llamadas esperadas)
+        assertNotNull(resultDto);
+
+        // Añadir más aserciones si es necesario
+        // Por ejemplo, si quieres comprobar que ciertos métodos fueron llamados, etc.
     }
+
 
 }

@@ -5,21 +5,27 @@ import com.block13testingcrud.block13testingcrud.dto.output.ProfesorFullOutputDt
 import com.block13testingcrud.block13testingcrud.entities.PersonaEntity;
 import com.block13testingcrud.block13testingcrud.entities.ProfesorEntity;
 import com.block13testingcrud.block13testingcrud.mapper.ProfesorMapper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@ExtendWith(MockitoExtension.class)
 public class ProfesorMapperTest {
 
     private ProfesorMapper profesorMapper;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Inicializa el mapper antes de cada prueba
         profesorMapper = new ProfesorMapper();
@@ -38,13 +44,13 @@ public class ProfesorMapperTest {
         ProfesorEntity result = profesorMapper.toEntity(profesorInputDto);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos del DTO se hayan mapeado correctamente a la entidad
-        Assert.assertEquals(profesorInputDto.getIdProfesor(), result.getIdProfesor());
-        Assert.assertEquals(profesorInputDto.getIdPersona(), result.getPersona().getIdPersona());
-        Assert.assertEquals(profesorInputDto.getComments(), result.getComments());
-        Assert.assertEquals(profesorInputDto.getBranch(), result.getBranch());
+        assertEquals(profesorInputDto.getIdProfesor(), result.getIdProfesor());
+        assertEquals(profesorInputDto.getIdPersona(), result.getPersona().getIdPersona());
+        assertEquals(profesorInputDto.getComments(), result.getComments());
+        assertEquals(profesorInputDto.getBranch(), result.getBranch());
     }
 
     @Test
@@ -62,13 +68,13 @@ public class ProfesorMapperTest {
         ProfesorInputDto result = profesorMapper.toDTO(profesorEntity);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos de la entidad se hayan mapeado correctamente al DTO
-        Assert.assertEquals(profesorEntity.getIdProfesor(), result.getIdProfesor());
-        Assert.assertEquals(profesorEntity.getPersona().getIdPersona(), result.getIdPersona());
-        Assert.assertEquals(profesorEntity.getComments(), result.getComments());
-        Assert.assertEquals(profesorEntity.getBranch(), result.getBranch());
+        assertEquals(profesorEntity.getIdProfesor(), result.getIdProfesor());
+        assertEquals(profesorEntity.getPersona().getIdPersona(), result.getIdPersona());
+        assertEquals(profesorEntity.getComments(), result.getComments());
+        assertEquals(profesorEntity.getBranch(), result.getBranch());
     }
 
     @Test
@@ -98,22 +104,22 @@ public class ProfesorMapperTest {
         ProfesorFullOutputDto result = profesorMapper.toFullDTO(profesorEntity);
 
         // Verifica que el resultado no sea nulo
-        Assert.assertNotNull(result);
+        assertNotNull(result);
 
         // Verifica que los atributos de la entidad y de la entidad PersonaEntity asociada se hayan mapeado correctamente al DTO completo
-        Assert.assertEquals(profesorEntity.getIdProfesor(), result.getIdProfesor());
-        Assert.assertEquals(profesorEntity.getPersona().getIdPersona(), result.getIdPersona());
-        Assert.assertEquals(profesorEntity.getPersona().getUsuario(), result.getUsuario());
-        Assert.assertEquals(profesorEntity.getPersona().getName(), result.getName());
-        Assert.assertEquals(profesorEntity.getPersona().getSurname(), result.getSurname());
-        Assert.assertEquals(profesorEntity.getPersona().getCompanyEmail(), result.getCompanyEmail());
-        Assert.assertEquals(profesorEntity.getPersona().getPersonalEmail(), result.getPersonalEmail());
-        Assert.assertEquals(profesorEntity.getPersona().getCity(), result.getCity());
-        Assert.assertEquals(profesorEntity.getPersona().isActive(), result.isActive());
-        Assert.assertEquals(profesorEntity.getPersona().getCreatedDate(), result.getCreatedDate());
-        Assert.assertEquals(profesorEntity.getPersona().getImageUrl(), result.getImageUrl());
-        Assert.assertEquals(profesorEntity.getPersona().getTerminationDate(), result.getTerminationDate());
-        Assert.assertEquals(profesorEntity.getComments(), result.getComments());
-        Assert.assertEquals(profesorEntity.getBranch(), result.getBranch());
+        assertEquals(profesorEntity.getIdProfesor(), result.getIdProfesor());
+        assertEquals(profesorEntity.getPersona().getIdPersona(), result.getIdPersona());
+        assertEquals(profesorEntity.getPersona().getUsuario(), result.getUsuario());
+        assertEquals(profesorEntity.getPersona().getName(), result.getName());
+        assertEquals(profesorEntity.getPersona().getSurname(), result.getSurname());
+        assertEquals(profesorEntity.getPersona().getCompanyEmail(), result.getCompanyEmail());
+        assertEquals(profesorEntity.getPersona().getPersonalEmail(), result.getPersonalEmail());
+        assertEquals(profesorEntity.getPersona().getCity(), result.getCity());
+        assertEquals(profesorEntity.getPersona().isActive(), result.isActive());
+        assertEquals(profesorEntity.getPersona().getCreatedDate(), result.getCreatedDate());
+        assertEquals(profesorEntity.getPersona().getImageUrl(), result.getImageUrl());
+        assertEquals(profesorEntity.getPersona().getTerminationDate(), result.getTerminationDate());
+        assertEquals(profesorEntity.getComments(), result.getComments());
+        assertEquals(profesorEntity.getBranch(), result.getBranch());
     }
 }
