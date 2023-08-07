@@ -12,13 +12,16 @@ import com.block13testingcrud.block13testingcrud.services.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class StudentMapper {
 
     @Autowired
-    private PersonaService personaService; // Asegúrate de que PersonaService esté correctamente inyectado.
+    public PersonaService personaService;
     @Autowired
-    private ProfesorRepository profesorRepository;
+    public ProfesorRepository profesorRepository;
 
     public StudentEntity toEntity(StudentInputDto studentInputDto) {
         StudentEntity studentEntity = new StudentEntity();
@@ -60,7 +63,7 @@ public class StudentMapper {
         return studentInputDto;
     }
 
-    private PersonaInputDto convertToDTO(PersonaEntity personaEntity) {
+    public PersonaInputDto convertToDTO(PersonaEntity personaEntity) {
         PersonaInputDto personaInputDto = new PersonaInputDto();
         personaInputDto.setId(personaEntity.getIdPersona());
         personaInputDto.setUsuario(personaEntity.getUsuario());
@@ -87,5 +90,11 @@ public class StudentMapper {
             profesorInputDto.setBranch(profesorEntity.getBranch());
         }
         return profesorInputDto;
+    }
+
+    public List<PersonaInputDto> toDTOList(List<PersonaEntity> personaEntities) {
+        return personaEntities.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 }

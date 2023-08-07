@@ -1,106 +1,217 @@
 package com.block13testingcrud.block13testingcrud.servicesTest;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import com.block13testingcrud.block13testingcrud.entities.StudentEntity;
+import com.block13testingcrud.block13testingcrud.dto.input.StudentInputDto;
+import com.block13testingcrud.block13testingcrud.dto.output.EstudianteFullOutDto;
+import com.block13testingcrud.block13testingcrud.entities.*;
 import com.block13testingcrud.block13testingcrud.exception.EntityNotFoundException;
 import com.block13testingcrud.block13testingcrud.mapper.StudentMapper;
-import com.block13testingcrud.block13testingcrud.repository.PersonaRepository;
-import com.block13testingcrud.block13testingcrud.repository.ProfesorEstudianteRepository;
-import com.block13testingcrud.block13testingcrud.repository.ProfesorRepository;
-import com.block13testingcrud.block13testingcrud.repository.StudentRepository;
+import com.block13testingcrud.block13testingcrud.repository.*;
+import com.block13testingcrud.block13testingcrud.services.PersonaService;
+import com.block13testingcrud.block13testingcrud.services.ProfesorService;
 import com.block13testingcrud.block13testingcrud.services.StudentServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
 
-@SpringBootTest
+import java.util.*;
+
 public class StudentServiceImplTest {
-
-    @Mock
-    private StudentRepository studentRepository;
-
-    @Mock
-    private ProfesorRepository profesorRepository;
-
-    @Mock
-    private PersonaRepository personaRepository;
-
-    @Mock
-    private StudentMapper studentMapper;
-
-    @Mock
-    private ProfesorEstudianteRepository profesorEstudianteRepository;
-
-
 
     @InjectMocks
     private StudentServiceImpl studentService;
 
+    @Mock
+    private StudentRepository studentRepository;
+    @Mock
+    private ProfesorRepository profesorRepository;
+    @Mock
+    private PersonaRepository personaRepository;
+    @Mock
+    private StudentMapper studentMapper;
+    @Mock
+    private ProfesorEstudianteRepository profesorEstudianteRepository;
+    @Mock
+    private AsignaturaRepository asignaturaRepository;
+    @Mock
+    private PersonaService personaService;
+    @Mock
+    private ProfesorService profesorService;
+
+    @BeforeEach
+    public void init() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+
+
+
+
+
+
+/*    @Test
+    public void testDeleteStudent() {
+        Integer id = 1;
+        StudentEntity student = new StudentEntity();
+        when(studentRepository.findByIdStudent(id)).thenReturn(Optional.of(student));
+
+        studentService.deleteStudent(id);
+
+        verify(profesorEstudianteRepository, times(1)).deleteByStudent(student);
+        verify(studentRepository, times(1)).delete(student);
+    }*/
+
+
+    @Test
+    public void testDeleteStudentNotFound() {
+        Integer id = 1;
+        when(studentRepository.findByIdStudent(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> studentService.deleteStudent(id));
+    }
+
+
+
+    @Test
+    public void testDeleteStudentAsignaturasHandling() {
+        Integer id = 1;
+        StudentEntity student = new StudentEntity();
+        AsignaturaEntity asignatura = new AsignaturaEntity();
+        asignatura.getStudents().add(student);
+        student.getAsignaturas().add(asignatura);
+
+        when(studentRepository.findByIdStudent(id)).thenReturn(Optional.of(student));
+
+        studentService.deleteStudent(id);
+
+        assertTrue(asignatura.getStudents().isEmpty());
+        assertTrue(student.getAsignaturas().isEmpty());
+        verify(studentRepository, times(1)).save(student); // Verificar que se guarda el estudiante desvinculado
+        verify(studentRepository, times(1)).delete(student);
+    }
+
+    @Test
+    public void testDeleteStudentProfesorEstudiantesHandling() {
+        Integer id = 1;
+        StudentEntity student = new StudentEntity();
+        ProfesorEstudiante profesorEstudiante = new ProfesorEstudiante();
+        List<ProfesorEstudiante> profesorEstudiantes = List.of(profesorEstudiante);
+
+        when(studentRepository.findByIdStudent(id)).thenReturn(Optional.of(student));
+        when(profesorEstudianteRepository.findByStudent(student)).thenReturn(profesorEstudiantes);
+
+        studentService.deleteStudent(id);
+
+        verify(profesorEstudianteRepository, times(1)).deleteByStudent(student);
+        verify(studentRepository, times(1)).delete(student);
+    }
+
+
+    @Test
+    public void testStudentEntityGettersAndSetters() {
+        StudentEntity student = new StudentEntity();
+        PersonaEntity persona = new PersonaEntity();
+        persona.setName("John Doe");
+
+
+        student.setIdStudent(1);
+        student.setPersona(persona);
+
+        assertEquals(1, student.getIdStudent());
+        assertEquals("John Doe", student.getPersona().getName());
+
+    }
     @Test
     public void testSaveStudent() {
-        StudentEntity studentEntity = new StudentEntity();
+        StudentEntity student = new StudentEntity();
+        when(studentRepository.save(student)).thenReturn(student);
 
-
-        when(studentRepository.save(studentEntity)).thenReturn(studentEntity);
-
-        StudentEntity result = studentService.saveStudent(studentEntity);
-        assertEquals(studentEntity, result);
+        StudentEntity result = studentService.saveStudent(student);
+        assertEquals(result, student);
     }
 
     @Test
     public void testGetAllStudents() {
-        StudentEntity studentEntity1 = new StudentEntity();
-        StudentEntity studentEntity2 = new StudentEntity();
-
-
-        when(studentRepository.findAll()).thenReturn(Arrays.asList(studentEntity1, studentEntity2));
+        List<StudentEntity> students = Arrays.asList(new StudentEntity());
+        when(studentRepository.findAll()).thenReturn(students);
 
         List<StudentEntity> result = studentService.getAllStudents();
-        assertEquals(2, result.size());
-        assertEquals(studentEntity1, result.get(0));
-        assertEquals(studentEntity2, result.get(1));
+        assertEquals(result, students);
     }
 
     @Test
     public void testGetStudentById() {
-        StudentEntity studentEntity = new StudentEntity();
-        int id = 1;
+        StudentEntity student = new StudentEntity();
+        student.setIdStudent(1);
+        when(studentRepository.findById(1)).thenReturn(Optional.of(student));
 
-        when(studentRepository.findById(id)).thenReturn(Optional.of(studentEntity));
-
-        StudentEntity result = studentService.getStudentById(id);
-        assertEquals(studentEntity, result);
+        StudentEntity result = studentService.getStudentById(1);
+        assertEquals(result, student);
     }
 
     @Test
     public void testDeleteStudent() {
-        int idStudent = 1;
+        StudentEntity student = new StudentEntity();
+        student.setIdStudent(1);
+        when(studentRepository.findByIdStudent(1)).thenReturn(Optional.of(student));
+
+        // Agrega más comportamientos simulados según sea necesario
+
+        studentService.deleteStudent(1);
+
+        // Agrega más aserciones según sea necesario
+    }
+    @Test
+    public void testGetStudentFullDetails() {
+        // Crear datos ficticios
         StudentEntity studentEntity = new StudentEntity();
+        studentEntity.setIdStudent(1);
+        // (Establecer más propiedades aquí)
 
+        PersonaEntity personaEntity = new PersonaEntity();
+        personaEntity.setIdPersona(2);
+        // (Establecer más propiedades aquí)
 
-        when(studentRepository.findByIdStudent(idStudent)).thenReturn(Optional.of(studentEntity));
-        doNothing().when(profesorEstudianteRepository).deleteByStudent(studentEntity);
+        // Configurar las respuestas de los repositorios
+        when(studentRepository.findById(1)).thenReturn(Optional.of(studentEntity));
+        when(personaRepository.findById(2)).thenReturn(Optional.of(personaEntity));
 
-        assertDoesNotThrow(() -> studentService.deleteStudent(idStudent));
-        verify(studentRepository).delete(studentEntity);
+        // Llamar al método que se está probando
+        EstudianteFullOutDto result = studentService.getStudentFullDetails(1);
+
+        // Verificar el resultado
+        assertEquals(1, result.getIdStudent().intValue());
+        assertEquals(2, result.getIdPersona().intValue());
+        // (Verificar más propiedades aquí)
     }
 
     @Test
-    public void testDeleteStudentNotFound() {
-        int idStudent = 1;
+    public void testAgregarEstudiante() {
+        // Crear datos ficticios
+        StudentInputDto studentInputDto = new StudentInputDto();
+        studentInputDto.setIdPersona(1);
+        studentInputDto.setIdProfesor(2);
+        // (Establecer más propiedades aquí)
 
-        when(studentRepository.findByIdStudent(idStudent)).thenReturn(Optional.empty());
+        PersonaEntity personaEntity = new PersonaEntity();
+        // (Establecer propiedades aquí)
 
-        assertThrows(EntityNotFoundException.class, () -> studentService.deleteStudent(idStudent));
+        ProfesorEntity profesorEntity = new ProfesorEntity();
+        // (Establecer propiedades aquí)
+
+        // Configurar las respuestas de los servicios/repositorios
+        when(personaService.buscarPorId(1)).thenReturn(personaEntity);
+        when(profesorRepository.findById(2)).thenReturn(Optional.of(profesorEntity));
+        // (Configurar más respuestas aquí)
+
+        // Llamar al método que se está probando
+        StudentInputDto result = studentService.agregarEstudiante(studentInputDto);
+
+        // Verificar el resultado
+        // (Asegúrate de verificar las propiedades y las llamadas esperadas)
     }
-
-
 
 }

@@ -13,10 +13,7 @@ public class ApplicationException extends RuntimeException {
         this.statusCode = statusCode;
     }
 
-    public ApplicationException(String externalMessage, HttpStatus statusCode, String[] args) {
-        this.externalMessage = String.format(externalMessage, args);
-        this.statusCode = statusCode;
-    }
+
 
 
 

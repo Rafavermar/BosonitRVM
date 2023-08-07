@@ -1,0 +1,122 @@
+package com.block13testingcrud.block13testingcrud.mappersTest;
+
+import com.block13testingcrud.block13testingcrud.dto.input.AsignaturaInputDTO;
+import com.block13testingcrud.block13testingcrud.entities.AsignaturaEntity;
+import com.block13testingcrud.block13testingcrud.mapper.AsignaturaMapper;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+@RunWith(MockitoJUnitRunner.class)
+public class AsignaturaMapperTest {
+
+    private AsignaturaMapper asignaturaMapper;
+
+    @Before
+    public void setUp() {
+        // Inicializa el mapper antes de cada prueba
+        asignaturaMapper = new AsignaturaMapper();
+    }
+
+    @Test
+    public void testToEntity() {
+        // Crea un DTO de prueba
+        AsignaturaInputDTO asignaturaInputDTO = new AsignaturaInputDTO();
+        asignaturaInputDTO.setComents("Comentarios de prueba");
+
+        // Mockea las fechas
+        Date initialDate = Mockito.mock(Date.class);
+        Date finishDate = Mockito.mock(Date.class);
+        asignaturaInputDTO.setInitialDate(initialDate);
+        asignaturaInputDTO.setFinishDate(finishDate);
+
+        // Ejecuta el método que queremos probar
+        AsignaturaEntity result = asignaturaMapper.toEntity(asignaturaInputDTO);
+
+        // Verifica que el resultado no sea nulo
+        Assert.assertNotNull(result);
+
+        // Verifica que los atributos del DTO se hayan mapeado correctamente a la entidad
+        Assert.assertEquals(asignaturaInputDTO.getComents(), result.getComents());
+        Assert.assertEquals(asignaturaInputDTO.getInitialDate(), result.getInitialDate());
+        Assert.assertEquals(asignaturaInputDTO.getFinishDate(), result.getFinishDate());
+    }
+
+    @Test
+    public void testToDTO() {
+        // Crea una entidad de prueba
+        AsignaturaEntity asignaturaEntity = new AsignaturaEntity();
+        asignaturaEntity.setIdAsignatura(1);
+        asignaturaEntity.setComents("Comentarios de prueba");
+
+        // Mockea las fechas
+        Date initialDate = Mockito.mock(Date.class);
+        Date finishDate = Mockito.mock(Date.class);
+        asignaturaEntity.setInitialDate(initialDate);
+        asignaturaEntity.setFinishDate(finishDate);
+
+        // Ejecuta el método que queremos probar
+        AsignaturaInputDTO result = asignaturaMapper.toDTO(asignaturaEntity);
+
+        // Verifica que el resultado no sea nulo
+        Assert.assertNotNull(result);
+
+        // Verifica que los atributos de la entidad se hayan mapeado correctamente al DTO
+        Assert.assertEquals(asignaturaEntity.getIdAsignatura(), result.getIdAsignatura());
+        Assert.assertEquals(asignaturaEntity.getComents(), result.getComents());
+        Assert.assertEquals(asignaturaEntity.getInitialDate(), result.getInitialDate());
+        Assert.assertEquals(asignaturaEntity.getFinishDate(), result.getFinishDate());
+    }
+
+    @Test
+    public void testToDTOList() {
+        // Crea una lista de entidades de prueba
+        List<AsignaturaEntity> asignaturaEntities = new ArrayList<>();
+        AsignaturaEntity asignaturaEntity1 = new AsignaturaEntity();
+        asignaturaEntity1.setIdAsignatura(1);
+        asignaturaEntity1.setComents("Comentarios de prueba 1");
+
+        // Mockea las fechas
+        Date initialDate1 = Mockito.mock(Date.class);
+        Date finishDate1 = Mockito.mock(Date.class);
+        asignaturaEntity1.setInitialDate(initialDate1);
+        asignaturaEntity1.setFinishDate(finishDate1);
+        asignaturaEntities.add(asignaturaEntity1);
+
+        AsignaturaEntity asignaturaEntity2 = new AsignaturaEntity();
+        asignaturaEntity2.setIdAsignatura(2);
+        asignaturaEntity2.setComents("Comentarios de prueba 2");
+
+        // Mockea las fechas
+        Date initialDate2 = Mockito.mock(Date.class);
+        Date finishDate2 = Mockito.mock(Date.class);
+        asignaturaEntity2.setInitialDate(initialDate2);
+        asignaturaEntity2.setFinishDate(finishDate2);
+        asignaturaEntities.add(asignaturaEntity2);
+
+        // Ejecuta el método que queremos probar
+        List<AsignaturaInputDTO> result = asignaturaMapper.toDTOList(asignaturaEntities);
+
+        // Verifica que el resultado no sea nulo y tenga el tamaño correcto
+        Assert.assertNotNull(result);
+        Assert.assertEquals(asignaturaEntities.size(), result.size());
+
+        // Verifica que los atributos de las entidades se hayan mapeado correctamente a los DTOs
+        Assert.assertEquals(asignaturaEntity1.getIdAsignatura(), result.get(0).getIdAsignatura());
+        Assert.assertEquals(asignaturaEntity1.getComents(), result.get(0).getComents());
+        Assert.assertEquals(asignaturaEntity1.getInitialDate(), result.get(0).getInitialDate());
+        Assert.assertEquals(asignaturaEntity1.getFinishDate(), result.get(0).getFinishDate());
+
+        Assert.assertEquals(asignaturaEntity2.getIdAsignatura(), result.get(1).getIdAsignatura());
+        Assert.assertEquals(asignaturaEntity2.getComents(), result.get(1).getComents());
+        Assert.assertEquals(asignaturaEntity2.getInitialDate(), result.get(1).getInitialDate());
+        Assert.assertEquals(asignaturaEntity2.getFinishDate(), result.get(1).getFinishDate());
+    }
+}

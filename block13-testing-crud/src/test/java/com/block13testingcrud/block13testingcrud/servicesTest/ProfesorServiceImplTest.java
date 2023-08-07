@@ -25,12 +25,15 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+@Transactional
 @RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class ProfesorServiceImplTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ProfesorServiceImplTest.class);

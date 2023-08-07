@@ -16,14 +16,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Transactional
 @RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class AsignaturaServiceImplTest {
 
     @InjectMocks
@@ -85,6 +88,17 @@ public class AsignaturaServiceImplTest {
         Assert.assertEquals(outputDTO, result);
     }
 
+  /*  @Test(expected = RuntimeException.class)
+    public void testCreateAsignaturaWithInvalidData() {
+        // Define el objeto de entrada con datos inválidos
+        AsignaturaInputDTO inputDTO = new AsignaturaInputDTO();
+        inputDTO.setInitialDate(null); // Nombre nulo, lo cual es inválido
+
+        // Ejecuta el método que queremos probar, esperando que lance una excepción
+        asignaturaService.createAsignatura(inputDTO);
+    }*/
+
+
     @Test
     public void testDeleteAsignatura() {
         // Define el id de la asignatura a eliminar
@@ -127,6 +141,7 @@ public class AsignaturaServiceImplTest {
         Assert.assertEquals(new ResponseEntity<>("Asignatura eliminada correctamente", HttpStatus.OK), responseEntity);
     }
 
+
     @Test(expected = RuntimeException.class)
     public void testDeleteAsignaturaNotFound() {
         // Define el id de una asignatura que no existe en la base de datos
@@ -138,6 +153,51 @@ public class AsignaturaServiceImplTest {
         // Ejecuta el método que queremos probar, esperando que lance una excepción
         asignaturaService.deleteAsignatura(idAsignatura);
     }
+
+    @Test
+    public void testDeleteAsignaturaWithAssociatedStudents() {
+        // Define el id de la asignatura a eliminar
+        Integer idAsignatura = 1;
+
+        // Crea una asignatura de prueba con estudiantes asociados
+        AsignaturaEntity asignatura = new AsignaturaEntity();
+        asignatura.setIdAsignatura(idAsignatura);
+
+        List<StudentEntity> students = new ArrayList<>();
+        StudentEntity student1 = new StudentEntity();
+        student1.setIdStudent(101);
+        student1.getAsignaturas().add(asignatura); // Asignatura asociada al estudiante
+        StudentEntity student2 = new StudentEntity();
+        student2.setIdStudent(102);
+        student2.getAsignaturas().add(asignatura); // Asignatura asociada al estudiante
+
+        students.add(student1);
+        students.add(student2);
+        asignatura.setStudents(students);
+
+        // Define el comportamiento esperado del repositorio
+        Mockito.when(asignaturaRepository.findById(idAsignatura)).thenReturn(Optional.of(asignatura));
+
+        // Ejecuta el método que queremos probar
+        ResponseEntity<?> responseEntity = asignaturaService.deleteAsignatura(idAsignatura);
+
+        // Verifica que el método del repositorio haya sido llamado con el parámetro correcto
+        Mockito.verify(asignaturaRepository).findById(idAsignatura);
+
+        // Verifica que los estudiantes ya no tengan la asignatura asociada
+        Assert.assertTrue(student1.getAsignaturas().isEmpty());
+        Assert.assertTrue(student2.getAsignaturas().isEmpty());
+
+        // Verifica que el método del repositorio haya sido llamado para guardar los estudiantes
+        Mockito.verify(studentRepository, Mockito.times(2)).save(Mockito.any(StudentEntity.class));
+
+        // Verifica que el método del repositorio haya sido llamado para eliminar la asignatura
+        Mockito.verify(asignaturaRepository).delete(asignatura);
+
+        // Verifica que el resultado sea el esperado
+        Assert.assertEquals(new ResponseEntity<>("Asignatura eliminada correctamente", HttpStatus.OK), responseEntity);
+    }
+
 
     @Test
     public void testGetAllAsignaturas() {
@@ -190,6 +250,7 @@ public class AsignaturaServiceImplTest {
         Assert.assertEquals(students, result);
     }
 
+
     @Test(expected = EntityNotFoundException.class)
     public void testGetStudentByAsignaturaIdNotFound() {
         // Define el id de una asignatura que no existe en la base de datos
@@ -201,6 +262,7 @@ public class AsignaturaServiceImplTest {
         // Ejecuta el método que queremos probar, esperando que lance una excepción
         asignaturaService.getStudentByAsignaturaId(idAsignatura);
     }
+
 
 
 }

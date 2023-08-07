@@ -16,12 +16,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Transactional
 @RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class PersonaServiceImplTest {
 
     @InjectMocks
