@@ -3,29 +3,36 @@ package com.block13testingcrud.block13testingcrud.controllersTest;
 import com.block13testingcrud.block13testingcrud.controllers.PersonaController;
 import com.block13testingcrud.block13testingcrud.dto.input.PersonaInputDto;
 import com.block13testingcrud.block13testingcrud.entities.PersonaEntity;
+
+import com.block13testingcrud.block13testingcrud.exception.PersonaNotFoundException;
 import com.block13testingcrud.block13testingcrud.exception.UnprocessableEntityException;
 import com.block13testingcrud.block13testingcrud.mapper.PersonaMapper;
 import com.block13testingcrud.block13testingcrud.services.PersonaService;
 import com.block13testingcrud.block13testingcrud.services.ProfesorService;
 import com.block13testingcrud.block13testingcrud.services.StudentService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class PersonaControllerTest {
 
     @Mock
@@ -165,7 +172,49 @@ public class PersonaControllerTest {
                 .andExpect(jsonPath("$.mensaje").value("Entidad no procesable: El usuario ya existe"));
     }
 
+    @Test
+    public void borrarPersona_withInvalidId_shouldReturnNotFound() throws Exception {
+        int id = 1;
+        doNothing().when(studentService).deleteStudent(id);
+        doNothing().when(profesorService).deleteProfesor(id);
+        doThrow(new PersonaNotFoundException(id)).when(personaService).borrarPersona(id);
 
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/personas/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+// TODO arreglar los tests
+    /*
+    @Test
+    public void buscarPorId_withInvalidId_shouldReturnBadRequest() throws Exception {
+        int id = -1; // ID inválido, menor o igual a 0
+        when(personaService.buscarPorId(id)).thenThrow(new BadRequestException());
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/personas/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+/*
+    @Test
+    public void buscarPorId_withValidId_shouldReturnOk() throws Exception {
+        int id = 1;
+        PersonaEntity persona = new PersonaEntity(id, "John Doe", 30, "New York");
+        when(personaService.buscarPorId(id)).thenReturn(persona);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/personas/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.nombre").value("John Doe"))
+                .andExpect(jsonPath("$.edad").value(30))
+                .andExpect(jsonPath("$.poblacion").value("New York"));
+    }
+
+*/
 
 
 }

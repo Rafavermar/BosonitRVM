@@ -19,17 +19,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.lang.reflect.Method;
 import java.util.*;
+
+
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class StudentServiceImplTest {
@@ -168,11 +167,21 @@ public class StudentServiceImplTest {
         // Crear datos ficticios
         StudentEntity studentEntity = new StudentEntity();
         studentEntity.setIdStudent(1);
-
+        studentEntity.setNumHoursWeek(20);
+        studentEntity.setComments("Estudiante aplicado");
 
         PersonaEntity personaEntity = new PersonaEntity();
         personaEntity.setIdPersona(2);
-
+        personaEntity.setUsuario("user1");
+        personaEntity.setName("John");
+        personaEntity.setSurname("Doe");
+        personaEntity.setCompanyEmail("john.doe@company.com");
+        personaEntity.setPersonalEmail("john.doe@gmail.com");
+        personaEntity.setCity("New York");
+        personaEntity.setActive(true);
+        personaEntity.setCreatedDate(new Date());
+        personaEntity.setImageUrl("https://example.com/johndoe.jpg");
+        personaEntity.setTerminationDate(null);
 
         // Ensure that the StudentEntity instance has its PersonaEntity set
         studentEntity.setPersona(personaEntity);
@@ -186,9 +195,21 @@ public class StudentServiceImplTest {
 
         // Verificar el resultado
         assertEquals(1, result.getIdStudent().intValue());
+        assertEquals(20, result.getNumHoursWeek());
+        assertEquals("Estudiante aplicado", result.getComments());
         assertEquals(2, result.getIdPersona().intValue());
-
+        assertEquals("user1", result.getUsuario());
+        assertEquals("John", result.getName());
+        assertEquals("Doe", result.getSurname());
+        assertEquals("john.doe@company.com", result.getCompanyEmail());
+        assertEquals("john.doe@gmail.com", result.getPersonalEmail());
+        assertEquals("New York", result.getCity());
+        assertTrue(result.isActive());
+        assertNotNull(result.getCreatedDate());
+        assertEquals("https://example.com/johndoe.jpg", result.getImageUrl());
+        assertNull(result.getTerminationDate());
     }
+
 
 
     @Test

@@ -6,6 +6,7 @@ import com.block13testingcrud.block13testingcrud.dto.output.ProfesorFullOutputDt
 import com.block13testingcrud.block13testingcrud.entities.PersonaEntity;
 import com.block13testingcrud.block13testingcrud.exception.CustomError;
 import com.block13testingcrud.block13testingcrud.exception.EntityNotFoundException;
+import com.block13testingcrud.block13testingcrud.exception.PersonaNotFoundException;
 import com.block13testingcrud.block13testingcrud.exception.UnprocessableEntityException;
 import com.block13testingcrud.block13testingcrud.mapper.PersonaMapper;
 import com.block13testingcrud.block13testingcrud.services.PersonaService;
@@ -139,7 +140,12 @@ public class PersonaController {
             CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getExternalMessage());
             return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-    }
 
+
+    }
+    @ExceptionHandler(PersonaNotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(PersonaNotFoundException ex) {
+        return ResponseEntity.notFound().build();
+    }
 
 }

@@ -12,7 +12,5 @@ public class PersonaNotFoundException extends ApplicationException {
         super(String.format(EXTERNAL_MESSAGE, idPersona), HttpStatus.NOT_FOUND);
 
     }
-    public PersonaNotFoundException(String usuario) {
-        super(String.format(EXTERNAL_MESSAGE, usuario), HttpStatus.NOT_FOUND);
-    }
+
 }

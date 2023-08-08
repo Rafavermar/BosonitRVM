@@ -4,6 +4,7 @@ package com.block13testingcrud.block13testingcrud.controllers;
 
 import com.block13testingcrud.block13testingcrud.dto.input.StudentInputDto;
 import com.block13testingcrud.block13testingcrud.services.StudentService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

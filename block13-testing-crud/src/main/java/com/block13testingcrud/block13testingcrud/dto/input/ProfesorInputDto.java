@@ -1,12 +1,10 @@
 package com.block13testingcrud.block13testingcrud.dto.input;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProfesorInputDto {

@@ -576,10 +576,10 @@ public class ProfesorServiceImplTest {
             assertEquals(profesor.getBranch(), createdProfesor.getBranch());
 
         } catch (UnprocessableEntityException e) {
-            // Handle the expected exception. In this case, we will fail the test deliberately
+
             fail("UnprocessableEntityException should not have been thrown. Message: " + e.getMessage());
         } catch (Exception e) {
-            // Catch other unexpected exceptions and fail the test with their details
+
             fail("Unexpected exception was thrown. Message: " + e.getMessage());
         }
     }
