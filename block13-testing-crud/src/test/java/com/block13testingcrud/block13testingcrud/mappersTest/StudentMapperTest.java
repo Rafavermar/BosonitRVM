@@ -1,6 +1,7 @@
 package com.block13testingcrud.block13testingcrud.mappersTest;
 
 import com.block13testingcrud.block13testingcrud.dto.input.PersonaInputDto;
+import com.block13testingcrud.block13testingcrud.dto.input.ProfesorInputDto;
 import com.block13testingcrud.block13testingcrud.dto.input.StudentInputDto;
 import com.block13testingcrud.block13testingcrud.entities.PersonaEntity;
 import com.block13testingcrud.block13testingcrud.entities.ProfesorEntity;
@@ -192,4 +193,31 @@ public class StudentMapperTest {
         assertEquals(personaEntities.get(0).getIdPersona(), result.get(0).getId());
         assertEquals(personaEntities.get(1).getIdPersona(), result.get(1).getId());
     }
+
+    @Test
+    public void testConvertToDTOForProfesor() {
+        // Crea una entidad Profesor de prueba
+        ProfesorEntity profesorEntity = new ProfesorEntity();
+        profesorEntity.setIdProfesor(10);
+
+        PersonaEntity personaEntity = new PersonaEntity();
+        personaEntity.setIdPersona(1001);
+        profesorEntity.setPersona(personaEntity);
+
+        profesorEntity.setComments("Comentarios del profesor");
+        profesorEntity.setBranch("Ciencias");
+
+        // Ejecuta el método que queremos probar
+        ProfesorInputDto result = studentMapper.convertToDTO(profesorEntity);
+
+        // Verifica que el resultado no sea nulo
+        assertNotNull(result);
+
+        // Verifica que los atributos de la entidad se hayan mapeado correctamente al DTO
+        assertEquals(profesorEntity.getIdProfesor(), result.getIdProfesor());
+        assertEquals(profesorEntity.getPersona().getIdPersona(), result.getIdPersona());
+        assertEquals(profesorEntity.getComments(), result.getComments());
+        assertEquals(profesorEntity.getBranch(), result.getBranch());
+    }
+
 }

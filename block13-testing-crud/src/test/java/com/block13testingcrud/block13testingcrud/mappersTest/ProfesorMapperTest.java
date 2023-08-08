@@ -15,7 +15,9 @@ import org.mockito.Mockito;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -122,4 +124,121 @@ public class ProfesorMapperTest {
         assertEquals(profesorEntity.getComments(), result.getComments());
         assertEquals(profesorEntity.getBranch(), result.getBranch());
     }
+
+    @Test
+    public void testToDTOList() {
+        // Crea una lista de entidades de prueba
+        ProfesorEntity profesorEntity1 = new ProfesorEntity();
+        profesorEntity1.setIdProfesor(1);
+        PersonaEntity personaEntity1 = new PersonaEntity();
+        personaEntity1.setIdPersona(1001); // ID de PersonaEntity asociada
+        profesorEntity1.setPersona(personaEntity1);
+        profesorEntity1.setComments("Comentarios del profesor 1");
+        profesorEntity1.setBranch("Ciencias");
+
+        ProfesorEntity profesorEntity2 = new ProfesorEntity();
+        profesorEntity2.setIdProfesor(2);
+        PersonaEntity personaEntity2 = new PersonaEntity();
+        personaEntity2.setIdPersona(1002); // ID de PersonaEntity asociada
+        profesorEntity2.setPersona(personaEntity2);
+        profesorEntity2.setComments("Comentarios del profesor 2");
+        profesorEntity2.setBranch("Artes");
+
+        List<ProfesorEntity> profesorEntities = Arrays.asList(profesorEntity1, profesorEntity2);
+
+        // Ejecuta el método que queremos probar
+        List<ProfesorInputDto> resultList = profesorMapper.toDTOList(profesorEntities);
+
+        // Verifica que el resultado no sea nulo
+        assertNotNull(resultList);
+
+        // Verifica que la lista resultante tenga el mismo tamaño que la lista original
+        assertEquals(profesorEntities.size(), resultList.size());
+
+        // Verifica que los atributos de las entidades se hayan mapeado correctamente a los DTOs
+        for (int i = 0; i < profesorEntities.size(); i++) {
+            assertEquals(profesorEntities.get(i).getIdProfesor(), resultList.get(i).getIdProfesor());
+            assertEquals(profesorEntities.get(i).getPersona().getIdPersona(), resultList.get(i).getIdPersona());
+            assertEquals(profesorEntities.get(i).getComments(), resultList.get(i).getComments());
+            assertEquals(profesorEntities.get(i).getBranch(), resultList.get(i).getBranch());
+        }
+
+    }
+
+    @Test
+    public void testToFullDTOList() {
+        // Crea una lista de entidades de prueba
+        ProfesorEntity profesorEntity1 = new ProfesorEntity();
+        profesorEntity1.setIdProfesor(1);
+        PersonaEntity personaEntity1 = new PersonaEntity();
+        personaEntity1.setIdPersona(1001); // ID de PersonaEntity asociada
+        personaEntity1.setUsuario("user123");
+        personaEntity1.setName("John");
+        personaEntity1.setSurname("Doe");
+        personaEntity1.setCompanyEmail("john.doe@company.com");
+        personaEntity1.setPersonalEmail("john.doe@gmail.com");
+        personaEntity1.setCity("New York");
+        personaEntity1.setActive(true);
+        Date createdDate1 = Mockito.mock(Date.class);
+        personaEntity1.setCreatedDate(createdDate1);
+        personaEntity1.setImageUrl("http://example.com/image1.jpg");
+        Date terminationDate1 = Mockito.mock(Date.class);
+        personaEntity1.setTerminationDate(terminationDate1);
+        profesorEntity1.setPersona(personaEntity1);
+        profesorEntity1.setComments("Comentarios del profesor 1");
+        profesorEntity1.setBranch("Ciencias");
+
+        ProfesorEntity profesorEntity2 = new ProfesorEntity();
+        profesorEntity2.setIdProfesor(2);
+        PersonaEntity personaEntity2 = new PersonaEntity();
+        personaEntity2.setIdPersona(1002); // ID de PersonaEntity asociada
+        personaEntity2.setUsuario("user456");
+        personaEntity2.setName("Jane");
+        personaEntity2.setSurname("Smith");
+        personaEntity2.setCompanyEmail("jane.smith@company.com");
+        personaEntity2.setPersonalEmail("jane.smith@gmail.com");
+        personaEntity2.setCity("Los Angeles");
+        personaEntity2.setActive(false);
+        Date createdDate2 = Mockito.mock(Date.class);
+        personaEntity2.setCreatedDate(createdDate2);
+        personaEntity2.setImageUrl("http://example.com/image2.jpg");
+        Date terminationDate2 = Mockito.mock(Date.class);
+        personaEntity2.setTerminationDate(terminationDate2);
+        profesorEntity2.setPersona(personaEntity2);
+        profesorEntity2.setComments("Comentarios del profesor 2");
+        profesorEntity2.setBranch("Artes");
+
+        List<ProfesorEntity> profesorEntities = Arrays.asList(profesorEntity1, profesorEntity2);
+
+        // Ejecuta el método que queremos probar
+        List<ProfesorFullOutputDto> resultList = profesorMapper.toFullDTOList(profesorEntities);
+
+        // Verifica que el resultado no sea nulo
+        assertNotNull(resultList);
+
+        // Verifica que la lista resultante tenga el mismo tamaño que la lista original
+        assertEquals(profesorEntities.size(), resultList.size());
+
+        // Verifica que los atributos de las entidades y de las entidades PersonaEntity asociadas se hayan mapeado correctamente a los DTOs completos
+        for (int i = 0; i < profesorEntities.size(); i++) {
+            ProfesorEntity entity = profesorEntities.get(i);
+            ProfesorFullOutputDto dto = resultList.get(i);
+
+            assertEquals(entity.getIdProfesor(), dto.getIdProfesor());
+            assertEquals(entity.getPersona().getIdPersona(), dto.getIdPersona());
+            assertEquals(entity.getPersona().getUsuario(), dto.getUsuario());
+            assertEquals(entity.getPersona().getName(), dto.getName());
+            assertEquals(entity.getPersona().getSurname(), dto.getSurname());
+            assertEquals(entity.getPersona().getCompanyEmail(), dto.getCompanyEmail());
+            assertEquals(entity.getPersona().getPersonalEmail(), dto.getPersonalEmail());
+            assertEquals(entity.getPersona().getCity(), dto.getCity());
+            assertEquals(entity.getPersona().isActive(), dto.isActive());
+            assertEquals(entity.getPersona().getCreatedDate(), dto.getCreatedDate());
+            assertEquals(entity.getPersona().getImageUrl(), dto.getImageUrl());
+            assertEquals(entity.getPersona().getTerminationDate(), dto.getTerminationDate());
+            assertEquals(entity.getComments(), dto.getComments());
+            assertEquals(entity.getBranch(), dto.getBranch());
+        }
+    }
+
 }

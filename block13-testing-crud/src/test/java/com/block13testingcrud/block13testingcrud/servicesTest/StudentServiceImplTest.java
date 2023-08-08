@@ -20,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.lang.reflect.Method;
 import java.util.*;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -53,10 +55,13 @@ public class StudentServiceImplTest {
     @MockBean
     private ProfesorService profesorService;
 
+
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
 
 
 
@@ -339,16 +344,43 @@ public class StudentServiceImplTest {
         verify(studentRepository).save(mockStudent);
     }
 
-    // TODO arregla estos test
-   /** @Test
+    @Test
+    public void testGetStudentDTOById_validId_returnsDto() {
+
+        Integer id = 1;
+        StudentEntity mockEntity = new StudentEntity();
+        mockEntity.setIdStudent(1);
+
+
+        StudentInputDto mockDto = new StudentInputDto();
+        mockDto.setIdStudent(1);
+
+
+        Mockito.when(studentRepository.findById(id)).thenReturn(Optional.of(mockEntity));
+        Mockito.when(studentMapper.toDTO(mockEntity)).thenReturn(mockDto);
+
+
+        StudentInputDto result = studentService.getStudentDTOById(id);
+
+
+        assertNotNull(result);
+        assertEquals(mockDto, result);
+    }
+
+
+
+
+    @Test
     void testGetStudentDTOById() {
         // Arrange
         Integer mockStudentId = 1;
 
+        // Creating mocks
         StudentEntity mockStudentEntity = mock(StudentEntity.class);
         StudentInputDto mockStudentInputDto = mock(StudentInputDto.class);
 
-        when(studentService.getStudentDTOById(mockStudentId)).thenReturn(mockStudentInputDto);
+        // Assuming you have a mocked repository or service that internally uses findById
+        when(studentRepository.findById(mockStudentId)).thenReturn(Optional.of(mockStudentEntity));
         when(studentMapper.toDTO(mockStudentEntity)).thenReturn(mockStudentInputDto);
 
         // Act
@@ -358,23 +390,68 @@ public class StudentServiceImplTest {
         assertNotNull(result);
         assertEquals(mockStudentInputDto, result);
     }
-   **/
 
-// TODO arregla estos test
-   /**
+
     @Test
-    void testGetStudentDTOByIdWhenEntityIsNull() {
+    void testGetStudentDTOByIdWhenStudentNotFound() {
         // Arrange
         Integer mockStudentId = 1;
 
-        when(studentService.getStudentById(mockStudentId)).thenReturn(null);
+        // Stubbing the method to throw EntityNotFoundException
+        when(studentService.getStudentById(mockStudentId)).thenThrow(new EntityNotFoundException(mockStudentId.toString()));
 
-        // Act
-        StudentInputDto result = studentService.getStudentDTOById(mockStudentId);
+        // Act and Assert
+        assertThrows(EntityNotFoundException.class, () -> {
+            studentService.getStudentDTOById(mockStudentId);
+        });
+    }
 
-        // Assert
-        assertNull(result);
+    /**
+
+     * Test para {@link StudentServiceImpl#convertToSimpleDto(StudentEntity)}.
+     *
+     * <p>
+     * Aunque generalmente no es una buena práctica testear métodos privados directamente,
+     * en este caso particular, hemos optado por hacerlo debido a:
+     * </p>
+     *
+     * <ul>
+     *   <li>La lógica dentro del método es crítica para la funcionalidad de varios métodos públicos.</li>
+     *   <li>Queremos asegurarnos de que cualquier cambio futuro en este método (incluso menores)
+     *       estén completamente probados, sin la necesidad de volver a testear todos los métodos públicos
+     *       que dependen de él.</li>
+     *   <li>La lógica de este método podría ser intrincada o no trivial, justificando su prueba unitaria directa.</li>
+     * </ul>
+     *
+     * <p>
+     * Para lograr esto, utilizamos Reflection de Java para acceder al método privado.
+     * Aunque este enfoque rompe el principio de encapsulamiento, es un compromiso consciente para asegurar
+     * la robustez y mantenibilidad de la base de código.
+     * </p>
+
+    @Test
+    public void testConvertToSimpleDto() throws Exception {
+        // Given
+        StudentEntity mockEntity = new StudentEntity();
+        mockEntity.setIdStudent(1);
+        mockEntity.setNumHoursWeek(20);
+        mockEntity.setComments("Some comments");
+
+        // Use reflection to invoke the private method
+        Method convertMethod = StudentServiceImpl.class.getDeclaredMethod("convertToSimpleDto", StudentEntity.class);
+        convertMethod.setAccessible(true);
+
+        // When
+        EstudianteSimpleOutDto result = (EstudianteSimpleOutDto) convertMethod.invoke(studentServiceImplInstance, mockEntity);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(Integer.valueOf(1), result.getIdStudent());
+        assertEquals(Integer.valueOf(20), result.getNumHoursWeek());
+        assertEquals("Some comments", result.getComments());
     }
 **/
+
+
 
 }

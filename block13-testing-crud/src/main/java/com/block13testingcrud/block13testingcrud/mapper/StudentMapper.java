@@ -81,7 +81,7 @@ public class StudentMapper {
         return personaInputDto;
     }
 
-    private ProfesorInputDto convertToDTO(ProfesorEntity profesorEntity) {
+    public ProfesorInputDto convertToDTO(ProfesorEntity profesorEntity) {
         ProfesorInputDto profesorInputDto = new ProfesorInputDto();
         if (profesorEntity != null) {
             profesorInputDto.setIdProfesor(profesorEntity.getIdProfesor());

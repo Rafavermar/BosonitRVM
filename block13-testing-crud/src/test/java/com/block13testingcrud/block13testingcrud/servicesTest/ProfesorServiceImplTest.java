@@ -110,6 +110,34 @@ public class ProfesorServiceImplTest {
     }
 
     @Test
+    void testGetProfesorById_returnProfesorEntity() {
+        // Arrange
+        Integer mockId = 1;
+        ProfesorEntity mockEntity = new ProfesorEntity();
+        when(profesorRepository.findById(mockId)).thenReturn(Optional.of(mockEntity));
+
+        // Act
+        ProfesorEntity result = profesorService.getProfesorById(mockId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(mockEntity, result);
+    }
+
+    @Test
+    void testGetProfesorById_returnNull() {
+        // Arrange
+        Integer mockId = 1;
+        when(profesorRepository.findById(mockId)).thenReturn(Optional.empty());
+
+        // Act
+        ProfesorEntity result = profesorService.getProfesorById(mockId);
+
+        // Assert
+        assertNull(result);
+    }
+
+    @Test
     public void testGetProfesorDTOById() {
         Integer id = 1;
 
@@ -308,6 +336,36 @@ public class ProfesorServiceImplTest {
         verify(profesorMapper).toDTO(mockProfesor);
     }
 
+    @Test
+    void testUpdateProfesorEntity_profesorExists_updatesAndReturnsEntity() {
+        // Arrange
+        Integer mockId = 1;
+        ProfesorEntity existingEntity = new ProfesorEntity();
+        ProfesorEntity updateEntity = new ProfesorEntity();
+        when(profesorRepository.findById(mockId)).thenReturn(Optional.of(existingEntity));
+        when(profesorRepository.save(existingEntity)).thenReturn(existingEntity);
+
+        // Act
+        ProfesorEntity result = profesorService.updateProfesorEntity(mockId, updateEntity);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(existingEntity, result);
+    }
+
+    @Test
+    void testUpdateProfesorEntity_profesorDoesNotExist_returnsNull() {
+        // Arrange
+        Integer mockId = 1;
+        ProfesorEntity updateEntity = new ProfesorEntity();
+        when(profesorRepository.findById(mockId)).thenReturn(Optional.empty());
+
+        // Act
+        ProfesorEntity result = profesorService.updateProfesorEntity(mockId, updateEntity);
+
+        // Assert
+        assertNull(result);
+    }
 
 
 

@@ -44,6 +44,8 @@ public class StudentServiceImpl implements StudentService {
         this.asignaturaRepository = asignaturaRepository;
     }
 
+
+
     @Override
     public StudentEntity saveStudent(StudentEntity student) {
         return studentRepository.save(student);
@@ -171,11 +173,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentInputDto getStudentDTOById(Integer id) {
         StudentEntity studentEntity = getStudentById(id);
-        if (studentEntity != null) {
-            return studentMapper.toDTO(studentEntity);
-        }
-        return null;
+        return studentMapper.toDTO(studentEntity);
     }
+
     @Override
     public List<StudentInputDto> getStudentsDTOByName(String name) {
         // Find students by name in the database
