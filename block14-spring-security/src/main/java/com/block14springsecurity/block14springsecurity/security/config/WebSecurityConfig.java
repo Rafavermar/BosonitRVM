@@ -60,7 +60,7 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        auth.requestMatchers("/api/auth/login").permitAll()
                                 .anyRequest().authenticated()
                 );
 
@@ -71,3 +71,5 @@ public class WebSecurityConfig {
         return http.build();
     }
 }
+
+//.requestMatchers("/h2-console/**").permitAll()
