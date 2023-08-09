@@ -13,15 +13,16 @@ public class ApplicationException extends RuntimeException {
         this.statusCode = statusCode;
     }
 
-
-
-
-
     public String getExternalMessage() {
         return externalMessage;
     }
 
     public HttpStatus getStatusCode() {
         return statusCode;
+    }
+
+    @Override
+    public String getMessage() {
+        return externalMessage;
     }
 }

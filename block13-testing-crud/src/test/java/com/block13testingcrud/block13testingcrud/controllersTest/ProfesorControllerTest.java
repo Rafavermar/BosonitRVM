@@ -6,6 +6,7 @@ import com.block13testingcrud.block13testingcrud.dto.input.ProfesorInputDto;
 
 import com.block13testingcrud.block13testingcrud.dto.output.ProfesorFullOutputDto;
 import com.block13testingcrud.block13testingcrud.exception.EntityNotFoundException;
+import com.block13testingcrud.block13testingcrud.exception.UnprocessableEntityException;
 import com.block13testingcrud.block13testingcrud.mapper.ProfesorMapper;
 import com.block13testingcrud.block13testingcrud.services.PersonaService;
 import com.block13testingcrud.block13testingcrud.services.ProfesorService;
@@ -50,7 +51,7 @@ public class ProfesorControllerTest {
     private ProfesorService profesorService;
     @Autowired
     private ProfesorController profesorController;
-
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     public void agregarProfesor_cuandoExito_debeRetornarProfesorCreado() throws Exception {
@@ -127,23 +128,116 @@ public class ProfesorControllerTest {
         ;
     }
 
+@Test
+public void obtenerProfesorPorId_FullDetails_Success() throws Exception {
+    ProfesorFullOutputDto profesorFullDTO = new ProfesorFullOutputDto(); // create a real instance or a mock if needed
+    when(profesorService.getProfesorFullDetailsById(anyInt())).thenReturn(profesorFullDTO);
+
+    mockMvc.perform(get("/profesores/125?outputType=full")
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").exists()); // You can add more detailed checks if needed
+}
+
     @Test
-    public void testObtenerProfesorPorId_NotFound() throws Exception {
-        // Dado (Given)
-        Integer id = 125;
+    public void obtenerProfesorPorId_SimpleDetails_Success() throws Exception {
+        ProfesorInputDto profesorInputDto = new ProfesorInputDto();
+        when(profesorService.getProfesorDTOById(anyInt())).thenReturn(profesorInputDto);
 
-        // Hacer que el mock lance la excepción cuando el método se llame con el ID 125
-        when(profesorService.getProfesorDTOById(eq(125))).thenThrow(new EntityNotFoundException("La entidad con ID: 125 no fue encontrada."));
-
-
-        // Ejecutar el request y verificar el resultado
-        mockMvc.perform(get("/profesores/" + id)
+        mockMvc.perform(get("/profesores/125")
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.mensaje").value("La entidad con ID: " + id + " no fue encontrada."));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").exists());
     }
 
+    @Test
+    public void obtenerProfesorPorId_NotFound() throws Exception {
+        String errorMessage = "La entidad con ID: 125 no fue encontrada.";
+        when(profesorService.getProfesorDTOById(eq(125))).thenThrow(new EntityNotFoundException(errorMessage));
 
+        mockMvc.perform(get("/profesores/125")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.mensaje").value(errorMessage));
+    }
 
+    @Test
+    public void testActualizarProfesor_Success() throws Exception {
+        // Datos de prueba
+        Integer id = 125;
+        ProfesorInputDto inputDto = new ProfesorInputDto(
+                id,
+                100,
+                "Comentario de prueba",
+                "Sede A");
+
+        when(profesorService.updateProfesor(eq(id), any(ProfesorInputDto.class))).thenReturn(inputDto);
+
+        mockMvc.perform(put("/profesores/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(inputDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.idProfesor").value(id))
+                .andExpect(jsonPath("$.idPersona").value(100))
+                .andExpect(jsonPath("$.comments").value("Comentario de prueba"))
+                .andExpect(jsonPath("$.branch").value("Sede A"));
+    }
+    @Test
+    public void testActualizarProfesor_NotFound() throws Exception {
+        Integer id = 125;
+        ProfesorInputDto inputDto = new ProfesorInputDto(id, 100, "Comentario de prueba", "Sede A");
+
+        String errorMessage = "La entidad con ID: " + id + " no fue encontrada.";
+
+        when(profesorService.updateProfesor(eq(id), any(ProfesorInputDto.class)))
+                .thenThrow(new EntityNotFoundException(errorMessage));
+
+        mockMvc.perform(put("/profesores/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(inputDto)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.mensaje").value(errorMessage));
+    }
+
+    /**
+     * Test para el endpoint de actualización de un profesor. Este método verifica
+     * la correcta gestión de errores cuando se produce una excepción de tipo
+     * {@link UnprocessableEntityException}.
+     *
+     * <p>
+     * En este test se define un mensaje base ("baseErrorMessage") que es el mensaje
+     * específico del error (por ejemplo, "Error específico"). Luego, debido a cómo
+     * se ha implementado el constructor de {@link UnprocessableEntityException},
+     * el mensaje real que se genera tiene un prefijo ("Entidad no procesable: "),
+     * resultando en un mensaje formateado ("formattedErrorMessage").
+     * </p>
+     *
+     * <p>
+     * El motivo de definir ambos mensajes en el test es para simular con precisión
+     * la construcción del mensaje de error que ocurre en el código real y, por lo tanto,
+     * establecer la expectativa correcta para la validación del test. Es esencial
+     * que el test refleje la lógica real para asegurar su efectividad.
+     * </p>
+     *
+     * @throws Exception si ocurre un error durante la ejecución del test
+     */
+    @Test
+    public void testActualizarProfesor_UnprocessableEntity() throws Exception {
+        Integer id = 125;
+        ProfesorInputDto inputDto = new ProfesorInputDto(id,
+                100, "Comentario de prueba",
+                "Sede A");
+        String baseErrorMessage = "Error específico";
+        String formattedErrorMessage = "Entidad no procesable: " + baseErrorMessage;
+
+        when(profesorService.updateProfesor(eq(id), any(ProfesorInputDto.class)))
+                .thenThrow(new UnprocessableEntityException(baseErrorMessage));
+
+        mockMvc.perform(put("/profesores/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(inputDto)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.mensaje").value(formattedErrorMessage));
+    }
 
 }
