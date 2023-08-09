@@ -29,6 +29,7 @@
         <module name="jpa-cascade" />
         <module name="block10-dockerize-app" />
         <module name="block3-maven-package" />
+        <module name="block14-spring-security" />
         <module name="block1a-process-file-and-streams" />
         <module name="block1c-process-file-and-streams" />
         <module name="block5-command-line-runner" />
@@ -55,6 +56,7 @@
       <module name="block12-criteria-builder" options="-parameters" />
       <module name="block13-mongodb" options="-parameters" />
       <module name="block13-testing-crud" options="-parameters" />
+      <module name="block14-spring-security" options="-parameters" />
       <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />
