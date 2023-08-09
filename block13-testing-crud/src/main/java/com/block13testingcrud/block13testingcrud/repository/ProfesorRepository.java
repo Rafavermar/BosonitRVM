@@ -12,6 +12,6 @@ import java.util.List;
 public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Integer> {
 
     ProfesorEntity findByPersona(PersonaEntity personaEntity);
-    // Method to find professors by name
+
     List<ProfesorEntity> findByPersonaName(String name);
 }

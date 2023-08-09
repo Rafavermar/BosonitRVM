@@ -7,7 +7,9 @@ import com.block13testingcrud.block13testingcrud.dto.output.EstudianteFullOutDto
 import com.block13testingcrud.block13testingcrud.dto.output.EstudianteSimpleOutDto;
 import com.block13testingcrud.block13testingcrud.entities.StudentEntity;
 
-import java.util.List;public interface StudentService {
+import java.util.List;
+
+public interface StudentService {
 
     StudentEntity saveStudent(StudentEntity student);
 

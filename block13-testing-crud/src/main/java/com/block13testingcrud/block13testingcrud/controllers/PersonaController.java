@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -73,20 +74,41 @@ public class PersonaController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<PersonaEntity> buscarPorId(@PathVariable Integer id) {
-        PersonaEntity personaEntity = personaService.buscarPorId(id);
-        return new ResponseEntity<>(personaEntity, HttpStatus.OK);
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
+        try {
+            PersonaEntity personaEntity = personaService.buscarPorId(id);
+            return new ResponseEntity<>(personaEntity, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            CustomError error = new CustomError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getMessage());
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
     }
+
+// TODO sustituir TryCatch por un Globalexception handler
 
     @GetMapping("/usuario/{usuario}")
-    public ResponseEntity<PersonaEntity> buscarPorUsuario(@PathVariable String usuario) {
-        PersonaEntity personaEntity = personaService.buscarPorUsuario(usuario);
-        return new ResponseEntity<>(personaEntity, HttpStatus.OK);
+    public ResponseEntity<?> buscarPorUsuario(@PathVariable String usuario) {
+        try {
+            PersonaEntity personaEntity = personaService.buscarPorUsuario(usuario);
+            return new ResponseEntity<>(personaEntity, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            // Retorna un objeto de error en vez de la entidad
+            return new ResponseEntity<>(Collections.singletonMap("mensaje", e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // Captura otras excepciones no esperadas
+            return new ResponseEntity<>(Collections.singletonMap("mensaje", "Error interno del servidor"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+
     @GetMapping
-    public ResponseEntity<List<PersonaEntity>> mostrarTodos() {
+    public ResponseEntity<?> mostrarTodos() {
         List<PersonaEntity> personasEntity = personaService.mostrarTodos();
+
+        if (personasEntity.isEmpty()) {
+            return new ResponseEntity<>(Collections.singletonMap("mensaje", "No hay personas disponibles"), HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(personasEntity, HttpStatus.OK);
     }
 

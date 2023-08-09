@@ -4,6 +4,7 @@ import com.block13testingcrud.block13testingcrud.controllers.PersonaController;
 import com.block13testingcrud.block13testingcrud.dto.input.PersonaInputDto;
 import com.block13testingcrud.block13testingcrud.entities.PersonaEntity;
 
+import com.block13testingcrud.block13testingcrud.exception.EntityNotFoundException;
 import com.block13testingcrud.block13testingcrud.exception.PersonaNotFoundException;
 import com.block13testingcrud.block13testingcrud.exception.UnprocessableEntityException;
 import com.block13testingcrud.block13testingcrud.mapper.PersonaMapper;
@@ -11,12 +12,14 @@ import com.block13testingcrud.block13testingcrud.services.PersonaService;
 import com.block13testingcrud.block13testingcrud.services.ProfesorService;
 import com.block13testingcrud.block13testingcrud.services.StudentService;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,12 +27,30 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+
+
+/**
+ * Esta clase realiza tests para {@link PersonaController}. Los tests utilizan MockMvc para simular
+ * solicitudes HTTP y verificar las respuestas del controlador.
+ *
+ * El {@link ObjectMapper} se inyecta para:
+ * 1. Convertir objetos a su representación JSON cuando se establece el cuerpo de la solicitud en los tests.
+ * 2. Facilitar la deserialización y serialización entre JSON y objetos Java durante el proceso de prueba.
+ *
+ * La inyección de dependencias, en este caso del {@link ObjectMapper}, garantiza que el código se prueba
+ * utilizando el mismo mapeador de objetos que la aplicación, asegurando la coherencia.
+ */
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -51,7 +72,8 @@ public class PersonaControllerTest {
     private PersonaController personaController;
 
     private MockMvc mockMvc;
-
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setUp() {
@@ -185,36 +207,83 @@ public class PersonaControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-// TODO arreglar los tests
-    /*
     @Test
-    public void buscarPorId_withInvalidId_shouldReturnBadRequest() throws Exception {
-        int id = -1; // ID inválido, menor o igual a 0
-        when(personaService.buscarPorId(id)).thenThrow(new BadRequestException());
+    public void buscarPorId_Success() throws Exception {
+        Integer id = 123; // ID de ejemplo
+        PersonaEntity personaEntity = new PersonaEntity();
+        personaEntity.setIdPersona(id);
+        // ... setea otros atributos de personaEntity según sea necesario ...
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/personas/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-/*
-    @Test
-    public void buscarPorId_withValidId_shouldReturnOk() throws Exception {
-        int id = 1;
-        PersonaEntity persona = new PersonaEntity(id, "John Doe", 30, "New York");
-        when(personaService.buscarPorId(id)).thenReturn(persona);
+        when(personaService.buscarPorId(id)).thenReturn(personaEntity);
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/personas/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/personas/" + id)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.nombre").value("John Doe"))
-                .andExpect(jsonPath("$.edad").value(30))
-                .andExpect(jsonPath("$.poblacion").value("New York"));
+                .andExpect(jsonPath("$.idPersona").value(id));
+
     }
 
-*/
+    @Test
+    public void buscarPorId_NotFound() throws Exception {
+        Integer id = 125;
+
+        when(personaService.buscarPorId(id)).thenThrow(new EntityNotFoundException("La entidad con ID: " + id + " no fue encontrada."));
+
+        mockMvc.perform(get("/personas/" + id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.mensaje").value("La entidad con ID: " + id + " no fue encontrada."));
+    }
+
+    @Test
+    public void buscarPorUsuario_ValidUsuario() throws Exception {
+        String usuario = "testUser";
+        PersonaEntity mockPersona = new PersonaEntity();
+        mockPersona.setUsuario(usuario);
+        when(personaService.buscarPorUsuario(usuario)).thenReturn(mockPersona);
+
+        mockMvc.perform(get("/personas/usuario/" + usuario)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.usuario").value(usuario));
+    }
+    @Test
+    public void buscarPorUsuario_UsuarioNoEncontrado() throws Exception {
+        String usuario = "nonExistentUser";
+
+        // Configuramos el servicio mockeado para lanzar una excepción cuando no se encuentre el usuario
+        when(personaService.buscarPorUsuario(usuario)).thenThrow(new EntityNotFoundException("Usuario no encontrado"));
+
+        mockMvc.perform(get("/personas/usuario/" + usuario)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.mensaje").value("Usuario no encontrado"));
+    }
+
+
+    @Test
+    public void mostrarTodos_ValidRequest() throws Exception {
+        List<PersonaEntity> mockPersonas = Arrays.asList(new PersonaEntity(), new PersonaEntity());
+
+        when(personaService.mostrarTodos()).thenReturn(mockPersonas);
+
+        mockMvc.perform(get("/personas")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    public void mostrarTodos_NoPersonas() throws Exception {
+
+        // Configuramos el servicio mockeado para devolver una lista vacía
+        when(personaService.mostrarTodos()).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get("/personas")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
 
 
 }

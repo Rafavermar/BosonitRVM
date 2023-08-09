@@ -29,7 +29,7 @@ public class ProfesorEstudianteTest {
         assertEquals(profesor, profesorEstudiante.getProfesor());
         assertEquals(student, profesorEstudiante.getStudent());
     }
-// TODO arreglar estos test, investigar sobre Equals y Hashcode
+// TODO investigar sobre Equals y Hashcode
     /*
     @Test
     public void testEquals() {

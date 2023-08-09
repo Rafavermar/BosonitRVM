@@ -4,6 +4,7 @@ package com.block13testingcrud.block13testingcrud.controllers;
 import com.block13testingcrud.block13testingcrud.dto.input.AsignaturaInputDTO;
 import com.block13testingcrud.block13testingcrud.entities.AsignaturaEntity;
 import com.block13testingcrud.block13testingcrud.entities.StudentEntity;
+import com.block13testingcrud.block13testingcrud.exception.EntityNotFoundException;
 import com.block13testingcrud.block13testingcrud.mapper.AsignaturaMapper;
 import com.block13testingcrud.block13testingcrud.services.AsignaturaService;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -33,10 +35,16 @@ public class AsignaturaController {
         return new ResponseEntity<>(asignaturas, HttpStatus.OK);
     }
 
+    // TODO sustituir el try catch por un Globalexception handler
     @GetMapping("/student/{idStudent}")
-    public ResponseEntity<List<AsignaturaInputDTO>> getAsignaturasByStudentId(@PathVariable Integer idStudent) {
-        List<AsignaturaEntity> asignaturas = asignaturaService.getAsignaturasByStudentId(idStudent);
-        return ResponseEntity.ok(asignaturaMapper.toDTOList(asignaturas));
+    public ResponseEntity<?> getAsignaturasByStudentId(@PathVariable Integer idStudent) {
+        try {
+            List<AsignaturaEntity> asignaturas = asignaturaService.getAsignaturasByStudentId(idStudent);
+            return ResponseEntity.ok(asignaturaMapper.toDTOList(asignaturas));
+        } catch (EntityNotFoundException e) {
+            // Devolvemos un mensaje de error personalizado con un código 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("mensaje", e.getMessage()));
+        }
     }
 
     @GetMapping("/{idAsignatura}/students")
