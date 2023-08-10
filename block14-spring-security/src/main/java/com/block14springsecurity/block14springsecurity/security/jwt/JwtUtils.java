@@ -27,7 +27,7 @@ public class JwtUtils {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
+                .claim("username", userPrincipal.getUsername())
                 .claim("role", userPrincipal.getRole()) // añadir el claim para el role del usuario
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))

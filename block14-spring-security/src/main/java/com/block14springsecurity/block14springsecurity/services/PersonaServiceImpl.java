@@ -38,7 +38,7 @@ public class PersonaServiceImpl implements PersonaService {
         this.studentRepository = studentRepository;
         this.profesorEstudianteRepository = profesorEstudianteRepository;
     }
-
+    @Transactional
     @Override
     public PersonaEntity agregarPersona(PersonaEntity personaEntity) {
         // Validar los campos requeridos y lanzar UnprocessableEntityException en caso de que no cumplan los requisitos
@@ -46,6 +46,7 @@ public class PersonaServiceImpl implements PersonaService {
             throw new UnprocessableEntityException("Todos los campos (usuario, name, city) deben estar presentes y no pueden estar vacíos.");
         }
 
+        System.out.println(personaEntity);
         return personaRepository.save(personaEntity);
     }
 

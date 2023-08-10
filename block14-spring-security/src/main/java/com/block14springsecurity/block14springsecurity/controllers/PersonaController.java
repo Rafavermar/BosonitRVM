@@ -12,14 +12,18 @@ import com.block14springsecurity.block14springsecurity.mapper.PersonaMapper;
 import com.block14springsecurity.block14springsecurity.services.PersonaService;
 import com.block14springsecurity.block14springsecurity.services.ProfesorService;
 import com.block14springsecurity.block14springsecurity.services.StudentService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 import java.util.List;
+
 
 
 
@@ -36,6 +40,8 @@ public class PersonaController {
     private StudentService studentService;
     @Autowired
     private ProfesorService profesorService;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
 
 
@@ -52,13 +58,20 @@ public class PersonaController {
     }
 
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
-    public ResponseEntity<?> agregarPersona(@RequestBody PersonaInputDto personaInputDto) {
+    public ResponseEntity<?> agregarPersona(@Valid @RequestBody PersonaInputDto personaInputDto) {
         try {
+            System.out.println(personaInputDto);
             // Convertir el DTO a una entidad PersonaEntity usando el mapper
             PersonaEntity nuevaPersonaEntity = personaMapper.toEntity(personaInputDto);
 
+            // Encriptar la contraseña
+            String rawPassword = nuevaPersonaEntity.getPassword(); // Obtener la contraseña sin encriptar
+            String encodedPassword = passwordEncoder.encode(rawPassword); // Encriptar la contraseña
+            nuevaPersonaEntity.setPassword(encodedPassword); // Establecer la contraseña encriptada en la entidad
+
+            System.out.println(nuevaPersonaEntity);
             // Guardar la entidad en la base de datos
             PersonaEntity personaGuardada = personaService.agregarPersona(nuevaPersonaEntity);
 
@@ -73,6 +86,7 @@ public class PersonaController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
         try {
@@ -85,7 +99,7 @@ public class PersonaController {
     }
 
 // TODO sustituir TryCatch por un Globalexception handler
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/usuario/{usuario}")
     public ResponseEntity<?> buscarPorUsuario(@PathVariable String usuario) {
         try {
@@ -100,7 +114,7 @@ public class PersonaController {
         }
     }
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
     public ResponseEntity<?> mostrarTodos() {
         List<PersonaEntity> personasEntity = personaService.mostrarTodos();
@@ -111,7 +125,7 @@ public class PersonaController {
 
         return new ResponseEntity<>(personasEntity, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> modificarPersona(@PathVariable Integer id, @RequestBody PersonaInputDto personaInputDto) {
         try {
@@ -134,7 +148,7 @@ public class PersonaController {
         }
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> borrarPersona(@PathVariable Integer id) {
         try {

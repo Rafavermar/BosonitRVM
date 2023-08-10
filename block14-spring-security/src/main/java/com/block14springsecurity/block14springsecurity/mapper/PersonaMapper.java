@@ -4,7 +4,9 @@ package com.block14springsecurity.block14springsecurity.mapper;
 
 import com.block14springsecurity.block14springsecurity.dto.input.PersonaInputDto;
 import com.block14springsecurity.block14springsecurity.entities.PersonaEntity;
+
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class PersonaMapper {
@@ -13,6 +15,7 @@ public class PersonaMapper {
         PersonaEntity personaEntity = new PersonaEntity();
         personaEntity.setUsuario(personaInputDto.getUsuario());
         personaEntity.setPassword(personaInputDto.getPassword());
+        personaEntity.setRole(personaInputDto.getRole());
         personaEntity.setName(personaInputDto.getName());
         personaEntity.setSurname(personaInputDto.getSurname());
         personaEntity.setCompanyEmail(personaInputDto.getCompanyEmail());
@@ -23,6 +26,7 @@ public class PersonaMapper {
         personaEntity.setImageUrl(personaInputDto.getImagenUrl());
         personaEntity.setTerminationDate(personaInputDto.getTermination_date());
         return personaEntity;
+
     }
 
     public PersonaInputDto toDTO(PersonaEntity personaEntity) {
@@ -30,6 +34,7 @@ public class PersonaMapper {
         personaInputDto.setId(personaEntity.getIdPersona());
         personaInputDto.setUsuario(personaEntity.getUsuario());
         personaInputDto.setPassword(personaEntity.getPassword());
+        personaInputDto.setRole(personaEntity.getRole());
         personaInputDto.setName(personaEntity.getName());
         personaInputDto.setSurname(personaEntity.getSurname());
         personaInputDto.setCompanyEmail(personaEntity.getCompanyEmail());

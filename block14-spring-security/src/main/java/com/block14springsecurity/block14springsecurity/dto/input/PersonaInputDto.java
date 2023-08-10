@@ -1,5 +1,7 @@
 package com.block14springsecurity.block14springsecurity.dto.input;
 
+
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,7 @@ public class PersonaInputDto {
     private Integer id;
     private String usuario;
     private String password;
+    private String role;
     private String name;
     private String surname;
     private String companyEmail;

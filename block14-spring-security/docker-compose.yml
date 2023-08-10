@@ -14,6 +14,8 @@ services:
       POSTGRES_DB: test
     networks:
       - bosonit
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   app:
     container_name: block14-Security
@@ -36,6 +38,6 @@ networks:
   bosonit:
     driver: bridge
 
-
-
+volumes:
+  pgdata:
 

@@ -10,14 +10,14 @@ public class JwtResponseDto {
     private String type = "Bearer";
     private Integer id;
     private String username;
-    private String email;
+    private String role;
     private List<String> roles;
 
-    public JwtResponseDto( String accessToken, Integer id, String username, String email, List<String> roles ) {
+    public JwtResponseDto( String accessToken, Integer id, String username, String role, List<String> roles ) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
-        this.email = email;
+        this.role = role;
         this.roles = roles;
     }
 
