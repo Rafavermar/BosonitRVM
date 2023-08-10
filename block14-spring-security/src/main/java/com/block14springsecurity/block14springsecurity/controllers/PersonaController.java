@@ -8,12 +8,14 @@ import com.block14springsecurity.block14springsecurity.exception.CustomError;
 import com.block14springsecurity.block14springsecurity.exception.EntityNotFoundException;
 import com.block14springsecurity.block14springsecurity.exception.PersonaNotFoundException;
 import com.block14springsecurity.block14springsecurity.exception.UnprocessableEntityException;
+
 import com.block14springsecurity.block14springsecurity.mapper.PersonaMapper;
 import com.block14springsecurity.block14springsecurity.services.PersonaService;
 import com.block14springsecurity.block14springsecurity.services.ProfesorService;
 import com.block14springsecurity.block14springsecurity.services.StudentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +42,7 @@ public class PersonaController {
     private StudentService studentService;
     @Autowired
     private ProfesorService profesorService;
-    @Autowired
+
     private final PasswordEncoder passwordEncoder;
 
 

@@ -4,7 +4,6 @@ package com.block14springsecurity.block14springsecurity.mapper;
 
 import com.block14springsecurity.block14springsecurity.dto.input.PersonaInputDto;
 import com.block14springsecurity.block14springsecurity.entities.PersonaEntity;
-
 import org.springframework.stereotype.Component;
 
 

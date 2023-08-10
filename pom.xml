@@ -26,6 +26,9 @@
         <module>block7-crud-validation</module>
         <module>block10-dockerize-app</module>
         <module>block11-upload-download-files</module>
+        <module>block13-testing-crud</module>
+        <module>block13-mongodb</module>
+
 
 
 
