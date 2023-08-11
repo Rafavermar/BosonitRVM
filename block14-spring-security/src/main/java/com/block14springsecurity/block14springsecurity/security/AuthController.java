@@ -22,16 +22,55 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+/**
+ * Controlador que gestiona las operaciones relacionadas con la autenticación de usuarios.
+ * Proporciona endpoints para autenticar usuarios y generar tokens JWT para sesiones autenticadas.
+ *
+ * <p>El controlador utiliza varios componentes, como {@link AuthenticationManager} para autenticar usuarios,
+ * {@link PersonaAuthService} para realizar operaciones relacionadas con el servicio de autenticación de personas,
+ * {@link JwtUtils} para operaciones de token JWT y {@link PersonaMapper} para convertir entre entidades y DTOs.</p>
+ *
+ * @author Tu nombre aquí
+ */
+
 @RestController
 
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    /**
+     * Logger para registrar eventos relacionados con las operaciones de autenticación.
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
+    /**
+     * Gestor utilizado para autenticar usuarios.
+     */
     private final AuthenticationManager authenticationManager;
+
+    /**
+     * Servicio que gestiona operaciones específicas de autenticación de personas.
+     */
     private final PersonaAuthService personaAuthService;
+
+    /**
+     * Utilidad para gestionar operaciones relacionadas con tokens JWT.
+     */
     private final JwtUtils jwtUtils;
+
+    /**
+     * Mapper utilizado para convertir entre entidades y DTOs relacionados con personas.
+     */
     private final PersonaMapper personaMapper;
+
+    /**
+     * Constructor para inicializar {@link AuthController} con dependencias requeridas.
+     *
+     * @param authenticationManager Gestor de autenticación.
+     * @param personaAuthService    Servicio de autenticación de personas.
+     * @param jwtUtils              Utilidad de JWT.
+     * @param personaMapper         Mapper de personas.
+     */
 
     public AuthController( AuthenticationManager authenticationManager, PersonaAuthService personaAuthService, JwtUtils jwtUtils, PersonaMapper personaMapper ) {
         this.authenticationManager = authenticationManager;
@@ -40,7 +79,17 @@ public class AuthController {
         this.personaMapper = personaMapper;
     }
 
-
+    /**
+     * Endpoint para autenticar usuarios. Una vez autenticados, genera y retorna un token JWT.
+     *
+     * <p>El token JWT es utilizado para futuras solicitudes autenticadas en la aplicación.
+     * Además de generar el token, este método también recopila detalles del usuario autenticado,
+     * como su ID, nombre de usuario, rol principal y otros roles asociados.</p>
+     *
+     * @param user Detalles del usuario para autenticar.
+     *             Estos detalles incluyen el nombre de usuario y la contraseña.
+     * @return Una respuesta que contiene el token JWT y detalles relacionados del usuario autenticado.
+     */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser( @Valid @RequestBody UserDetailsImpl user ) {
         LOGGER.info("Attempting authentication for user: {}", user.getUsername());
