@@ -11,10 +11,36 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Configuración de Kafka Consumer para Spring Boot.
+ *
+ * <p>
+ * Esta clase proporciona configuraciones necesarias para establecer una conexión con
+ * un servidor Kafka y consumir mensajes de tópicos específicos. Define las configuraciones
+ * básicas del consumidor y la fábrica para crear instancias del oyente del consumidor.
+ * </p>
+ */
 @Configuration
 public class KafkaConsumerConfig {
+
+    /**
+     * Dirección de los servidores bootstrap de Kafka. Por lo general, es la dirección
+     * del broker de Kafka.
+     */
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
+
+    /**
+     * Configuraciones específicas para el consumidor de Kafka.
+     *
+     * <p>
+     * Define propiedades como la dirección del servidor, el ID del grupo,
+     * y las clases de deserialización para las claves y valores de los mensajes.
+     * </p>
+     *
+     * @return Un mapa con las configuraciones del consumidor.
+     */
 
     @Bean
     public Map<String, Object> consumerConfigs() {
@@ -25,6 +51,17 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         return props;
     }
+
+    /**
+     * Define la fábrica para crear instancias del oyente del consumidor.
+     *
+     * <p>
+     * Esta fábrica se encarga de crear los contenedores que se utilizan
+     * para consumir mensajes desde el servidor Kafka.
+     * </p>
+     *
+     * @return Una instancia de {@link ConcurrentKafkaListenerContainerFactory} configurada.
+     */
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
