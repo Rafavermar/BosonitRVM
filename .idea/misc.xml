@@ -54,6 +54,9 @@
         <option value="$PROJECT_DIR$/../block14-spring-security/pom.xml" />
         <option value="$PROJECT_DIR$/block14-spring-security/pom.xml" />
         <option value="$PROJECT_DIR$/../block15-kafka/pom.xml" />
+        <option value="$PROJECT_DIR$/block15-kafka/pom.xml" />
+        <option value="$PROJECT_DIR$/../block15-kafka-consumer/pom.xml" />
+        <option value="$PROJECT_DIR$/block15-kafka-consumer/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

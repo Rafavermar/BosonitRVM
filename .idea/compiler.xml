@@ -20,6 +20,7 @@
         <module name="block6-person-controllers1" />
         <module name="block6-simple-controller" />
         <module name="block5-properties" />
+        <module name="block15-kafka-consumer" />
         <module name="block13-testing-crud" />
         <module name="block11-upload-download-files" />
         <module name="block6-path-variable-headers" />
@@ -58,6 +59,8 @@
       <module name="block13-mongodb" options="-parameters" />
       <module name="block13-testing-crud" options="-parameters" />
       <module name="block14-spring-security" options="-parameters" />
+      <module name="block15-kafka" options="-parameters" />
+      <module name="block15-kafka-consumer" options="-parameters" />
       <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />

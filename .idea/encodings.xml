@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$APPLICATION_HOME_DIR$/jbr/bin/src/main/java" charset="UTF-8" />
+    <file url="file://$APPLICATION_HOME_DIR$/jbr/bin/src/main/resources" charset="UTF-8" />
     <file url="file://$USER_HOME$/Desktop/block13-mongodb/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bloc1d-process-file-and-streams/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bloc1d-process-file-and-streams/src/main/resources" charset="UTF-8" />
@@ -18,6 +20,8 @@
     <file url="file://$PROJECT_DIR$/block13-testing-crud/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block14-spring-security/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block14-spring-security/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/block15-kafka-consumer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/block15-kafka-consumer/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block15-kafka/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block15-kafka/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/block1a-process-file-and-streams/src/main/java" charset="UTF-8" />
