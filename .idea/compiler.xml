@@ -29,6 +29,7 @@
         <module name="jpa-cascade" />
         <module name="block10-dockerize-app" />
         <module name="block3-maven-package" />
+        <module name="block15-kafka" />
         <module name="block14-spring-security" />
         <module name="block1a-process-file-and-streams" />
         <module name="block1c-process-file-and-streams" />
