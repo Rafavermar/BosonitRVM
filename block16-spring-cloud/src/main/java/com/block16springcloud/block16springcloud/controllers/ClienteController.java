@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {
@@ -18,29 +19,33 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAllClientes() {
-        return new ResponseEntity<>(clienteService.getAllClientes(), HttpStatus.OK);
+    public List<Cliente> getAllClientes() {
+        return clienteService.getAllClientes();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getClienteById(@PathVariable Long id) {
-        return new ResponseEntity<>(clienteService.getClienteById(id), HttpStatus.OK);
+    public Cliente getClienteById(@PathVariable Long id) {
+        return clienteService.getClienteById(id);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Cliente> createCliente(@RequestBody Cliente cliente) {
-        return new ResponseEntity<>(clienteService.createCliente(cliente), HttpStatus.CREATED);
+    public Cliente createCliente(@RequestBody Cliente cliente) {
+        return clienteService.createCliente(cliente);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> updateCliente(@PathVariable Long id, @RequestBody Cliente updatedCliente) {
-        return new ResponseEntity<>(clienteService.updateCliente(id, updatedCliente), HttpStatus.OK);
+    public Cliente updateCliente(@PathVariable Long id, @RequestBody Cliente updatedCliente) {
+        return clienteService.updateCliente(id, updatedCliente);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCliente(@PathVariable Long id) {
+    public void deleteCliente(@PathVariable Long id) {
         clienteService.deleteCliente(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

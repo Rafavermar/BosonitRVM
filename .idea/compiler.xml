@@ -25,6 +25,7 @@
         <module name="block11-upload-download-files" />
         <module name="block6-path-variable-headers" />
         <module name="block12-criteria-builder" />
+        <module name="block16-spring-cloud-BackendFrontend" />
         <module name="block7-crud" />
         <module name="block5-profiles" />
         <module name="jpa-cascade" />
@@ -63,6 +64,7 @@
       <module name="block15-kafka" options="-parameters" />
       <module name="block15-kafka-consumer" options="-parameters" />
       <module name="block16-spring-cloud" options="-parameters" />
+      <module name="block16-spring-cloud-BackendFrontend" options="-parameters" />
       <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />

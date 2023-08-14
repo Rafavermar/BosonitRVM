@@ -28,6 +28,9 @@
         <module>block11-upload-download-files</module>
         <module>block13-testing-crud</module>
         <module>block13-mongodb</module>
+        <module>block14-spring-security</module>
+        <module>block15-kafka</module>
+        <module>block15-kafka-consumer</module>
 
 
 

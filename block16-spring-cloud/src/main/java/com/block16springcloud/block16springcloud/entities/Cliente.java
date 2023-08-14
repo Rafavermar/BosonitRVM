@@ -1,5 +1,6 @@
 package com.block16springcloud.block16springcloud.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Cliente {
     private String email;
     private String telefono;
     @ManyToMany(mappedBy = "passengers")
+    @JsonIgnore
     private List<Viaje> trips = new ArrayList<>();
 
 }
