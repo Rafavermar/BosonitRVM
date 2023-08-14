@@ -21,7 +21,7 @@ public class TicketServiceImpl implements TicketService {
     public Ticket generateTicket(Long userId, Long tripId) {
         // Endpoints del servicio backend
         String userEndpoint = "http://localhost:8081/cliente/" + userId;
-        String tripEndpoint = "http://localhost:8081/viaje/" + tripId;
+        String tripEndpoint = "http://localhost:8081/trip/" + tripId;
 
         // Usando RestTemplate para obtener detalles del usuario (cliente) y del viaje
         Cliente cliente = restTemplate.getForObject(userEndpoint, Cliente.class);
