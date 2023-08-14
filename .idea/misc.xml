@@ -61,6 +61,11 @@
         <option value="$PROJECT_DIR$/block16-spring-cloud/pom.xml" />
         <option value="$PROJECT_DIR$/../block16-spring-cloud-BackendFrontend/pom.xml" />
         <option value="$PROJECT_DIR$/block16-spring-cloud-BackendFrontend/pom.xml" />
+        <option value="$PROJECT_DIR$/../Eureka-Naming-Server/pom.xml" />
+        <option value="$PROJECT_DIR$/../block16-spring-cloud-Eureka-Naming-Server/pom.xml" />
+        <option value="$PROJECT_DIR$/block16-spring-cloud-Eureka-Naming-Server/pom.xml" />
+        <option value="$PROJECT_DIR$/../block16-Eureka-Naming-Server/pom.xml" />
+        <option value="$PROJECT_DIR$/block16-Eureka-Naming-Server/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -69,8 +74,10 @@
         <option value="$PROJECT_DIR$/../5.SpringBasico/pom.xml" />
         <option value="$PROJECT_DIR$/BosonitProjects/pom.xml" />
         <option value="$PROJECT_DIR$/bloc1d-process-file-and-streams/pom.xml" />
+        <option value="$PROJECT_DIR$/block16-spring-cloud-Eureka-Naming-Server/pom.xml" />
         <option value="$PROJECT_DIR$/block6-simple-controllers/pom.xml" />
         <option value="$PROJECT_DIR$/com.block5-Logging/pom.xml" />
+        <option value="$PROJECT_DIR$/../Eureka-Naming-Server/pom.xml" />
         <option value="$PROJECT_DIR$/../block6-person.controllers1/pom.xml" />
       </set>
     </option>

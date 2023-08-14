@@ -26,6 +26,7 @@
         <module name="block6-path-variable-headers" />
         <module name="block12-criteria-builder" />
         <module name="block16-spring-cloud-BackendFrontend" />
+        <module name="block16-Eureka-Naming-Server" />
         <module name="block7-crud" />
         <module name="block5-profiles" />
         <module name="jpa-cascade" />
@@ -45,16 +46,19 @@
     <bytecodeTargetLevel>
       <module name="block1-process-file-and-streams (1)" target="17" />
       <module name="block1-process-file-and-streams (2)" target="17" />
+      <module name="block16-spring-cloud-Eureka-Naming-Server" target="17" />
       <module name="block5-logging" target="17" />
       <module name="block6-person-controllers" target="17" />
       <module name="block6-person.controllers1" target="17" />
       <module name="block6-simple-controllers" target="17" />
       <module name="BosonitProjects" target="17" />
       <module name="com.BosonitRVM" target="17" />
+      <module name="Eureka-Naming-Server" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Eureka-Naming-Server" options="-parameters" />
       <module name="block10-dockerize-app" options="-parameters" />
       <module name="block11-upload-download-files" options="-parameters" />
       <module name="block12-criteria-builder" options="-parameters" />
@@ -63,8 +67,10 @@
       <module name="block14-spring-security" options="-parameters" />
       <module name="block15-kafka" options="-parameters" />
       <module name="block15-kafka-consumer" options="-parameters" />
+      <module name="block16-Eureka-Naming-Server" options="-parameters" />
       <module name="block16-spring-cloud" options="-parameters" />
       <module name="block16-spring-cloud-BackendFrontend" options="-parameters" />
+      <module name="block16-spring-cloud-Eureka-Naming-Server" options="-parameters" />
       <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />
