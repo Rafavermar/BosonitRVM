@@ -32,6 +32,7 @@
         <module name="block3-maven-package" />
         <module name="block15-kafka" />
         <module name="block14-spring-security" />
+        <module name="block16-spring-cloud" />
         <module name="block1a-process-file-and-streams" />
         <module name="block1c-process-file-and-streams" />
         <module name="block5-command-line-runner" />
@@ -61,6 +62,7 @@
       <module name="block14-spring-security" options="-parameters" />
       <module name="block15-kafka" options="-parameters" />
       <module name="block15-kafka-consumer" options="-parameters" />
+      <module name="block16-spring-cloud" options="-parameters" />
       <module name="block5-Logging" options="-parameters" />
       <module name="block5-command-line-runner" options="-parameters" />
       <module name="block5-logging" options="-parameters" />
