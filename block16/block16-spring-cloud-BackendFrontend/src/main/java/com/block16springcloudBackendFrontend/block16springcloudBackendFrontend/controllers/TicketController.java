@@ -5,7 +5,7 @@ import com.block16springcloudBackendFrontend.block16springcloudBackendFrontend.e
 import com.block16springcloudBackendFrontend.block16springcloudBackendFrontend.services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController

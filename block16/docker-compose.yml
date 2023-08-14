@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  eureka-server:
+    build:
+      context: ./block16-Eureka-Naming-Server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - main
+
+  api-gateway:
+    build:
+      context: ./block16-API-GETWAY
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+    networks:
+      - main
+
+  backend-service:
+    build:
+      context: ./block16-spring-cloud
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+    networks:
+      - main
+
+  backend-frontend-service:
+    build:
+      context: ./block16-spring-cloud-BackendFrontend
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka-server
+    networks:
+      - main
+
+networks:
+  main:
+    driver: bridge
