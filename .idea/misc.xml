@@ -66,6 +66,8 @@
         <option value="$PROJECT_DIR$/block16-spring-cloud-Eureka-Naming-Server/pom.xml" />
         <option value="$PROJECT_DIR$/../block16-Eureka-Naming-Server/pom.xml" />
         <option value="$PROJECT_DIR$/block16-Eureka-Naming-Server/pom.xml" />
+        <option value="$PROJECT_DIR$/../block16-API-GETWAY/pom.xml" />
+        <option value="$PROJECT_DIR$/block16-API-GETWAY/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
