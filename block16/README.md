@@ -72,6 +72,6 @@ Este endpoint permite consultar cuántos pasajeros están asignados al viaje con
 docker-compose build
 docker-compose up
 
-- Asegúrate de actualizar la propiedad eureka.client.service-url.defaultZone en tus archivos properties de otros servicios para usar el nombre del servicio eureka-server en lugar de localhost:
+- Se debe actualizar la propiedad eureka.client.service-url.defaultZone en los archivos properties de los servicios para usar el nombre del servicio eureka-server en lugar de localhost:
   eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
 
